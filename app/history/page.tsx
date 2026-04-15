@@ -58,24 +58,23 @@ export default function HistoryPage() {
   return (
     <div>
       {/* Page Header */}
-      <div style={{ marginBottom: '20px' }}>
+      <div style={{ marginBottom: '28px' }}>
         <h1 style={{
-          fontSize: '24px',
-          fontWeight: 800,
-          fontFamily: 'var(--font-mono)',
-          background: 'linear-gradient(135deg, #10b981, #6ee7b7)',
-          WebkitBackgroundClip: 'text',
-          WebkitTextFillColor: 'transparent',
-          marginBottom: '3px',
+          fontSize: '28px',
+          fontWeight: 700,
+          fontFamily: 'var(--font-sans)',
+          color: '#edf2f7',
+          marginBottom: '6px',
+          letterSpacing: '-0.03em',
         }}>
-          \uD83D\uDCDC \u5386\u53F2\u7B80\u62A5
+          历史简报
         </h1>
         <p style={{
-          color: '#555',
-          fontSize: '13px',
-          fontFamily: 'var(--font-mono)',
+          color: '#475569',
+          fontSize: '14px',
+          fontFamily: 'var(--font-sans)',
         }}>
-          \u6D4F\u89C8\u6240\u6709\u5386\u53F2\u7B80\u62A5\u8BB0\u5F55
+          浏览所有历史简报记录
         </p>
       </div>
 
@@ -86,58 +85,51 @@ export default function HistoryPage() {
           alignItems: 'center',
           justifyContent: 'center',
           padding: '56px',
-          color: '#555',
-          fontFamily: 'var(--font-mono)',
+          color: '#475569',
           fontSize: '13px',
         }}>
           <div style={{
-            width: '32px',
-            height: '32px',
+            width: '28px',
+            height: '28px',
             border: '2px solid rgba(255, 255, 255, 0.06)',
-            borderTopColor: '#10b981',
+            borderTopColor: '#818CF8',
             borderRadius: '50%',
             animation: 'spin 0.7s linear infinite',
             marginBottom: '12px',
           }} />
-          \u52A0\u8F7D\u4E2D...
+          加载中...
         </div>
       ) : digests.length > 0 ? (
         <>
-          <div style={{
-            border: '1px solid rgba(255, 255, 255, 0.06)',
-            borderRadius: '8px',
-            overflow: 'hidden',
-          }}>
-            {uniqueDigests.map(digest => (
-              <DigestCard key={digest.id} digest={digest} />
-            ))}
-          </div>
+          {uniqueDigests.map(digest => (
+            <DigestCard key={digest.id} digest={digest} />
+          ))}
           {hasMore && (
-            <div style={{ textAlign: 'center', marginTop: '24px' }}>
+            <div style={{ textAlign: 'center', marginTop: '28px' }}>
               <button
                 onClick={loadMore}
                 style={{
-                  height: '32px',
-                  padding: '0 14px',
+                  height: '36px',
+                  padding: '0 20px',
                   background: 'transparent',
-                  border: '1px solid rgba(255, 255, 255, 0.1)',
-                  borderRadius: '6px',
-                  color: '#8b8b8b',
+                  border: '1px solid rgba(129, 140, 248, 0.2)',
+                  borderRadius: '8px',
+                  color: '#818CF8',
                   fontSize: '13px',
-                  fontFamily: 'var(--font-mono)',
+                  fontFamily: 'var(--font-sans)',
                   cursor: 'pointer',
-                  transition: 'all 150ms ease',
+                  transition: 'all 200ms ease',
                 }}
                 onMouseEnter={e => {
-                  (e.currentTarget as HTMLButtonElement).style.borderColor = 'rgba(255, 255, 255, 0.2)';
-                  (e.currentTarget as HTMLButtonElement).style.color = '#e8e8e8';
+                  (e.currentTarget as HTMLButtonElement).style.background = 'rgba(129, 140, 248, 0.1)';
+                  (e.currentTarget as HTMLButtonElement).style.borderColor = 'rgba(129, 140, 248, 0.3)';
                 }}
                 onMouseLeave={e => {
-                  (e.currentTarget as HTMLButtonElement).style.borderColor = 'rgba(255, 255, 255, 0.1)';
-                  (e.currentTarget as HTMLButtonElement).style.color = '#8b8b8b';
+                  (e.currentTarget as HTMLButtonElement).style.background = 'transparent';
+                  (e.currentTarget as HTMLButtonElement).style.borderColor = 'rgba(129, 140, 248, 0.2)';
                 }}
               >
-                \u52A0\u8F7D\u66F4\u591A
+                加载更多
               </button>
             </div>
           )}
@@ -145,26 +137,39 @@ export default function HistoryPage() {
       ) : (
         <div style={{
           textAlign: 'center',
-          padding: '56px',
-          color: '#555',
+          padding: '64px',
+          color: '#475569',
         }}>
-          <div style={{ fontSize: '40px', marginBottom: '12px', opacity: 0.6 }}>\uD83D\uDCED</div>
           <div style={{
-            fontSize: '16px',
-            fontWeight: 600,
-            color: '#8b8b8b',
-            marginBottom: '3px',
-            fontFamily: 'var(--font-mono)',
+            width: '56px',
+            height: '56px',
+            borderRadius: '14px',
+            background: 'rgba(129, 140, 248, 0.08)',
+            border: '1px solid rgba(129, 140, 248, 0.15)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            margin: '0 auto 16px',
+            fontSize: '24px',
           }}>
-            \u6682\u65E0\u5386\u53F2\u7B80\u62A5
+            📋
           </div>
           <div style={{
-            fontSize: '13px',
+            fontSize: '18px',
+            fontWeight: 600,
+            color: '#94a3b8',
+            marginBottom: '8px',
+            fontFamily: 'var(--font-sans)',
+          }}>
+            暂无历史简报
+          </div>
+          <div style={{
+            fontSize: '14px',
             maxWidth: '400px',
             margin: '0 auto',
-            lineHeight: 1.5,
+            lineHeight: 1.6,
           }}>
-            \u9996\u6B21\u6293\u53D6\u540E\uFF0C\u7B80\u62A5\u5C06\u663E\u793A\u5728\u8FD9\u91CC
+            首次抓取后，简报将显示在这里
           </div>
         </div>
       )}

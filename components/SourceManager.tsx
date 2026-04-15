@@ -7,10 +7,10 @@ import { SOURCE_META } from '@/lib/utils';
 const SOURCE_TYPES: { value: SourceType; label: string }[] = [
   { value: 'github-trending', label: 'GitHub Trending' },
   { value: 'github-release', label: 'GitHub Release' },
-  { value: 'arxiv', label: 'ArXiv \u8BBA\u6587' },
+  { value: 'arxiv', label: 'ArXiv 论文' },
   { value: 'huggingface', label: 'HuggingFace Daily Papers' },
   { value: 'hackernews', label: 'Hacker News' },
-  { value: 'rss', label: 'RSS \u8BA2\u9605' },
+  { value: 'rss', label: 'RSS 订阅' },
 ];
 
 export default function SourceManager() {
@@ -53,7 +53,7 @@ export default function SourceManager() {
   };
 
   const handleDelete = async (id: string) => {
-    if (!confirm('\u786E\u5B9A\u8981\u5220\u9664\u8FD9\u4E2A\u6570\u636E\u6E90\u5417\uFF1F')) return;
+    if (!confirm('确定要删除这个数据源吗？')) return;
     try {
       await fetch(`/api/sources/${id}`, { method: 'DELETE' });
       setSources(prev => prev.filter(s => s.id !== id));
@@ -89,204 +89,213 @@ export default function SourceManager() {
         alignItems: 'center',
         justifyContent: 'center',
         padding: '56px',
-        color: '#555',
-        fontFamily: 'var(--font-mono)',
+        color: '#475569',
         fontSize: '13px',
       }}>
         <div style={{
-          width: '32px',
-          height: '32px',
+          width: '28px',
+          height: '28px',
           border: '2px solid rgba(255, 255, 255, 0.06)',
-          borderTopColor: '#10b981',
+          borderTopColor: '#818CF8',
           borderRadius: '50%',
           animation: 'spin 0.7s linear infinite',
           marginBottom: '12px',
         }} />
-        loading...
+        加载中...
       </div>
     );
   }
 
+  const inputStyle: React.CSSProperties = {
+    width: '100%',
+    padding: '8px 14px',
+    background: '#111827',
+    border: '1px solid rgba(255, 255, 255, 0.06)',
+    borderRadius: '8px',
+    color: '#edf2f7',
+    fontSize: '14px',
+    fontFamily: 'var(--font-sans)',
+    height: '38px',
+    outline: 'none',
+    transition: 'border-color 200ms ease, box-shadow 200ms ease',
+  };
+
+  const labelStyle: React.CSSProperties = {
+    display: 'block',
+    fontSize: '12px',
+    fontWeight: 500,
+    color: '#94a3b8',
+    marginBottom: '6px',
+    fontFamily: 'var(--font-mono)',
+    letterSpacing: '0.02em',
+  };
+
   return (
     <div>
-      <div style={{ display: 'flex', gap: '6px', marginBottom: '20px' }}>
+      <div style={{ marginBottom: '20px' }}>
         <button
           onClick={() => setShowForm(!showForm)}
           style={{
-            height: '32px',
-            padding: '0 14px',
-            background: 'linear-gradient(135deg, #10b981, #34d399)',
+            height: '36px',
+            padding: '0 16px',
+            background: '#818CF8',
             border: 'none',
-            borderRadius: '6px',
-            color: '#000',
+            borderRadius: '8px',
+            color: '#0B0F19',
             fontSize: '13px',
-            fontWeight: 700,
-            fontFamily: 'var(--font-mono)',
+            fontWeight: 600,
+            fontFamily: 'var(--font-sans)',
             cursor: 'pointer',
-            letterSpacing: '-0.01em',
-            transition: 'all 150ms ease',
+            transition: 'all 200ms ease',
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '6px',
+          }}
+          onMouseEnter={e => {
+            (e.currentTarget as HTMLButtonElement).style.background = '#a5b4fc';
+          }}
+          onMouseLeave={e => {
+            (e.currentTarget as HTMLButtonElement).style.background = '#818CF8';
           }}
         >
-          {showForm ? '\u2715 \u53D6\u6D88' : '+ \u6DFB\u52A0\u6570\u636E\u6E90'}
+          <span style={{ fontSize: '16px', lineHeight: 1 }}>+</span>
+          {showForm ? '取消' : '添加数据源'}
         </button>
       </div>
 
       {showForm && (
         <div style={{
           marginBottom: '24px',
-          padding: '16px 20px',
-          background: 'rgba(255, 255, 255, 0.02)',
+          padding: '20px',
+          background: '#111827',
           border: '1px solid rgba(255, 255, 255, 0.06)',
-          borderRadius: '6px',
+          borderRadius: '12px',
+          animation: 'slideUp 0.2s ease',
         }}>
           <form onSubmit={handleAdd}>
-            <div style={{ marginBottom: '12px' }}>
-              <label style={{
-                display: 'block',
-                fontSize: '11px',
-                fontWeight: 600,
-                color: '#8b8b8b',
-                marginBottom: '3px',
-                fontFamily: 'var(--font-mono)',
-                textTransform: 'uppercase',
-                letterSpacing: '0.05em',
-              }}>
-                \u7C7B\u578B
-              </label>
+            <div style={{ marginBottom: '16px' }}>
+              <label style={labelStyle}>类型</label>
               <select
                 value={formData.type}
                 onChange={e => setFormData(prev => ({ ...prev, type: e.target.value as SourceType }))}
                 style={{
-                  width: '100%',
-                  padding: '6px 12px',
-                  background: '#0a0a0a',
-                  border: '1px solid rgba(255, 255, 255, 0.06)',
-                  borderRadius: '4px',
-                  color: '#e8e8e8',
-                  fontSize: '13px',
-                  fontFamily: 'var(--font-mono)',
-                  height: '32px',
-                  outline: 'none',
+                  ...inputStyle,
+                  cursor: 'pointer',
+                }}
+                onFocus={e => {
+                  (e.currentTarget as HTMLSelectElement).style.borderColor = 'rgba(129, 140, 248, 0.4)';
+                  (e.currentTarget as HTMLSelectElement).style.boxShadow = '0 0 0 3px rgba(129, 140, 248, 0.08)';
+                }}
+                onBlur={e => {
+                  (e.currentTarget as HTMLSelectElement).style.borderColor = 'rgba(255, 255, 255, 0.06)';
+                  (e.currentTarget as HTMLSelectElement).style.boxShadow = 'none';
                 }}
               >
                 {SOURCE_TYPES.map(st => (
-                  <option key={st.value} value={st.value}>{st.label}</option>
+                  <option key={st.value} value={st.value} style={{ background: '#111827' }}>{st.label}</option>
                 ))}
               </select>
             </div>
-            <div style={{ marginBottom: '12px' }}>
-              <label style={{
-                display: 'block',
-                fontSize: '11px',
-                fontWeight: 600,
-                color: '#8b8b8b',
-                marginBottom: '3px',
-                fontFamily: 'var(--font-mono)',
-                textTransform: 'uppercase',
-                letterSpacing: '0.05em',
-              }}>
-                \u540D\u79F0
-              </label>
+            <div style={{ marginBottom: '16px' }}>
+              <label style={labelStyle}>名称</label>
               <input
                 value={formData.name}
                 onChange={e => setFormData(prev => ({ ...prev, name: e.target.value }))}
-                placeholder="\u6570\u636E\u6E90\u540D\u79F0"
+                placeholder="数据源名称"
                 required
-                style={{
-                  width: '100%',
-                  padding: '6px 12px',
-                  background: '#0a0a0a',
-                  border: '1px solid rgba(255, 255, 255, 0.06)',
-                  borderRadius: '4px',
-                  color: '#e8e8e8',
-                  fontSize: '13px',
-                  fontFamily: 'var(--font-mono)',
-                  height: '32px',
-                  outline: 'none',
+                style={inputStyle}
+                onFocus={e => {
+                  (e.currentTarget as HTMLInputElement).style.borderColor = 'rgba(129, 140, 248, 0.4)';
+                  (e.currentTarget as HTMLInputElement).style.boxShadow = '0 0 0 3px rgba(129, 140, 248, 0.08)';
+                }}
+                onBlur={e => {
+                  (e.currentTarget as HTMLInputElement).style.borderColor = 'rgba(255, 255, 255, 0.06)';
+                  (e.currentTarget as HTMLInputElement).style.boxShadow = 'none';
                 }}
               />
             </div>
             {(formData.type === 'rss' || formData.type === 'github-release') && (
-              <div style={{ marginBottom: '12px' }}>
-                <label style={{
-                  display: 'block',
-                  fontSize: '11px',
-                  fontWeight: 600,
-                  color: '#8b8b8b',
-                  marginBottom: '3px',
-                  fontFamily: 'var(--font-mono)',
-                  textTransform: 'uppercase',
-                  letterSpacing: '0.05em',
-                }}>
-                  {formData.type === 'rss' ? 'RSS URL' : '\u4ED3\u5E93\u5730\u5740 (owner/repo)'}
-                </label>
+              <div style={{ marginBottom: '16px' }}>
+                <label style={labelStyle}>{formData.type === 'rss' ? 'RSS URL' : '仓库地址 (owner/repo)'}</label>
                 <input
                   value={formData.url}
                   onChange={e => setFormData(prev => ({ ...prev, url: e.target.value }))}
                   placeholder={formData.type === 'rss' ? 'https://example.com/feed.xml' : 'langgenius/dify'}
                   required
-                  style={{
-                    width: '100%',
-                    padding: '6px 12px',
-                    background: '#0a0a0a',
-                    border: '1px solid rgba(255, 255, 255, 0.06)',
-                    borderRadius: '4px',
-                    color: '#e8e8e8',
-                    fontSize: '13px',
-                    fontFamily: 'var(--font-mono)',
-                    height: '32px',
-                    outline: 'none',
+                  style={inputStyle}
+                  onFocus={e => {
+                    (e.currentTarget as HTMLInputElement).style.borderColor = 'rgba(129, 140, 248, 0.4)';
+                    (e.currentTarget as HTMLInputElement).style.boxShadow = '0 0 0 3px rgba(129, 140, 248, 0.08)';
+                  }}
+                  onBlur={e => {
+                    (e.currentTarget as HTMLInputElement).style.borderColor = 'rgba(255, 255, 255, 0.06)';
+                    (e.currentTarget as HTMLInputElement).style.boxShadow = 'none';
                   }}
                 />
               </div>
             )}
             <button type="submit" style={{
-              height: '32px',
-              padding: '0 14px',
-              background: 'linear-gradient(135deg, #10b981, #34d399)',
+              height: '36px',
+              padding: '0 16px',
+              background: '#818CF8',
               border: 'none',
-              borderRadius: '6px',
-              color: '#000',
+              borderRadius: '8px',
+              color: '#0B0F19',
               fontSize: '13px',
-              fontWeight: 700,
-              fontFamily: 'var(--font-mono)',
+              fontWeight: 600,
+              fontFamily: 'var(--font-sans)',
               cursor: 'pointer',
-              letterSpacing: '-0.01em',
-            }}>
-              \u6DFB\u52A0
+              transition: 'all 200ms ease',
+            }}
+            onMouseEnter={e => {
+              (e.currentTarget as HTMLButtonElement).style.background = '#a5b4fc';
+            }}
+            onMouseLeave={e => {
+              (e.currentTarget as HTMLButtonElement).style.background = '#818CF8';
+            }}
+            >
+              添加
             </button>
           </form>
         </div>
       )}
 
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '3px' }}>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
         {sources.map(source => {
-          const meta = SOURCE_META[source.type] || { icon: '\uD83D\uDCE1', label: source.type };
+          const meta = SOURCE_META[source.type] || { icon: '📡', label: source.type };
           return (
             <div key={source.id} style={{
               display: 'flex',
               alignItems: 'center',
-              gap: '12px',
-              padding: '8px 12px',
-              borderBottom: '1px solid rgba(255, 255, 255, 0.03)',
-              transition: 'background 150ms ease',
+              gap: '14px',
+              padding: '14px 16px',
+              background: '#111827',
+              border: '1px solid rgba(255, 255, 255, 0.06)',
+              borderRadius: '12px',
+              transition: 'all 200ms ease',
             }}
-            onMouseEnter={e => { (e.currentTarget as HTMLDivElement).style.background = 'rgba(255, 255, 255, 0.03)'; }}
-            onMouseLeave={e => { (e.currentTarget as HTMLDivElement).style.background = 'transparent'; }}
+            onMouseEnter={e => {
+              (e.currentTarget as HTMLDivElement).style.borderColor = 'rgba(129, 140, 248, 0.15)';
+              (e.currentTarget as HTMLDivElement).style.background = '#151d2e';
+            }}
+            onMouseLeave={e => {
+              (e.currentTarget as HTMLDivElement).style.borderColor = 'rgba(255, 255, 255, 0.06)';
+              (e.currentTarget as HTMLDivElement).style.background = '#111827';
+            }}
             >
               <div style={{ fontSize: '18px', width: '28px', textAlign: 'center' }}>{meta.icon}</div>
               <div style={{ flex: 1, minWidth: 0 }}>
                 <div style={{
                   fontWeight: 600,
-                  fontSize: '13px',
-                  fontFamily: 'var(--font-mono)',
-                  color: '#e8e8e8',
+                  fontSize: '14px',
+                  fontFamily: 'var(--font-sans)',
+                  color: '#edf2f7',
                 }}>
                   {source.name}
                 </div>
                 <div style={{
-                  fontSize: '11px',
-                  color: '#555',
+                  fontSize: '12px',
+                  color: '#475569',
                   fontFamily: 'var(--font-mono)',
                 }}>
                   {source.type}
@@ -298,52 +307,50 @@ export default function SourceManager() {
                 aria-checked={source.enabled}
                 style={{
                   position: 'relative',
-                  width: '36px',
-                  height: '20px',
-                  background: source.enabled ? 'rgba(16, 185, 129, 0.2)' : '#0a0a0a',
+                  width: '40px',
+                  height: '22px',
+                  background: source.enabled ? 'rgba(129, 140, 248, 0.2)' : 'rgba(255, 255, 255, 0.06)',
                   borderRadius: '9999px',
                   cursor: 'pointer',
-                  transition: 'background 150ms ease',
-                  border: `1px solid ${source.enabled ? '#10b981' : 'rgba(255, 255, 255, 0.06)'}`,
+                  transition: 'background 200ms ease',
+                  border: `1px solid ${source.enabled ? 'rgba(129, 140, 248, 0.3)' : 'rgba(255, 255, 255, 0.06)'}`,
                   flexShrink: 0,
                 }}
               >
                 <div style={{
                   position: 'absolute',
                   top: '2px',
-                  left: source.enabled ? '18px' : '2px',
-                  width: '14px',
-                  height: '14px',
-                  background: source.enabled ? '#10b981' : '#555',
+                  left: source.enabled ? '20px' : '2px',
+                  width: '16px',
+                  height: '16px',
+                  background: source.enabled ? '#818CF8' : '#475569',
                   borderRadius: '50%',
-                  transition: 'all 150ms ease',
-                  boxShadow: source.enabled ? '0 0 6px rgba(16, 185, 129, 0.4)' : 'none',
+                  transition: 'all 200ms ease',
+                  boxShadow: source.enabled ? '0 0 8px rgba(129, 140, 248, 0.4)' : 'none',
                 }} />
               </div>
               <button
                 onClick={() => handleDelete(source.id)}
                 style={{
-                  height: '26px',
-                  padding: '0 8px',
-                  background: 'rgba(239, 68, 68, 0.08)',
-                  border: '1px solid rgba(239, 68, 68, 0.15)',
-                  borderRadius: '4px',
-                  color: '#ef4444',
-                  fontSize: '11px',
-                  fontFamily: 'var(--font-mono)',
+                  height: '28px',
+                  padding: '0 10px',
+                  background: 'transparent',
+                  border: 'none',
+                  borderRadius: '6px',
+                  color: '#f87171',
+                  fontSize: '12px',
+                  fontFamily: 'var(--font-sans)',
                   cursor: 'pointer',
-                  transition: 'all 150ms ease',
+                  transition: 'all 200ms ease',
                 }}
                 onMouseEnter={e => {
-                  (e.currentTarget as HTMLButtonElement).style.background = 'rgba(239, 68, 68, 0.15)';
-                  (e.currentTarget as HTMLButtonElement).style.borderColor = 'rgba(239, 68, 68, 0.3)';
+                  (e.currentTarget as HTMLButtonElement).style.background = 'rgba(248, 113, 113, 0.1)';
                 }}
                 onMouseLeave={e => {
-                  (e.currentTarget as HTMLButtonElement).style.background = 'rgba(239, 68, 68, 0.08)';
-                  (e.currentTarget as HTMLButtonElement).style.borderColor = 'rgba(239, 68, 68, 0.15)';
+                  (e.currentTarget as HTMLButtonElement).style.background = 'transparent';
                 }}
               >
-                \u5220\u9664
+                删除
               </button>
             </div>
           );
@@ -354,25 +361,38 @@ export default function SourceManager() {
         <div style={{
           textAlign: 'center',
           padding: '56px',
-          color: '#555',
+          color: '#475569',
         }}>
-          <div style={{ fontSize: '40px', marginBottom: '12px', opacity: 0.6 }}>\uD83D\uDCE1</div>
+          <div style={{
+            width: '48px',
+            height: '48px',
+            borderRadius: '12px',
+            background: 'rgba(129, 140, 248, 0.08)',
+            border: '1px solid rgba(129, 140, 248, 0.15)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            margin: '0 auto 16px',
+            fontSize: '20px',
+          }}>
+            📡
+          </div>
           <div style={{
             fontSize: '16px',
             fontWeight: 600,
-            color: '#8b8b8b',
-            marginBottom: '3px',
-            fontFamily: 'var(--font-mono)',
+            color: '#94a3b8',
+            marginBottom: '6px',
+            fontFamily: 'var(--font-sans)',
           }}>
-            \u6682\u65E0\u6570\u636E\u6E90
+            暂无数据源
           </div>
           <div style={{
             fontSize: '13px',
             maxWidth: '400px',
             margin: '0 auto',
-            lineHeight: 1.5,
+            lineHeight: 1.6,
           }}>
-            \u70B9\u51FB\u4E0A\u65B9\u6309\u94AE\u6DFB\u52A0\u6570\u636E\u6E90
+            点击上方按钮添加数据源
           </div>
         </div>
       )}

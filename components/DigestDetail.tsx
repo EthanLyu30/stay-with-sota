@@ -21,82 +21,150 @@ export default function DigestDetail({ digest }: DigestDetailProps) {
     <div>
       {/* Header */}
       <div style={{
-        padding: '20px 0',
+        padding: '24px 0',
         borderBottom: '1px solid rgba(255, 255, 255, 0.06)',
-        marginBottom: '24px',
+        marginBottom: '28px',
       }}>
         <h1 style={{
-          fontSize: '20px',
+          fontSize: '24px',
           fontWeight: 700,
-          fontFamily: 'var(--font-mono)',
-          color: '#ffffff',
-          marginBottom: '12px',
+          fontFamily: 'var(--font-sans)',
+          color: '#edf2f7',
+          marginBottom: '16px',
+          letterSpacing: '-0.02em',
         }}>
           {digest.title}
         </h1>
         <div style={{
           display: 'flex',
-          gap: '16px',
-          fontSize: '12px',
+          gap: '12px',
+          fontSize: '13px',
           fontFamily: 'var(--font-mono)',
-          color: '#6b7280',
+          color: '#94a3b8',
           flexWrap: 'wrap',
+          alignItems: 'center',
         }}>
-          <span>{new Date(digest.date).toLocaleDateString('zh-CN', { year: 'numeric', month: 'long', day: 'numeric', weekday: 'long' })}</span>
-          <span style={{ color: '#10b981' }}>\uD83D\uDCE5 {digest.totalFetched} \u6293\u53D6</span>
-          <span style={{ color: '#34d399' }}>\u2705 {digest.totalFiltered} \u7CBE\u9009</span>
-          <span>\uD83D\uDCCA {passRate}%</span>
-          {digest.emailSent && <span style={{ color: '#10b981' }}>\uD83D\uDCE7 \u5DF2\u63A8\u9001</span>}
+          <span style={{ color: '#94a3b8' }}>
+            {new Date(digest.date).toLocaleDateString('zh-CN', { year: 'numeric', month: 'long', day: 'numeric', weekday: 'long' })}
+          </span>
+          <span style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '4px',
+            padding: '3px 10px',
+            borderRadius: '9999px',
+            background: 'rgba(129, 140, 248, 0.1)',
+            color: '#818CF8',
+            fontSize: '12px',
+            border: '1px solid rgba(129, 140, 248, 0.15)',
+          }}>
+            📥 {digest.totalFetched} 抓取
+          </span>
+          <span style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '4px',
+            padding: '3px 10px',
+            borderRadius: '9999px',
+            background: 'rgba(52, 211, 153, 0.1)',
+            color: '#34d399',
+            fontSize: '12px',
+            border: '1px solid rgba(52, 211, 153, 0.15)',
+          }}>
+            ✅ {digest.totalFiltered} 精选
+          </span>
+          <span style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '4px',
+            padding: '3px 10px',
+            borderRadius: '9999px',
+            background: 'rgba(251, 191, 36, 0.1)',
+            color: '#fbbf24',
+            fontSize: '12px',
+            border: '1px solid rgba(251, 191, 36, 0.15)',
+          }}>
+            📊 {passRate}%
+          </span>
+          {digest.emailSent && (
+            <span style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '4px',
+              padding: '3px 10px',
+              borderRadius: '9999px',
+              background: 'rgba(52, 211, 153, 0.1)',
+              color: '#34d399',
+              fontSize: '12px',
+              border: '1px solid rgba(52, 211, 153, 0.15)',
+            }}>
+              📧 已推送
+            </span>
+          )}
         </div>
       </div>
 
       {/* Items by source */}
       {Array.from(grouped.entries()).map(([sourceType, items]) => {
-        const meta = SOURCE_META[sourceType] || { icon: '\uD83D\uDCE1', label: sourceType, color: '#6b7280' };
+        const meta = SOURCE_META[sourceType] || { icon: '📡', label: sourceType, color: '#818CF8' };
         return (
-          <div key={sourceType} style={{ marginBottom: '32px' }}>
+          <div key={sourceType} style={{ marginBottom: '36px' }}>
             <div style={{
               display: 'flex',
               alignItems: 'center',
-              gap: '8px',
-              marginBottom: '12px',
-              paddingBottom: '8px',
+              gap: '10px',
+              marginBottom: '16px',
+              paddingBottom: '10px',
               borderBottom: '1px solid rgba(255, 255, 255, 0.06)',
+              borderLeft: '3px solid ' + (meta.color || '#818CF8'),
+              paddingLeft: '12px',
             }}>
               <span style={{ fontSize: '16px' }}>{meta.icon}</span>
               <span style={{
-                fontSize: '13px',
+                fontSize: '14px',
                 fontWeight: 600,
-                fontFamily: 'var(--font-mono)',
-                color: meta.color,
+                fontFamily: 'var(--font-sans)',
+                color: meta.color || '#818CF8',
               }}>
                 {meta.label}
               </span>
               <span style={{
                 fontSize: '11px',
                 fontFamily: 'var(--font-mono)',
-                color: '#6b7280',
-                background: 'rgba(255, 255, 255, 0.05)',
-                padding: '1px 8px',
-                borderRadius: '3px',
+                color: '#475569',
+                background: 'rgba(255, 255, 255, 0.04)',
+                padding: '2px 8px',
+                borderRadius: '6px',
               }}>
                 {items.length}
               </span>
             </div>
 
-            <div style={{ display: 'flex', flexDirection: 'column' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
               {items.map(item => (
                 <div key={item.id} style={{
                   display: 'flex',
-                  gap: '12px',
-                  padding: '12px 0',
-                  borderBottom: '1px solid rgba(255, 255, 255, 0.03)',
-                }}>
+                  gap: '16px',
+                  padding: '16px',
+                  borderRadius: '12px',
+                  background: '#111827',
+                  border: '1px solid rgba(255, 255, 255, 0.06)',
+                  transition: 'all 200ms ease',
+                }}
+                onMouseEnter={e => {
+                  (e.currentTarget as HTMLDivElement).style.borderColor = 'rgba(129, 140, 248, 0.15)';
+                  (e.currentTarget as HTMLDivElement).style.background = '#151d2e';
+                }}
+                onMouseLeave={e => {
+                  (e.currentTarget as HTMLDivElement).style.borderColor = 'rgba(255, 255, 255, 0.06)';
+                  (e.currentTarget as HTMLDivElement).style.background = '#111827';
+                }}
+                >
                   {/* Score badge */}
                   <div style={{
-                    width: '36px',
-                    height: '36px',
-                    borderRadius: '4px',
+                    width: '40px',
+                    height: '40px',
+                    borderRadius: '10px',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
@@ -105,15 +173,20 @@ export default function DigestDetail({ digest }: DigestDetailProps) {
                     fontFamily: 'var(--font-mono)',
                     flexShrink: 0,
                     background: item.relevanceScore >= 70
-                      ? 'rgba(16, 185, 129, 0.15)'
+                      ? 'rgba(129, 140, 248, 0.15)'
                       : item.relevanceScore >= 50
                         ? 'rgba(251, 191, 36, 0.15)'
-                        : 'rgba(255, 255, 255, 0.05)',
+                        : 'rgba(255, 255, 255, 0.04)',
                     color: item.relevanceScore >= 70
-                      ? '#10b981'
+                      ? '#818CF8'
                       : item.relevanceScore >= 50
                         ? '#fbbf24'
-                        : '#6b7280',
+                        : '#475569',
+                    border: `1px solid ${item.relevanceScore >= 70
+                      ? 'rgba(129, 140, 248, 0.2)'
+                      : item.relevanceScore >= 50
+                        ? 'rgba(251, 191, 36, 0.2)'
+                        : 'rgba(255, 255, 255, 0.06)'}`,
                   }}>
                     {item.relevanceScore}
                   </div>
@@ -125,36 +198,43 @@ export default function DigestDetail({ digest }: DigestDetailProps) {
                       target="_blank"
                       rel="noopener noreferrer"
                       style={{
-                        fontSize: '14px',
+                        fontSize: '15px',
                         fontWeight: 600,
-                        color: '#ffffff',
+                        color: '#edf2f7',
                         textDecoration: 'none',
                         display: 'block',
-                        marginBottom: '4px',
+                        marginBottom: '6px',
                         lineHeight: 1.4,
+                        transition: 'color 200ms ease',
+                      }}
+                      onMouseEnter={e => {
+                        (e.currentTarget as HTMLAnchorElement).style.color = '#818CF8';
+                      }}
+                      onMouseLeave={e => {
+                        (e.currentTarget as HTMLAnchorElement).style.color = '#edf2f7';
                       }}
                     >
                       {item.title}
                     </a>
                     <div style={{
                       fontSize: '13px',
-                      color: '#6b7280',
-                      lineHeight: 1.5,
-                      marginBottom: '6px',
+                      color: '#94a3b8',
+                      lineHeight: 1.6,
+                      marginBottom: '8px',
                     }}>
                       {item.summary}
                     </div>
                     {item.tags.length > 0 && (
-                      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px' }}>
+                      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
                         {item.tags.map(tag => (
                           <span key={tag} style={{
                             fontSize: '11px',
                             fontFamily: 'var(--font-mono)',
-                            color: '#10b981',
-                            background: 'rgba(16, 185, 129, 0.08)',
-                            padding: '1px 8px',
-                            borderRadius: '3px',
-                            border: '1px solid rgba(16, 185, 129, 0.15)',
+                            color: '#818CF8',
+                            background: 'rgba(129, 140, 248, 0.08)',
+                            padding: '2px 8px',
+                            borderRadius: '6px',
+                            border: '1px solid rgba(129, 140, 248, 0.15)',
                           }}>
                             #{tag}
                           </span>
