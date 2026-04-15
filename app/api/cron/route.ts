@@ -48,12 +48,19 @@ export async function GET(request: NextRequest) {
     // 初始化默认数据源
     await initDefaultSources();
 
-    // 获取启用的数据源
-    const sources = await getSources();
-    const enabledSources = sources.filter(s => s.enabled);
+    // 获取启用的数据源（如果 Redis 读取失败，使用内置兜底）
+    let sources = await getSources();
+    let enabledSources = sources.filter(s => s.enabled);
 
+    // 兜底：如果 Redis 没有数据源，直接用内置默认值
     if (enabledSources.length === 0) {
-      return NextResponse.json({ success: false, error: '没有启用的数据源，请前往设置页添加' });
+      console.log('[Cron] No sources in Redis, using built-in defaults');
+      enabledSources = [
+        { id: 'builtin-1', type: 'github-trending', name: 'GitHub Trending', config: { languages: ['python', 'typescript', 'rust'], since: 'daily' }, enabled: true, createdAt: '' },
+        { id: 'builtin-2', type: 'arxiv', name: 'ArXiv AI Papers', config: { categories: ['cs.AI', 'cs.CL', 'cs.CV', 'cs.LG'] }, enabled: true, createdAt: '' },
+        { id: 'builtin-3', type: 'huggingface', name: 'HuggingFace Daily Papers', config: {}, enabled: true, createdAt: '' },
+        { id: 'builtin-4', type: 'hackernews', name: 'Hacker News AI', config: { keywords: ['AI', 'LLM', 'GPT', 'LLaMA', 'transformer', 'machine learning', 'deep learning', 'neural'] }, enabled: true, createdAt: '' },
+      ];
     }
 
     // 并行抓取所有数据源
