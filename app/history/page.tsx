@@ -51,6 +51,11 @@ export default function HistoryPage() {
     fetchDigests(nextPage);
   };
 
+  // 去重：确保同一个 digest.id 只出现一次
+  const uniqueDigests = Array.from(
+    new Map(digests.map(d => [d.id, d])).values()
+  );
+
   return (
     <div>
       <div className="page-header">
@@ -66,7 +71,7 @@ export default function HistoryPage() {
       ) : digests.length > 0 ? (
         <>
           <div className="card-grid">
-            {digests.map(digest => (
+            {uniqueDigests.map(digest => (
               <DigestCard key={digest.id} digest={digest} />
             ))}
           </div>

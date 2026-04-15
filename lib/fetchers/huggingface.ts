@@ -13,13 +13,34 @@ export async function fetchHuggingFace(_config?: Record<string, unknown>): Promi
   const items: FetchedItem[] = [];
 
   try {
-    const res = await fetch('https://huggingface.co/api/daily_papers', {
-      headers: { 'User-Agent': 'SOTA-Bot/1.0' },
-    });
+    // 优先使用本地代理（解决国内网络问题），失败则直连
+    let papers: HFPaper[] = [];
+    let useProxy = false;
 
-    if (!res.ok) throw new Error(`HuggingFace API returned ${res.status}`);
+    try {
+      const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || '';
+      const proxyUrl = `${baseUrl}/api/proxy/huggingface?path=/api/daily_papers`;
+      const res = await fetch(proxyUrl, { signal: AbortSignal.timeout(15000) });
+      if (res.ok) {
+        papers = await res.json() as HFPaper[];
+        useProxy = true;
+      }
+    } catch {
+      console.log('[HF] Proxy failed, trying direct...');
+    }
 
-    const papers = await res.json() as HFPaper[];
+    // 代理失败，尝试直连
+    if (papers.length === 0) {
+      const res = await fetch('https://huggingface.co/api/daily_papers', {
+        headers: { 'User-Agent': 'SOTA-Bot/1.0' },
+        signal: AbortSignal.timeout(15000),
+      });
+      if (res.ok) {
+        papers = await res.json() as HFPaper[];
+      }
+    }
+
+    console.log(`[HF] Fetched ${papers.length} papers (proxy: ${useProxy})`);
 
     for (const paper of papers.slice(0, 15)) {
       items.push({
