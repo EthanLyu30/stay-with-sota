@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import StatsBar from '@/components/StatsBar';
 import DigestDetail from '@/components/DigestDetail';
 import SearchBar from '@/components/SearchBar';
@@ -12,11 +12,13 @@ export default function DashboardPage() {
   const [loading, setLoading] = useState(true);
   const [fetching, setFetching] = useState(false);
   const [sendingEmail, setSendingEmail] = useState(false);
+  const [fetchStatus, setFetchStatus] = useState('');
   const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
+  const fetchTimerRef = useRef<NodeJS.Timeout | null>(null);
 
   const showToast = (message: string, type: 'success' | 'error') => {
     setToast({ message, type });
-    setTimeout(() => setToast(null), 3000);
+    setTimeout(() => setToast(null), 5000);
   };
 
   useEffect(() => {
@@ -40,18 +42,53 @@ export default function DashboardPage() {
 
   const handleFetchNow = async () => {
     setFetching(true);
+    setFetchStatus('正在连接数据源...');
+
+    // 进度提示动画
+    const steps = [
+      '正在抓取 GitHub Trending...',
+      '正在抓取 ArXiv 论文...',
+      '正在抓取 HuggingFace...',
+      '正在抓取 Hacker News...',
+      '正在去重...',
+      '正在调用 AI 模型筛选（本地模型可能需要 1-3 分钟）...',
+      '正在生成简报...',
+      '正在发送邮件...',
+    ];
+    let stepIdx = 0;
+    fetchTimerRef.current = setInterval(() => {
+      stepIdx = Math.min(stepIdx + 1, steps.length - 1);
+      setFetchStatus(steps[stepIdx]);
+    }, 8000);
+
     try {
-      const res = await fetch('/api/fetch-now', { method: 'POST' });
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 600000); // 10 分钟超时
+
+      const res = await fetch('/api/fetch-now', {
+        method: 'POST',
+        signal: controller.signal,
+      });
+      clearTimeout(timeoutId);
+
       const data = await res.json();
       if (data.success) {
+        setFetchStatus('✅ 抓取完成！');
         showToast(`抓取完成！精选 ${data.digest?.totalFiltered || 0} 条内容`, 'success');
-        window.location.reload();
+        setTimeout(() => window.location.reload(), 1500);
       } else {
         showToast(data.error || '抓取失败', 'error');
+        setFetchStatus('');
       }
-    } catch (err) {
-      showToast('抓取请求失败', 'error');
+    } catch (err: any) {
+      if (err.name === 'AbortError') {
+        showToast('抓取超时（超过 10 分钟），请重试', 'error');
+      } else {
+        showToast('抓取请求失败: ' + (err.message || ''), 'error');
+      }
+      setFetchStatus('');
     } finally {
+      if (fetchTimerRef.current) clearInterval(fetchTimerRef.current);
       setFetching(false);
     }
   };
@@ -102,6 +139,23 @@ export default function DashboardPage() {
           <ExportButton digestId={latestDigest.id} date={latestDigest.date} />
         )}
       </div>
+
+      {fetchStatus && (
+        <div className="card" style={{
+          marginBottom: '24px',
+          padding: '20px 24px',
+          display: 'flex',
+          alignItems: 'center',
+          gap: '12px',
+          borderColor: 'var(--border-accent)',
+        }}>
+          <div className="loading-spinner" style={{ width: '24px', height: '24px', borderWidth: '2px' }} />
+          <div>
+            <div style={{ fontWeight: 600, marginBottom: '4px' }}>正在抓取中...</div>
+            <div style={{ fontSize: '13px', color: 'var(--text-secondary)' }}>{fetchStatus}</div>
+          </div>
+        </div>
+      )}
 
       {loading ? (
         <div className="loading">
