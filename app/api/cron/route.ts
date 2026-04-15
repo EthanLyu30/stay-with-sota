@@ -13,7 +13,7 @@ import { generateId, getToday } from '@/lib/utils';
 import type { FetchedItem, Source } from '@/lib/types';
 
 // Vercel Cron Job handler
-export const maxDuration = 300; // 5 minutes for Pro plan
+export const maxDuration = 300;
 
 async function fetchFromSource(source: Source): Promise<FetchedItem[]> {
   switch (source.type) {
@@ -53,12 +53,22 @@ export async function GET(request: NextRequest) {
     const enabledSources = sources.filter(s => s.enabled);
 
     if (enabledSources.length === 0) {
-      return NextResponse.json({ message: 'No enabled sources', digest: null });
+      return NextResponse.json({ success: false, error: '没有启用的数据源，请前往设置页添加' });
     }
 
     // 并行抓取所有数据源
+    console.log(`[Cron] Starting fetch from ${enabledSources.length} sources...`);
     const fetchResults = await Promise.allSettled(
-      enabledSources.map(source => fetchFromSource(source))
+      enabledSources.map(async (source) => {
+        try {
+          const items = await fetchFromSource(source);
+          console.log(`[Cron] ${source.name}: ${items.length} items fetched`);
+          return items;
+        } catch (err) {
+          console.error(`[Cron] ${source.name} failed:`, err);
+          return [];
+        }
+      })
     );
 
     // 合并所有抓取结果
@@ -69,19 +79,30 @@ export async function GET(request: NextRequest) {
       }
     }
 
+    console.log(`[Cron] Total fetched: ${allItems.length} items`);
+
     if (allItems.length === 0) {
-      return NextResponse.json({ message: 'No items fetched', digest: null });
+      return NextResponse.json({ 
+        success: false, 
+        error: '所有数据源抓取结果为空。可能原因：网络问题、GitHub/HuggingFace 访问受限、或数据源配置有误。请检查终端日志。' 
+      });
     }
 
     // 跨源去重
     const dedupedItems = deduplicateItems(allItems);
     const dedupCount = allItems.length - dedupedItems.length;
+    console.log(`[Cron] After dedup: ${dedupedItems.length} items (removed ${dedupCount} duplicates)`);
 
     // AI 筛选和摘要
+    console.log(`[Cron] Calling AI summarizer...`);
     const { digestItems, digestTitle } = await summarizeItems(dedupedItems);
+    console.log(`[Cron] AI filtered: ${digestItems.length} items`);
 
     if (digestItems.length === 0) {
-      return NextResponse.json({ message: 'No items passed filtering', digest: null });
+      return NextResponse.json({ 
+        success: false, 
+        error: 'AI 筛选后没有内容通过。可能原因：本地 Ollama 模型未运行、模型未拉取、或 API 调用失败。请检查终端日志。' 
+      });
     }
 
     // 创建简报
@@ -100,11 +121,18 @@ export async function GET(request: NextRequest) {
     await saveDigest(digest);
 
     // 发送邮件
-    const emailSent = await sendDigestEmail(digest);
-    if (emailSent) {
-      digest.emailSent = true;
-      await saveDigest(digest);
+    let emailSent = false;
+    try {
+      emailSent = await sendDigestEmail(digest);
+      if (emailSent) {
+        digest.emailSent = true;
+        await saveDigest(digest);
+      }
+    } catch (err) {
+      console.error('[Cron] Email failed:', err);
     }
+
+    console.log(`[Cron] Done! ${digestItems.length} items, email sent: ${emailSent}`);
 
     return NextResponse.json({
       success: true,
@@ -119,9 +147,9 @@ export async function GET(request: NextRequest) {
       },
     });
   } catch (error) {
-    console.error('Cron job error:', error);
+    console.error('[Cron] Fatal error:', error);
     return NextResponse.json(
-      { error: 'Internal server error', details: String(error) },
+      { success: false, error: 'Internal server error', details: String(error) },
       { status: 500 }
     );
   }
