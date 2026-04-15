@@ -24,11 +24,11 @@ export default function DigestPage() {
         if (data.success) {
           setDigest(data.data);
         } else {
-          setError('\u7B80\u62A5\u672A\u627E\u5230');
+          setError('简报未找到');
         }
       })
       .catch(err => {
-        setError(err.message || '\u52A0\u8F7D\u5931\u8D25');
+        setError(err.message || '加载失败');
       })
       .finally(() => setLoading(false));
   }, [id]);
@@ -41,7 +41,7 @@ export default function DigestPage() {
         alignItems: 'center',
         justifyContent: 'center',
         padding: '56px',
-        color: '#555',
+        color: '#5a5a5a',
         fontFamily: 'var(--font-mono)',
         fontSize: '13px',
       }}>
@@ -49,12 +49,12 @@ export default function DigestPage() {
           width: '32px',
           height: '32px',
           border: '2px solid rgba(255, 255, 255, 0.06)',
-          borderTopColor: '#10b981',
+          borderTopColor: '#3b82f6',
           borderRadius: '50%',
           animation: 'spin 0.7s linear infinite',
           marginBottom: '12px',
         }} />
-        \u52A0\u8F7D\u4E2D...
+        加载中...
       </div>
     );
   }
@@ -66,21 +66,21 @@ export default function DigestPage() {
           display: 'inline-flex',
           alignItems: 'center',
           gap: '6px',
-          color: '#555',
+          color: '#5a5a5a',
           fontSize: '13px',
           marginBottom: '20px',
           textDecoration: 'none',
           fontFamily: 'var(--font-mono)',
           transition: 'color 150ms ease',
         }}>
-          \u2190 \u8FD4\u56DE\u5386\u53F2
+          ← 返回历史
         </Link>
         <div style={{
           textAlign: 'center',
           padding: '56px',
-          color: '#555',
+          color: '#5a5a5a',
         }}>
-          <div style={{ fontSize: '40px', marginBottom: '12px', opacity: 0.6 }}>\uD83D\uDE15</div>
+          <div style={{ fontSize: '40px', marginBottom: '12px', opacity: 0.6 }}>😕</div>
           <div style={{
             fontSize: '16px',
             fontWeight: 600,
@@ -88,7 +88,7 @@ export default function DigestPage() {
             marginBottom: '3px',
             fontFamily: 'var(--font-mono)',
           }}>
-            {error || '\u7B80\u62A5\u672A\u627E\u5230'}
+            {error || '简报未找到'}
           </div>
           <div style={{
             fontSize: '13px',
@@ -96,7 +96,7 @@ export default function DigestPage() {
             margin: '0 auto',
             lineHeight: 1.5,
           }}>
-            \u8BE5\u7B80\u62A5\u53EF\u80FD\u5DF2\u88AB\u5220\u9664\u6216\u4E0D\u5B58\u5728
+            该简报可能已被删除或不存在
           </div>
         </div>
       </div>
@@ -110,16 +110,16 @@ export default function DigestPage() {
           display: 'inline-flex',
           alignItems: 'center',
           gap: '6px',
-          color: '#555',
+          color: '#5a5a5a',
           fontSize: '13px',
           textDecoration: 'none',
           fontFamily: 'var(--font-mono)',
           transition: 'color 150ms ease',
         }}
-        onMouseEnter={e => { (e.currentTarget as HTMLAnchorElement).style.color = '#10b981'; }}
-        onMouseLeave={e => { (e.currentTarget as HTMLAnchorElement).style.color = '#555'; }}
+        onMouseEnter={e => { (e.currentTarget as HTMLAnchorElement).style.color = '#3b82f6'; }}
+        onMouseLeave={e => { (e.currentTarget as HTMLAnchorElement).style.color = '#5a5a5a'; }}
         >
-          \u2190 \u8FD4\u56DE\u5386\u53F2
+          ← 返回历史
         </Link>
         <ExportButton digestId={digest.id} date={digest.date} />
       </div>

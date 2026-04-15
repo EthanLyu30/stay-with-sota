@@ -4,9 +4,9 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
 const navItems = [
-  { href: '/', icon: '\u26A1', label: 'Dashboard' },
-  { href: '/history', icon: '\uD83D\uDCDC', label: '\u5386\u53F2\u7B80\u62A5' },
-  { href: '/settings', icon: '\u2699\uFE0F', label: '\u8BBE\u7F6E' },
+  { href: '/', icon: '⚡', label: 'Dashboard' },
+  { href: '/history', icon: '📋', label: '历史简报' },
+  { href: '/settings', icon: '⚙️', label: '设置' },
 ];
 
 export default function Navigation() {
@@ -19,8 +19,9 @@ export default function Navigation() {
       left: 0,
       right: 0,
       height: '56px',
-      background: 'rgba(0, 0, 0, 0.8)',
+      background: 'rgba(31, 34, 40, 0.85)',
       backdropFilter: 'blur(12px)',
+      WebkitBackdropFilter: 'blur(12px)',
       borderBottom: '1px solid rgba(255, 255, 255, 0.06)',
       display: 'flex',
       alignItems: 'center',
@@ -30,14 +31,12 @@ export default function Navigation() {
     }}>
       {/* Logo */}
       <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: '8px', textDecoration: 'none' }}>
-        <span style={{ fontSize: '20px' }}>\u26A1</span>
+        <span style={{ fontSize: '20px' }}>⚡</span>
         <span style={{
           fontSize: '16px',
           fontWeight: 800,
           fontFamily: 'var(--font-mono)',
-          background: 'linear-gradient(135deg, #10b981, #34d399)',
-          WebkitBackgroundClip: 'text',
-          WebkitTextFillColor: 'transparent',
+          color: '#3b82f6',
         }}>
           SOTA Daily
         </span>
@@ -59,8 +58,8 @@ export default function Navigation() {
               fontWeight: 500,
               fontFamily: 'var(--font-mono)',
               textDecoration: 'none',
-              color: pathname === item.href ? '#10b981' : '#9ca3af',
-              background: pathname === item.href ? 'rgba(16, 185, 129, 0.1)' : 'transparent',
+              color: pathname === item.href ? '#3b82f6' : '#8b8b8b',
+              background: pathname === item.href ? 'rgba(59, 130, 246, 0.1)' : 'transparent',
               transition: 'all 150ms ease',
             }}
           >
@@ -71,8 +70,8 @@ export default function Navigation() {
       </nav>
 
       {/* Status indicator */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '12px', color: '#6b7280', fontFamily: 'var(--font-mono)' }}>
-        <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#10b981', boxShadow: '0 0 8px rgba(16, 185, 129, 0.5)' }} />
+      <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '12px', color: '#5a5a5a', fontFamily: 'var(--font-mono)' }}>
+        <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#22c55e' }} />
         online
       </div>
     </header>

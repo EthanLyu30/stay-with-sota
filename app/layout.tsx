@@ -14,8 +14,8 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: 'SOTA Daily \u2014 AI \u4FE1\u606F\u805A\u5408\u63A8\u9001',
-  description: '\u81EA\u52A8\u6293\u53D6 AI \u9886\u57DF\u6700\u65B0\u52A8\u6001\uFF0C\u901A\u8FC7 LLM \u667A\u80FD\u7B5B\u9009\u6458\u8981\uFF0C\u6BCF\u65E5\u63A8\u9001\u81F3\u90AE\u7BB1',
+  title: 'SOTA Daily — AI 信息聚合推送',
+  description: '自动抓取 AI 领域最新动态，通过 LLM 智能筛选摘要，每日推送至邮箱',
 };
 
 export default function RootLayout({
@@ -30,7 +30,7 @@ export default function RootLayout({
         <main style={{
           paddingTop: '56px',
           minHeight: '100vh',
-          background: '#000000',
+          background: '#1f2228',
         }}>
           <div style={{
             maxWidth: '1200px',

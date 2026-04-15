@@ -10,10 +10,10 @@ interface StatItem {
 
 export default function StatsBar() {
   const [stats, setStats] = useState<StatItem[]>([
-    { label: '\u603B\u7B80\u62A5', value: '\u2014', color: '#10b981' },
-    { label: '\u4ECA\u65E5\u65B0\u589E', value: '\u2014', color: '#34d399' },
-    { label: '\u6D3B\u8DC3\u6570\u636E\u6E90', value: '\u2014', color: '#6ee7b7' },
-    { label: '\u4E0A\u6B21\u63A8\u9001', value: '\u2014', color: '#9ca3af' },
+    { label: '总简报', value: '—', color: '#3b82f6' },
+    { label: '今日新增', value: '—', color: '#60a5fa' },
+    { label: '活跃数据源', value: '—', color: '#93c5fd' },
+    { label: '上次推送', value: '—', color: '#8b8b8b' },
   ]);
   const [loading, setLoading] = useState(true);
 
@@ -25,10 +25,10 @@ export default function StatsBar() {
       const total = digestData.total || 0;
       const sources = (sourceData.data || []).filter((s: { enabled: boolean }) => s.enabled).length;
       setStats([
-        { label: '\u603B\u7B80\u62A5', value: total, color: '#10b981' },
-        { label: '\u4ECA\u65E5\u65B0\u589E', value: digestData.items?.[0] ? '\u2713' : '\u2014', color: '#34d399' },
-        { label: '\u6D3B\u8DC3\u6570\u636E\u6E90', value: sources, color: '#6ee7b7' },
-        { label: '\u4E0A\u6B21\u63A8\u9001', value: digestData.items?.[0]?.emailSent ? '\u2713 \u5DF2\u63A8\u9001' : '\u5F85\u63A8\u9001', color: '#9ca3af' },
+        { label: '总简报', value: total, color: '#3b82f6' },
+        { label: '今日新增', value: digestData.items?.[0] ? '✓' : '—', color: '#60a5fa' },
+        { label: '活跃数据源', value: sources, color: '#93c5fd' },
+        { label: '上次推送', value: digestData.items?.[0]?.emailSent ? '✓ 已推送' : '待推送', color: '#8b8b8b' },
       ]);
     }).catch(() => {}).finally(() => setLoading(false));
   }, []);
@@ -36,7 +36,7 @@ export default function StatsBar() {
   if (loading) return null;
 
   return (
-    <div style={{
+    <div className="stats-grid-4" style={{
       display: 'grid',
       gridTemplateColumns: 'repeat(4, 1fr)',
       gap: '1px',
@@ -47,12 +47,12 @@ export default function StatsBar() {
     }}>
       {stats.map((stat, i) => (
         <div key={i} style={{
-          background: '#000000',
+          background: '#282c34',
           padding: '16px 20px',
         }}>
           <div style={{
             fontSize: '11px',
-            color: '#6b7280',
+            color: '#5a5a5a',
             fontFamily: 'var(--font-mono)',
             textTransform: 'uppercase',
             letterSpacing: '0.05em',

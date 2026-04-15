@@ -29,7 +29,7 @@ export default function DigestDetail({ digest }: DigestDetailProps) {
           fontSize: '20px',
           fontWeight: 700,
           fontFamily: 'var(--font-mono)',
-          color: '#ffffff',
+          color: '#f0f0f0',
           marginBottom: '12px',
         }}>
           {digest.title}
@@ -39,20 +39,20 @@ export default function DigestDetail({ digest }: DigestDetailProps) {
           gap: '16px',
           fontSize: '12px',
           fontFamily: 'var(--font-mono)',
-          color: '#6b7280',
+          color: '#5a5a5a',
           flexWrap: 'wrap',
         }}>
           <span>{new Date(digest.date).toLocaleDateString('zh-CN', { year: 'numeric', month: 'long', day: 'numeric', weekday: 'long' })}</span>
-          <span style={{ color: '#10b981' }}>\uD83D\uDCE5 {digest.totalFetched} \u6293\u53D6</span>
-          <span style={{ color: '#34d399' }}>\u2705 {digest.totalFiltered} \u7CBE\u9009</span>
-          <span>\uD83D\uDCCA {passRate}%</span>
-          {digest.emailSent && <span style={{ color: '#10b981' }}>\uD83D\uDCE7 \u5DF2\u63A8\u9001</span>}
+          <span style={{ color: '#3b82f6' }}>📥 {digest.totalFetched} 抓取</span>
+          <span style={{ color: '#60a5fa' }}>✅ {digest.totalFiltered} 精选</span>
+          <span>📊 {passRate}%</span>
+          {digest.emailSent && <span style={{ color: '#22c55e' }}>📧 已推送</span>}
         </div>
       </div>
 
       {/* Items by source */}
       {Array.from(grouped.entries()).map(([sourceType, items]) => {
-        const meta = SOURCE_META[sourceType] || { icon: '\uD83D\uDCE1', label: sourceType, color: '#6b7280' };
+        const meta = SOURCE_META[sourceType] || { icon: '📡', label: sourceType, color: '#5a5a5a' };
         return (
           <div key={sourceType} style={{ marginBottom: '32px' }}>
             <div style={{
@@ -75,7 +75,7 @@ export default function DigestDetail({ digest }: DigestDetailProps) {
               <span style={{
                 fontSize: '11px',
                 fontFamily: 'var(--font-mono)',
-                color: '#6b7280',
+                color: '#5a5a5a',
                 background: 'rgba(255, 255, 255, 0.05)',
                 padding: '1px 8px',
                 borderRadius: '3px',
@@ -105,15 +105,15 @@ export default function DigestDetail({ digest }: DigestDetailProps) {
                     fontFamily: 'var(--font-mono)',
                     flexShrink: 0,
                     background: item.relevanceScore >= 70
-                      ? 'rgba(16, 185, 129, 0.15)'
+                      ? 'rgba(59, 130, 246, 0.15)'
                       : item.relevanceScore >= 50
-                        ? 'rgba(251, 191, 36, 0.15)'
+                        ? 'rgba(245, 158, 11, 0.15)'
                         : 'rgba(255, 255, 255, 0.05)',
                     color: item.relevanceScore >= 70
-                      ? '#10b981'
+                      ? '#3b82f6'
                       : item.relevanceScore >= 50
-                        ? '#fbbf24'
-                        : '#6b7280',
+                        ? '#f59e0b'
+                        : '#5a5a5a',
                   }}>
                     {item.relevanceScore}
                   </div>
@@ -127,7 +127,7 @@ export default function DigestDetail({ digest }: DigestDetailProps) {
                       style={{
                         fontSize: '14px',
                         fontWeight: 600,
-                        color: '#ffffff',
+                        color: '#f0f0f0',
                         textDecoration: 'none',
                         display: 'block',
                         marginBottom: '4px',
@@ -138,7 +138,7 @@ export default function DigestDetail({ digest }: DigestDetailProps) {
                     </a>
                     <div style={{
                       fontSize: '13px',
-                      color: '#6b7280',
+                      color: '#5a5a5a',
                       lineHeight: 1.5,
                       marginBottom: '6px',
                     }}>
@@ -150,11 +150,11 @@ export default function DigestDetail({ digest }: DigestDetailProps) {
                           <span key={tag} style={{
                             fontSize: '11px',
                             fontFamily: 'var(--font-mono)',
-                            color: '#10b981',
-                            background: 'rgba(16, 185, 129, 0.08)',
+                            color: '#3b82f6',
+                            background: 'rgba(59, 130, 246, 0.08)',
                             padding: '1px 8px',
                             borderRadius: '3px',
-                            border: '1px solid rgba(16, 185, 129, 0.15)',
+                            border: '1px solid rgba(59, 130, 246, 0.15)',
                           }}>
                             #{tag}
                           </span>

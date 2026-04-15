@@ -57,15 +57,15 @@ export default function SearchBar() {
         display: 'flex',
         alignItems: 'center',
         gap: '8px',
-        background: 'rgba(255, 255, 255, 0.03)',
-        border: '1px solid rgba(255, 255, 255, 0.08)',
+        background: '#282c34',
+        border: '1px solid rgba(255, 255, 255, 0.06)',
         borderRadius: '6px',
         padding: '0 12px',
       }}>
-        <span style={{ color: '#6b7280', fontSize: '14px' }}>$</span>
+        <span style={{ color: '#5a5a5a', fontSize: '14px' }}>$</span>
         <input
           type="text"
-          placeholder="\u641C\u7D22\u5386\u53F2\u7B80\u62A5..."
+          placeholder="搜索历史简报..."
           value={query}
           onChange={e => setQuery(e.target.value)}
           onKeyDown={e => { if (e.key === 'Enter') handleSearch(); }}
@@ -75,7 +75,7 @@ export default function SearchBar() {
             background: 'transparent',
             border: 'none',
             outline: 'none',
-            color: '#ffffff',
+            color: '#f0f0f0',
             fontSize: '13px',
             fontFamily: 'var(--font-mono)',
             padding: '10px 0',
@@ -87,14 +87,14 @@ export default function SearchBar() {
           style={{
             background: 'transparent',
             border: 'none',
-            color: '#10b981',
+            color: '#3b82f6',
             fontSize: '13px',
             fontFamily: 'var(--font-mono)',
             cursor: 'pointer',
             padding: '4px',
           }}
         >
-          {loading ? '...' : '\u23CE'}
+          {loading ? '...' : '↵'}
         </button>
       </div>
 
@@ -106,18 +106,17 @@ export default function SearchBar() {
           right: 0,
           zIndex: 50,
           marginTop: '4px',
-          background: '#0a0a0a',
-          border: '1px solid rgba(255, 255, 255, 0.08)',
+          background: '#282c34',
+          border: '1px solid rgba(255, 255, 255, 0.06)',
           borderRadius: '6px',
           maxHeight: '400px',
           overflowY: 'auto',
-          boxShadow: '0 8px 32px rgba(0, 0, 0, 0.5)',
         }}>
           <div style={{
             padding: '8px 12px',
             fontSize: '11px',
             fontFamily: 'var(--font-mono)',
-            color: '#6b7280',
+            color: '#5a5a5a',
             borderBottom: '1px solid rgba(255, 255, 255, 0.06)',
           }}>
             found {total} results
@@ -134,10 +133,10 @@ export default function SearchBar() {
                 color: 'inherit',
               }}
             >
-              <div style={{ fontSize: '13px', color: '#ffffff', marginBottom: '2px' }}>
+              <div style={{ fontSize: '13px', color: '#f0f0f0', marginBottom: '2px' }}>
                 {item.title}
               </div>
-              <div style={{ fontSize: '12px', color: '#6b7280' }}>
+              <div style={{ fontSize: '12px', color: '#5a5a5a' }}>
                 {item.summary.substring(0, 80)}...
               </div>
             </a>

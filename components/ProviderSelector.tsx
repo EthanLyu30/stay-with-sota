@@ -36,7 +36,7 @@ export default function ProviderSelector() {
         width: '32px',
         height: '32px',
         border: '2px solid rgba(255, 255, 255, 0.06)',
-        borderTopColor: '#10b981',
+        borderTopColor: '#3b82f6',
         borderRadius: '50%',
         animation: 'spin 0.7s linear infinite',
       }} />
@@ -50,9 +50,9 @@ export default function ProviderSelector() {
         fontSize: '16px',
         fontWeight: 700,
         fontFamily: 'var(--font-mono)',
-        color: '#e8e8e8',
+        color: '#f0f0f0',
       }}>
-        AI \u6A21\u578B\u914D\u7F6E
+        AI 模型配置
       </h3>
       <p style={{
         color: '#8b8b8b',
@@ -60,15 +60,15 @@ export default function ProviderSelector() {
         marginBottom: '16px',
         lineHeight: 1.5,
       }}>
-        \u9009\u62E9\u7528\u4E8E\u4FE1\u606F\u7B5B\u9009\u548C\u6458\u8981\u7684 AI \u6A21\u578B\u3002\u5F53\u524D\u901A\u8FC7\u73AF\u5883\u53D8\u91CF <code style={{
+        选择用于信息筛选和摘要的 AI 模型。当前通过环境变量 <code style={{
           fontFamily: 'var(--font-mono)',
           fontSize: '0.85em',
-          background: 'rgba(16, 185, 129, 0.08)',
-          color: '#10b981',
+          background: 'rgba(59, 130, 246, 0.1)',
+          color: '#3b82f6',
           padding: '1px 5px',
           borderRadius: '4px',
-          border: '1px solid rgba(16, 185, 129, 0.12)',
-        }}>LLM_PROVIDER</code> \u63A7\u5236\u3002
+          border: '1px solid rgba(59, 130, 246, 0.12)',
+        }}>LLM_PROVIDER</code> 控制。
       </p>
       <div style={{ display: 'flex', flexDirection: 'column', gap: '3px' }}>
         {providers.map(provider => (
@@ -80,20 +80,20 @@ export default function ProviderSelector() {
               gap: '12px',
               padding: '10px 12px',
               borderBottom: '1px solid rgba(255, 255, 255, 0.03)',
-              borderLeft: provider.id === activeProvider ? '2px solid #10b981' : '2px solid transparent',
-              background: provider.id === activeProvider ? 'rgba(16, 185, 129, 0.03)' : 'transparent',
+              borderLeft: provider.id === activeProvider ? '2px solid #3b82f6' : '2px solid transparent',
+              background: provider.id === activeProvider ? 'rgba(59, 130, 246, 0.03)' : 'transparent',
               transition: 'background 150ms ease',
             }}
           >
             <div style={{ fontSize: '18px', width: '28px', textAlign: 'center' }}>
-              {provider.type === 'ollama' ? '\uD83D\uDDA5\uFE0F' : '\u2601\uFE0F'}
+              {provider.type === 'ollama' ? '🖥️' : '☁️'}
             </div>
             <div style={{ flex: 1, minWidth: 0 }}>
               <div style={{
                 fontWeight: 600,
                 fontSize: '13px',
                 fontFamily: 'var(--font-mono)',
-                color: '#e8e8e8',
+                color: '#f0f0f0',
                 display: 'flex',
                 alignItems: 'center',
                 gap: '8px',
@@ -102,19 +102,19 @@ export default function ProviderSelector() {
                 {provider.id === activeProvider && (
                   <span style={{
                     fontSize: '11px',
-                    color: '#10b981',
-                    background: 'rgba(16, 185, 129, 0.1)',
+                    color: '#3b82f6',
+                    background: 'rgba(59, 130, 246, 0.1)',
                     padding: '1px 6px',
                     borderRadius: '4px',
                     fontFamily: 'var(--font-mono)',
                   }}>
-                    \u5F53\u524D\u4F7F\u7528
+                    当前使用
                   </span>
                 )}
               </div>
               <div style={{
                 fontSize: '11px',
-                color: '#555',
+                color: '#5a5a5a',
                 fontFamily: 'var(--font-mono)',
               }}>
                 {provider.model} &middot; {provider.description}
@@ -122,9 +122,9 @@ export default function ProviderSelector() {
             </div>
             <span style={{
               fontSize: '12px',
-              color: provider.configured ? '#10b981' : '#f59e0b',
+              color: provider.configured ? '#22c55e' : '#f59e0b',
             }}>
-              {provider.configured ? '\u2705' : '\u26A0\uFE0F \u9700\u914D\u7F6E'}
+              {provider.configured ? '✅' : '⚠️ 需配置'}
             </span>
           </div>
         ))}
@@ -132,55 +132,55 @@ export default function ProviderSelector() {
       <div style={{
         marginTop: '16px',
         padding: '12px 16px',
-        background: 'rgba(255, 255, 255, 0.02)',
+        background: '#282c34',
         border: '1px solid rgba(255, 255, 255, 0.06)',
         borderRadius: '6px',
         fontSize: '13px',
         color: '#8b8b8b',
         lineHeight: 1.5,
       }}>
-        <strong style={{ color: '#e8e8e8' }}>\u5207\u6362\u65B9\u5F0F\uFF1A</strong>\u5728\u73AF\u5883\u53D8\u91CF\u4E2D\u8BBE\u7F6E <code style={{
+        <strong style={{ color: '#f0f0f0' }}>切换方式：</strong>在环境变量中设置 <code style={{
           fontFamily: 'var(--font-mono)',
           fontSize: '0.85em',
-          background: 'rgba(16, 185, 129, 0.08)',
-          color: '#10b981',
+          background: 'rgba(59, 130, 246, 0.1)',
+          color: '#3b82f6',
           padding: '1px 5px',
           borderRadius: '4px',
-          border: '1px solid rgba(16, 185, 129, 0.12)',
-        }}>LLM_PROVIDER</code> \u4E3A\u63D0\u4F9B\u5546 ID\uFF08\u5982 <code style={{
+          border: '1px solid rgba(59, 130, 246, 0.12)',
+        }}>LLM_PROVIDER</code> 为提供商 ID（如 <code style={{
           fontFamily: 'var(--font-mono)',
           fontSize: '0.85em',
-          background: 'rgba(16, 185, 129, 0.08)',
-          color: '#10b981',
+          background: 'rgba(59, 130, 246, 0.1)',
+          color: '#3b82f6',
           padding: '1px 5px',
           borderRadius: '4px',
-          border: '1px solid rgba(16, 185, 129, 0.12)',
-        }}>deepseek</code>\u3001<code style={{
+          border: '1px solid rgba(59, 130, 246, 0.12)',
+        }}>deepseek</code>、<code style={{
           fontFamily: 'var(--font-mono)',
           fontSize: '0.85em',
-          background: 'rgba(16, 185, 129, 0.08)',
-          color: '#10b981',
+          background: 'rgba(59, 130, 246, 0.1)',
+          color: '#3b82f6',
           padding: '1px 5px',
           borderRadius: '4px',
-          border: '1px solid rgba(16, 185, 129, 0.12)',
-        }}>gemini</code>\u3001<code style={{
+          border: '1px solid rgba(59, 130, 246, 0.12)',
+        }}>gemini</code>、<code style={{
           fontFamily: 'var(--font-mono)',
           fontSize: '0.85em',
-          background: 'rgba(16, 185, 129, 0.08)',
-          color: '#10b981',
+          background: 'rgba(59, 130, 246, 0.1)',
+          color: '#3b82f6',
           padding: '1px 5px',
           borderRadius: '4px',
-          border: '1px solid rgba(16, 185, 129, 0.12)',
-        }}>qwen</code>\uFF09\uFF0C
-        \u5E76\u914D\u7F6E\u5BF9\u5E94\u7684 <code style={{
+          border: '1px solid rgba(59, 130, 246, 0.12)',
+        }}>qwen</code>），
+        并配置对应的 <code style={{
           fontFamily: 'var(--font-mono)',
           fontSize: '0.85em',
-          background: 'rgba(16, 185, 129, 0.08)',
-          color: '#10b981',
+          background: 'rgba(59, 130, 246, 0.1)',
+          color: '#3b82f6',
           padding: '1px 5px',
           borderRadius: '4px',
-          border: '1px solid rgba(16, 185, 129, 0.12)',
-        }}>LLM_API_KEY</code>\u3002
+          border: '1px solid rgba(59, 130, 246, 0.12)',
+        }}>LLM_API_KEY</code>。
       </div>
     </div>
   );

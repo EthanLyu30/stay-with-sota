@@ -7,10 +7,10 @@ import { SOURCE_META } from '@/lib/utils';
 const SOURCE_TYPES: { value: SourceType; label: string }[] = [
   { value: 'github-trending', label: 'GitHub Trending' },
   { value: 'github-release', label: 'GitHub Release' },
-  { value: 'arxiv', label: 'ArXiv \u8BBA\u6587' },
+  { value: 'arxiv', label: 'ArXiv 论文' },
   { value: 'huggingface', label: 'HuggingFace Daily Papers' },
   { value: 'hackernews', label: 'Hacker News' },
-  { value: 'rss', label: 'RSS \u8BA2\u9605' },
+  { value: 'rss', label: 'RSS 订阅' },
 ];
 
 export default function SourceManager() {
@@ -53,7 +53,7 @@ export default function SourceManager() {
   };
 
   const handleDelete = async (id: string) => {
-    if (!confirm('\u786E\u5B9A\u8981\u5220\u9664\u8FD9\u4E2A\u6570\u636E\u6E90\u5417\uFF1F')) return;
+    if (!confirm('确定要删除这个数据源吗？')) return;
     try {
       await fetch(`/api/sources/${id}`, { method: 'DELETE' });
       setSources(prev => prev.filter(s => s.id !== id));
@@ -89,7 +89,7 @@ export default function SourceManager() {
         alignItems: 'center',
         justifyContent: 'center',
         padding: '56px',
-        color: '#555',
+        color: '#5a5a5a',
         fontFamily: 'var(--font-mono)',
         fontSize: '13px',
       }}>
@@ -97,7 +97,7 @@ export default function SourceManager() {
           width: '32px',
           height: '32px',
           border: '2px solid rgba(255, 255, 255, 0.06)',
-          borderTopColor: '#10b981',
+          borderTopColor: '#3b82f6',
           borderRadius: '50%',
           animation: 'spin 0.7s linear infinite',
           marginBottom: '12px',
@@ -115,10 +115,10 @@ export default function SourceManager() {
           style={{
             height: '32px',
             padding: '0 14px',
-            background: 'linear-gradient(135deg, #10b981, #34d399)',
+            background: '#3b82f6',
             border: 'none',
             borderRadius: '6px',
-            color: '#000',
+            color: '#f0f0f0',
             fontSize: '13px',
             fontWeight: 700,
             fontFamily: 'var(--font-mono)',
@@ -126,8 +126,14 @@ export default function SourceManager() {
             letterSpacing: '-0.01em',
             transition: 'all 150ms ease',
           }}
+          onMouseEnter={e => {
+            (e.currentTarget as HTMLButtonElement).style.background = '#60a5fa';
+          }}
+          onMouseLeave={e => {
+            (e.currentTarget as HTMLButtonElement).style.background = '#3b82f6';
+          }}
         >
-          {showForm ? '\u2715 \u53D6\u6D88' : '+ \u6DFB\u52A0\u6570\u636E\u6E90'}
+          {showForm ? '✕ 取消' : '+ 添加数据源'}
         </button>
       </div>
 
@@ -135,7 +141,7 @@ export default function SourceManager() {
         <div style={{
           marginBottom: '24px',
           padding: '16px 20px',
-          background: 'rgba(255, 255, 255, 0.02)',
+          background: '#282c34',
           border: '1px solid rgba(255, 255, 255, 0.06)',
           borderRadius: '6px',
         }}>
@@ -151,7 +157,7 @@ export default function SourceManager() {
                 textTransform: 'uppercase',
                 letterSpacing: '0.05em',
               }}>
-                \u7C7B\u578B
+                类型
               </label>
               <select
                 value={formData.type}
@@ -159,10 +165,10 @@ export default function SourceManager() {
                 style={{
                   width: '100%',
                   padding: '6px 12px',
-                  background: '#0a0a0a',
+                  background: '#1f2228',
                   border: '1px solid rgba(255, 255, 255, 0.06)',
                   borderRadius: '4px',
-                  color: '#e8e8e8',
+                  color: '#f0f0f0',
                   fontSize: '13px',
                   fontFamily: 'var(--font-mono)',
                   height: '32px',
@@ -185,20 +191,20 @@ export default function SourceManager() {
                 textTransform: 'uppercase',
                 letterSpacing: '0.05em',
               }}>
-                \u540D\u79F0
+                名称
               </label>
               <input
                 value={formData.name}
                 onChange={e => setFormData(prev => ({ ...prev, name: e.target.value }))}
-                placeholder="\u6570\u636E\u6E90\u540D\u79F0"
+                placeholder="数据源名称"
                 required
                 style={{
                   width: '100%',
                   padding: '6px 12px',
-                  background: '#0a0a0a',
+                  background: '#1f2228',
                   border: '1px solid rgba(255, 255, 255, 0.06)',
                   borderRadius: '4px',
-                  color: '#e8e8e8',
+                  color: '#f0f0f0',
                   fontSize: '13px',
                   fontFamily: 'var(--font-mono)',
                   height: '32px',
@@ -218,7 +224,7 @@ export default function SourceManager() {
                   textTransform: 'uppercase',
                   letterSpacing: '0.05em',
                 }}>
-                  {formData.type === 'rss' ? 'RSS URL' : '\u4ED3\u5E93\u5730\u5740 (owner/repo)'}
+                  {formData.type === 'rss' ? 'RSS URL' : '仓库地址 (owner/repo)'}
                 </label>
                 <input
                   value={formData.url}
@@ -228,10 +234,10 @@ export default function SourceManager() {
                   style={{
                     width: '100%',
                     padding: '6px 12px',
-                    background: '#0a0a0a',
+                    background: '#1f2228',
                     border: '1px solid rgba(255, 255, 255, 0.06)',
                     borderRadius: '4px',
-                    color: '#e8e8e8',
+                    color: '#f0f0f0',
                     fontSize: '13px',
                     fontFamily: 'var(--font-mono)',
                     height: '32px',
@@ -243,17 +249,25 @@ export default function SourceManager() {
             <button type="submit" style={{
               height: '32px',
               padding: '0 14px',
-              background: 'linear-gradient(135deg, #10b981, #34d399)',
+              background: '#3b82f6',
               border: 'none',
               borderRadius: '6px',
-              color: '#000',
+              color: '#f0f0f0',
               fontSize: '13px',
               fontWeight: 700,
               fontFamily: 'var(--font-mono)',
               cursor: 'pointer',
               letterSpacing: '-0.01em',
-            }}>
-              \u6DFB\u52A0
+              transition: 'all 150ms ease',
+            }}
+            onMouseEnter={e => {
+              (e.currentTarget as HTMLButtonElement).style.background = '#60a5fa';
+            }}
+            onMouseLeave={e => {
+              (e.currentTarget as HTMLButtonElement).style.background = '#3b82f6';
+            }}
+            >
+              添加
             </button>
           </form>
         </div>
@@ -261,7 +275,7 @@ export default function SourceManager() {
 
       <div style={{ display: 'flex', flexDirection: 'column', gap: '3px' }}>
         {sources.map(source => {
-          const meta = SOURCE_META[source.type] || { icon: '\uD83D\uDCE1', label: source.type };
+          const meta = SOURCE_META[source.type] || { icon: '📡', label: source.type };
           return (
             <div key={source.id} style={{
               display: 'flex',
@@ -271,7 +285,7 @@ export default function SourceManager() {
               borderBottom: '1px solid rgba(255, 255, 255, 0.03)',
               transition: 'background 150ms ease',
             }}
-            onMouseEnter={e => { (e.currentTarget as HTMLDivElement).style.background = 'rgba(255, 255, 255, 0.03)'; }}
+            onMouseEnter={e => { (e.currentTarget as HTMLDivElement).style.background = '#2d3139'; }}
             onMouseLeave={e => { (e.currentTarget as HTMLDivElement).style.background = 'transparent'; }}
             >
               <div style={{ fontSize: '18px', width: '28px', textAlign: 'center' }}>{meta.icon}</div>
@@ -280,13 +294,13 @@ export default function SourceManager() {
                   fontWeight: 600,
                   fontSize: '13px',
                   fontFamily: 'var(--font-mono)',
-                  color: '#e8e8e8',
+                  color: '#f0f0f0',
                 }}>
                   {source.name}
                 </div>
                 <div style={{
                   fontSize: '11px',
-                  color: '#555',
+                  color: '#5a5a5a',
                   fontFamily: 'var(--font-mono)',
                 }}>
                   {source.type}
@@ -300,11 +314,11 @@ export default function SourceManager() {
                   position: 'relative',
                   width: '36px',
                   height: '20px',
-                  background: source.enabled ? 'rgba(16, 185, 129, 0.2)' : '#0a0a0a',
+                  background: source.enabled ? 'rgba(59, 130, 246, 0.2)' : '#1f2228',
                   borderRadius: '9999px',
                   cursor: 'pointer',
                   transition: 'background 150ms ease',
-                  border: `1px solid ${source.enabled ? '#10b981' : 'rgba(255, 255, 255, 0.06)'}`,
+                  border: `1px solid ${source.enabled ? '#3b82f6' : 'rgba(255, 255, 255, 0.06)'}`,
                   flexShrink: 0,
                 }}
               >
@@ -314,10 +328,9 @@ export default function SourceManager() {
                   left: source.enabled ? '18px' : '2px',
                   width: '14px',
                   height: '14px',
-                  background: source.enabled ? '#10b981' : '#555',
+                  background: source.enabled ? '#3b82f6' : '#5a5a5a',
                   borderRadius: '50%',
                   transition: 'all 150ms ease',
-                  boxShadow: source.enabled ? '0 0 6px rgba(16, 185, 129, 0.4)' : 'none',
                 }} />
               </div>
               <button
@@ -343,7 +356,7 @@ export default function SourceManager() {
                   (e.currentTarget as HTMLButtonElement).style.borderColor = 'rgba(239, 68, 68, 0.15)';
                 }}
               >
-                \u5220\u9664
+                删除
               </button>
             </div>
           );
@@ -354,9 +367,9 @@ export default function SourceManager() {
         <div style={{
           textAlign: 'center',
           padding: '56px',
-          color: '#555',
+          color: '#5a5a5a',
         }}>
-          <div style={{ fontSize: '40px', marginBottom: '12px', opacity: 0.6 }}>\uD83D\uDCE1</div>
+          <div style={{ fontSize: '40px', marginBottom: '12px', opacity: 0.6 }}>📡</div>
           <div style={{
             fontSize: '16px',
             fontWeight: 600,
@@ -364,7 +377,7 @@ export default function SourceManager() {
             marginBottom: '3px',
             fontFamily: 'var(--font-mono)',
           }}>
-            \u6682\u65E0\u6570\u636E\u6E90
+            暂无数据源
           </div>
           <div style={{
             fontSize: '13px',
@@ -372,7 +385,7 @@ export default function SourceManager() {
             margin: '0 auto',
             lineHeight: 1.5,
           }}>
-            \u70B9\u51FB\u4E0A\u65B9\u6309\u94AE\u6DFB\u52A0\u6570\u636E\u6E90
+            点击上方按钮添加数据源
           </div>
         </div>
       )}

@@ -10,19 +10,17 @@ export default function SettingsPage() {
           fontSize: '24px',
           fontWeight: 800,
           fontFamily: 'var(--font-mono)',
-          background: 'linear-gradient(135deg, #10b981, #6ee7b7)',
-          WebkitBackgroundClip: 'text',
-          WebkitTextFillColor: 'transparent',
+          color: '#3b82f6',
           marginBottom: '3px',
         }}>
-          \u2699\uFE0F \u8BBE\u7F6E
+          ⚙️ 设置
         </h1>
         <p style={{
-          color: '#555',
+          color: '#5a5a5a',
           fontSize: '13px',
           fontFamily: 'var(--font-mono)',
         }}>
-          \u7BA1\u7406\u6570\u636E\u6E90\u3001AI \u6A21\u578B\u548C\u7CFB\u7EDF\u914D\u7F6E
+          管理数据源、AI 模型和系统配置
         </p>
       </div>
 
@@ -36,9 +34,9 @@ export default function SettingsPage() {
           fontSize: '16px',
           fontWeight: 700,
           fontFamily: 'var(--font-mono)',
-          color: '#e8e8e8',
+          color: '#f0f0f0',
         }}>
-          \uD83D\uDCE1 \u6570\u636E\u6E90\u7BA1\u7406
+          📡 数据源管理
         </h3>
         <p style={{
           color: '#8b8b8b',
@@ -46,7 +44,7 @@ export default function SettingsPage() {
           marginBottom: '16px',
           lineHeight: 1.5,
         }}>
-          \u6DFB\u52A0\u3001\u5220\u9664\u6216\u542F\u7528/\u7981\u7528\u6570\u636E\u6E90\u3002\u7CFB\u7EDF\u4F1A\u4ECE\u542F\u7528\u7684\u6570\u636E\u6E90\u4E2D\u81EA\u52A8\u6293\u53D6\u5185\u5BB9\u3002
+          添加、删除或启用/禁用数据源。系统会从启用的数据源中自动抓取内容。
         </p>
         <SourceManager />
       </div>
@@ -55,7 +53,7 @@ export default function SettingsPage() {
       <div style={{
         maxWidth: '600px',
         padding: '16px 20px',
-        background: 'rgba(255, 255, 255, 0.02)',
+        background: '#282c34',
         border: '1px solid rgba(255, 255, 255, 0.06)',
         borderRadius: '6px',
       }}>
@@ -64,9 +62,9 @@ export default function SettingsPage() {
           fontSize: '16px',
           fontWeight: 700,
           fontFamily: 'var(--font-mono)',
-          color: '#e8e8e8',
+          color: '#f0f0f0',
         }}>
-          \uD83D\uDD27 \u7CFB\u7EDF\u4FE1\u606F
+          🔧 系统信息
         </h3>
         <div style={{
           display: 'flex',
@@ -75,17 +73,17 @@ export default function SettingsPage() {
           fontSize: '13px',
         }}>
           {[
-            ['\u6846\u67B6', 'Next.js 15 (App Router)'],
-            ['\u90E8\u7F72', 'Vercel'],
-            ['\u6570\u636E\u5E93', 'Vercel KV (Upstash Redis)'],
-            ['AI \u5F15\u64CE', '\u591A\u6A21\u578B\u652F\u6301 (Ollama / Gemini / DeepSeek / \u901A\u4E49 / \u667A\u8C31)'],
-            ['\u90AE\u4EF6', 'QQ \u90AE\u7BB1 SMTP'],
-            ['\u5B9A\u65F6\u4EFB\u52A1', '\u6BCF\u65E5 08:00 (\u5317\u4EAC\u65F6\u95F4)'],
-            ['\u5185\u5BB9\u53BB\u91CD', '\u2705 \u8DE8\u6E90\u81EA\u52A8\u53BB\u91CD'],
+            ['框架', 'Next.js 15 (App Router)'],
+            ['部署', 'Vercel'],
+            ['数据库', 'Vercel KV (Upstash Redis)'],
+            ['AI 引擎', '多模型支持 (Ollama / Gemini / DeepSeek / 通义 / 智谱)'],
+            ['邮件', 'QQ 邮箱 SMTP'],
+            ['定时任务', '每日 08:00 (北京时间)'],
+            ['内容去重', '✅ 跨源自自动去重'],
           ].map(([label, value]) => (
             <div key={label} style={{ display: 'flex', justifyContent: 'space-between' }}>
               <span style={{ color: '#8b8b8b' }}>{label}</span>
-              <span style={{ color: '#e8e8e8', fontFamily: 'var(--font-mono)', fontSize: '12px' }}>{value}</span>
+              <span style={{ color: '#f0f0f0', fontFamily: 'var(--font-mono)', fontSize: '12px' }}>{value}</span>
             </div>
           ))}
         </div>

@@ -63,19 +63,17 @@ export default function HistoryPage() {
           fontSize: '24px',
           fontWeight: 800,
           fontFamily: 'var(--font-mono)',
-          background: 'linear-gradient(135deg, #10b981, #6ee7b7)',
-          WebkitBackgroundClip: 'text',
-          WebkitTextFillColor: 'transparent',
+          color: '#3b82f6',
           marginBottom: '3px',
         }}>
-          \uD83D\uDCDC \u5386\u53F2\u7B80\u62A5
+          📋 历史简报
         </h1>
         <p style={{
-          color: '#555',
+          color: '#5a5a5a',
           fontSize: '13px',
           fontFamily: 'var(--font-mono)',
         }}>
-          \u6D4F\u89C8\u6240\u6709\u5386\u53F2\u7B80\u62A5\u8BB0\u5F55
+          浏览所有历史简报记录
         </p>
       </div>
 
@@ -86,7 +84,7 @@ export default function HistoryPage() {
           alignItems: 'center',
           justifyContent: 'center',
           padding: '56px',
-          color: '#555',
+          color: '#5a5a5a',
           fontFamily: 'var(--font-mono)',
           fontSize: '13px',
         }}>
@@ -94,12 +92,12 @@ export default function HistoryPage() {
             width: '32px',
             height: '32px',
             border: '2px solid rgba(255, 255, 255, 0.06)',
-            borderTopColor: '#10b981',
+            borderTopColor: '#3b82f6',
             borderRadius: '50%',
             animation: 'spin 0.7s linear infinite',
             marginBottom: '12px',
           }} />
-          \u52A0\u8F7D\u4E2D...
+          加载中...
         </div>
       ) : digests.length > 0 ? (
         <>
@@ -130,14 +128,14 @@ export default function HistoryPage() {
                 }}
                 onMouseEnter={e => {
                   (e.currentTarget as HTMLButtonElement).style.borderColor = 'rgba(255, 255, 255, 0.2)';
-                  (e.currentTarget as HTMLButtonElement).style.color = '#e8e8e8';
+                  (e.currentTarget as HTMLButtonElement).style.color = '#f0f0f0';
                 }}
                 onMouseLeave={e => {
                   (e.currentTarget as HTMLButtonElement).style.borderColor = 'rgba(255, 255, 255, 0.1)';
                   (e.currentTarget as HTMLButtonElement).style.color = '#8b8b8b';
                 }}
               >
-                \u52A0\u8F7D\u66F4\u591A
+                加载更多
               </button>
             </div>
           )}
@@ -146,9 +144,9 @@ export default function HistoryPage() {
         <div style={{
           textAlign: 'center',
           padding: '56px',
-          color: '#555',
+          color: '#5a5a5a',
         }}>
-          <div style={{ fontSize: '40px', marginBottom: '12px', opacity: 0.6 }}>\uD83D\uDCED</div>
+          <div style={{ fontSize: '40px', marginBottom: '12px', opacity: 0.6 }}>📭</div>
           <div style={{
             fontSize: '16px',
             fontWeight: 600,
@@ -156,7 +154,7 @@ export default function HistoryPage() {
             marginBottom: '3px',
             fontFamily: 'var(--font-mono)',
           }}>
-            \u6682\u65E0\u5386\u53F2\u7B80\u62A5
+            暂无历史简报
           </div>
           <div style={{
             fontSize: '13px',
@@ -164,7 +162,7 @@ export default function HistoryPage() {
             margin: '0 auto',
             lineHeight: 1.5,
           }}>
-            \u9996\u6B21\u6293\u53D6\u540E\uFF0C\u7B80\u62A5\u5C06\u663E\u793A\u5728\u8FD9\u91CC
+            首次抓取后，简报将显示在这里
           </div>
         </div>
       )}

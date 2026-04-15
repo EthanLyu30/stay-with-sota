@@ -31,7 +31,7 @@ export default function DigestCard({ digest }: DigestCardProps) {
         transition: 'background 150ms ease',
         cursor: 'pointer',
       }}
-      onMouseEnter={e => { (e.currentTarget as HTMLDivElement).style.background = 'rgba(255, 255, 255, 0.03)'; }}
+      onMouseEnter={e => { (e.currentTarget as HTMLDivElement).style.background = '#2d3139'; }}
       onMouseLeave={e => { (e.currentTarget as HTMLDivElement).style.background = 'transparent'; }}
       >
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '16px' }}>
@@ -39,7 +39,7 @@ export default function DigestCard({ digest }: DigestCardProps) {
             <div style={{
               fontSize: '11px',
               fontFamily: 'var(--font-mono)',
-              color: '#6b7280',
+              color: '#5a5a5a',
               marginBottom: '6px',
             }}>
               {new Date(digest.date).toLocaleDateString('zh-CN', { month: 'short', day: 'numeric' })}
@@ -47,7 +47,7 @@ export default function DigestCard({ digest }: DigestCardProps) {
             <div style={{
               fontSize: '15px',
               fontWeight: 600,
-              color: '#ffffff',
+              color: '#f0f0f0',
               marginBottom: '8px',
               overflow: 'hidden',
               textOverflow: 'ellipsis',
@@ -60,7 +60,7 @@ export default function DigestCard({ digest }: DigestCardProps) {
                 {digest.preview.slice(0, 2).map((item, idx) => (
                   <div key={idx} style={{
                     fontSize: '12px',
-                    color: '#6b7280',
+                    color: '#5a5a5a',
                     display: 'flex',
                     alignItems: 'center',
                     gap: '6px',
@@ -68,7 +68,7 @@ export default function DigestCard({ digest }: DigestCardProps) {
                     textOverflow: 'ellipsis',
                     whiteSpace: 'nowrap',
                   }}>
-                    <span>{SOURCE_META[item.sourceType]?.icon || '\uD83D\uDCE1'}</span>
+                    <span>{SOURCE_META[item.sourceType]?.icon || '📡'}</span>
                     <span>{item.title}</span>
                   </div>
                 ))}
@@ -80,27 +80,27 @@ export default function DigestCard({ digest }: DigestCardProps) {
               fontSize: '13px',
               fontFamily: 'var(--font-mono)',
               fontWeight: 600,
-              color: '#10b981',
+              color: '#3b82f6',
             }}>
-              {digest.totalFiltered} \u6761
+              {digest.totalFiltered} 条
             </div>
             <div style={{
               fontSize: '11px',
               fontFamily: 'var(--font-mono)',
-              color: '#6b7280',
+              color: '#5a5a5a',
             }}>
-              {passRate}% \u901A\u8FC7
+              {passRate}% 通过
             </div>
             {digest.emailSent && (
               <span style={{
                 fontSize: '10px',
                 fontFamily: 'var(--font-mono)',
-                color: '#10b981',
-                background: 'rgba(16, 185, 129, 0.1)',
+                color: '#22c55e',
+                background: 'rgba(34, 197, 94, 0.1)',
                 padding: '1px 6px',
                 borderRadius: '3px',
               }}>
-                \u2713 emailed
+                ✓ emailed
               </span>
             )}
           </div>
