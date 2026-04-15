@@ -1,7 +1,6 @@
 'use client';
 
-import { useState, useCallback, useRef, useEffect } from 'react';
-import { SOURCE_META } from '@/lib/utils';
+import { useState, useRef, useEffect } from 'react';
 
 interface SearchResult {
   digestId: string;
@@ -24,7 +23,6 @@ export default function SearchBar() {
   const [total, setTotal] = useState(0);
   const wrapperRef = useRef<HTMLDivElement>(null);
 
-  // 点击外部关闭
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
       if (wrapperRef.current && !wrapperRef.current.contains(e.target as Node)) {
@@ -35,7 +33,7 @@ export default function SearchBar() {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  const handleSearch = useCallback(async () => {
+  const handleSearch = async () => {
     if (!query.trim()) return;
     setLoading(true);
     setShowResults(true);
@@ -51,97 +49,99 @@ export default function SearchBar() {
     } finally {
       setLoading(false);
     }
-  }, [query]);
-
-  const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter') handleSearch();
   };
 
   return (
     <div ref={wrapperRef} style={{ position: 'relative', marginBottom: '24px' }}>
-      <div style={{ display: 'flex', gap: '8px' }}>
+      <div style={{
+        display: 'flex',
+        alignItems: 'center',
+        gap: '8px',
+        background: 'rgba(255, 255, 255, 0.03)',
+        border: '1px solid rgba(255, 255, 255, 0.08)',
+        borderRadius: '6px',
+        padding: '0 12px',
+      }}>
+        <span style={{ color: '#6b7280', fontSize: '14px' }}>$</span>
         <input
-          className="form-input"
           type="text"
-          placeholder="🔍 搜索历史简报内容..."
+          placeholder="\u641C\u7D22\u5386\u53F2\u7B80\u62A5..."
           value={query}
           onChange={e => setQuery(e.target.value)}
-          onKeyDown={handleKeyDown}
+          onKeyDown={e => { if (e.key === 'Enter') handleSearch(); }}
           onFocus={() => results.length > 0 && setShowResults(true)}
-          style={{ flex: 1 }}
+          style={{
+            flex: 1,
+            background: 'transparent',
+            border: 'none',
+            outline: 'none',
+            color: '#ffffff',
+            fontSize: '13px',
+            fontFamily: 'var(--font-mono)',
+            padding: '10px 0',
+          }}
         />
         <button
-          className="btn btn-primary"
           onClick={handleSearch}
           disabled={loading || !query.trim()}
+          style={{
+            background: 'transparent',
+            border: 'none',
+            color: '#10b981',
+            fontSize: '13px',
+            fontFamily: 'var(--font-mono)',
+            cursor: 'pointer',
+            padding: '4px',
+          }}
         >
-          {loading ? '搜索中...' : '搜索'}
+          {loading ? '...' : '\u23CE'}
         </button>
       </div>
 
-      {showResults && (
+      {showResults && results.length > 0 && (
         <div style={{
           position: 'absolute',
           top: '100%',
           left: 0,
           right: 0,
           zIndex: 50,
-          marginTop: '8px',
-          background: 'var(--bg-secondary)',
-          border: '1px solid var(--border-primary)',
-          borderRadius: 'var(--radius-lg)',
-          maxHeight: '500px',
+          marginTop: '4px',
+          background: '#0a0a0a',
+          border: '1px solid rgba(255, 255, 255, 0.08)',
+          borderRadius: '6px',
+          maxHeight: '400px',
           overflowY: 'auto',
-          boxShadow: 'var(--shadow-lg)',
+          boxShadow: '0 8px 32px rgba(0, 0, 0, 0.5)',
         }}>
-          {results.length > 0 ? (
-            <>
-              <div style={{ padding: '12px 16px', color: 'var(--text-muted)', fontSize: '13px', borderBottom: '1px solid var(--border-primary)' }}>
-                找到 {total} 条结果
+          <div style={{
+            padding: '8px 12px',
+            fontSize: '11px',
+            fontFamily: 'var(--font-mono)',
+            color: '#6b7280',
+            borderBottom: '1px solid rgba(255, 255, 255, 0.06)',
+          }}>
+            found {total} results
+          </div>
+          {results.map(item => (
+            <a
+              key={item.itemId}
+              href={`/digest/${item.digestId}`}
+              style={{
+                display: 'block',
+                padding: '10px 12px',
+                borderBottom: '1px solid rgba(255, 255, 255, 0.03)',
+                textDecoration: 'none',
+                color: 'inherit',
+              }}
+            >
+              <div style={{ fontSize: '13px', color: '#ffffff', marginBottom: '2px' }}>
+                {item.title}
               </div>
-              {results.map(item => (
-                <a
-                  key={item.itemId}
-                  href={`/digest/${item.digestId}`}
-                  style={{
-                    display: 'block',
-                    padding: '12px 16px',
-                    borderBottom: '1px solid var(--border-primary)',
-                    textDecoration: 'none',
-                    color: 'inherit',
-                    transition: 'background 0.15s',
-                  }}
-                  onMouseEnter={e => (e.currentTarget.style.background = 'var(--bg-card-hover)')}
-                  onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}
-                >
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
-                    <span>{SOURCE_META[item.sourceType]?.icon || '📡'}</span>
-                    <span style={{ fontWeight: 600, fontSize: '14px', color: 'var(--text-primary)' }}>
-                      {item.title}
-                    </span>
-                    <span style={{
-                      marginLeft: 'auto',
-                      fontSize: '12px',
-                      color: item.relevanceScore >= 70 ? 'var(--accent-green)' : 'var(--text-muted)',
-                      fontWeight: 600,
-                    }}>
-                      {item.relevanceScore}
-                    </span>
-                  </div>
-                  <div style={{ fontSize: '13px', color: 'var(--text-secondary)', lineHeight: 1.4 }}>
-                    {item.summary}
-                  </div>
-                  <div style={{ fontSize: '11px', color: 'var(--text-muted)', marginTop: '4px' }}>
-                    {item.digestDate} · {item.tags.map(t => `#${t}`).join(' ')}
-                  </div>
-                </a>
-              ))}
-            </>
-          ) : !loading && query ? (
-            <div style={{ padding: '24px', textAlign: 'center', color: 'var(--text-muted)' }}>
-              未找到相关内容
-            </div>
-          ) : null}
+              <div style={{ fontSize: '12px', color: '#6b7280' }}>
+                {item.summary.substring(0, 80)}...
+              </div>
+            </a>
+          ))}
         </div>
       )}
     </div>

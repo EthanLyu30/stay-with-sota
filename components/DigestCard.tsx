@@ -1,6 +1,5 @@
 import Link from 'next/link';
-import type { Digest } from '@/lib/types';
-import { formatDate, SOURCE_META } from '@/lib/utils';
+import { SOURCE_META } from '@/lib/utils';
 
 interface DigestCardProps {
   digest: {
@@ -25,48 +24,87 @@ export default function DigestCard({ digest }: DigestCardProps) {
   );
 
   return (
-    <Link href={`/digest/${digest.id}`} style={{ textDecoration: 'none' }}>
-      <div className="card digest-card">
-        <div className="digest-card-date">{formatDate(digest.date)}</div>
-        <div className="digest-card-title">{digest.title}</div>
-        <div className="digest-card-stats">
-          <span className="digest-card-stat">
-            📥 {digest.totalFetched} 抓取
-          </span>
-          <span className="digest-card-stat">
-            ✅ {digest.totalFiltered} 精选
-          </span>
-          <span className="digest-card-stat">
-            📊 {passRate}% 通过率
-          </span>
-          {digest.emailSent && (
-            <span className="digest-card-stat">📧 已推送</span>
-          )}
-        </div>
-        {digest.preview && digest.preview.length > 0 && (
-          <div style={{ marginTop: '12px', display: 'flex', flexDirection: 'column', gap: '4px' }}>
-            {digest.preview.map((item, idx) => (
-              <div
-                key={idx}
-                style={{
-                  fontSize: '13px',
-                  color: 'var(--text-secondary)',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '6px',
-                  overflow: 'hidden',
-                  textOverflow: 'ellipsis',
-                  whiteSpace: 'nowrap',
-                }}
-              >
-                <span>{SOURCE_META[item.sourceType]?.icon || '📡'}</span>
-                <span style={{ overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                  {item.title}
-                </span>
+    <Link href={`/digest/${digest.id}`} style={{ textDecoration: 'none', display: 'block' }}>
+      <div style={{
+        padding: '16px 20px',
+        borderBottom: '1px solid rgba(255, 255, 255, 0.06)',
+        transition: 'background 150ms ease',
+        cursor: 'pointer',
+      }}
+      onMouseEnter={e => { (e.currentTarget as HTMLDivElement).style.background = 'rgba(255, 255, 255, 0.03)'; }}
+      onMouseLeave={e => { (e.currentTarget as HTMLDivElement).style.background = 'transparent'; }}
+      >
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '16px' }}>
+          <div style={{ flex: 1, minWidth: 0 }}>
+            <div style={{
+              fontSize: '11px',
+              fontFamily: 'var(--font-mono)',
+              color: '#6b7280',
+              marginBottom: '6px',
+            }}>
+              {new Date(digest.date).toLocaleDateString('zh-CN', { month: 'short', day: 'numeric' })}
+            </div>
+            <div style={{
+              fontSize: '15px',
+              fontWeight: 600,
+              color: '#ffffff',
+              marginBottom: '8px',
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+              whiteSpace: 'nowrap',
+            }}>
+              {digest.title}
+            </div>
+            {digest.preview && digest.preview.length > 0 && (
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '3px' }}>
+                {digest.preview.slice(0, 2).map((item, idx) => (
+                  <div key={idx} style={{
+                    fontSize: '12px',
+                    color: '#6b7280',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '6px',
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                    whiteSpace: 'nowrap',
+                  }}>
+                    <span>{SOURCE_META[item.sourceType]?.icon || '\uD83D\uDCE1'}</span>
+                    <span>{item.title}</span>
+                  </div>
+                ))}
               </div>
-            ))}
+            )}
           </div>
-        )}
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '4px', flexShrink: 0 }}>
+            <div style={{
+              fontSize: '13px',
+              fontFamily: 'var(--font-mono)',
+              fontWeight: 600,
+              color: '#10b981',
+            }}>
+              {digest.totalFiltered} \u6761
+            </div>
+            <div style={{
+              fontSize: '11px',
+              fontFamily: 'var(--font-mono)',
+              color: '#6b7280',
+            }}>
+              {passRate}% \u901A\u8FC7
+            </div>
+            {digest.emailSent && (
+              <span style={{
+                fontSize: '10px',
+                fontFamily: 'var(--font-mono)',
+                color: '#10b981',
+                background: 'rgba(16, 185, 129, 0.1)',
+                padding: '1px 6px',
+                borderRadius: '3px',
+              }}>
+                \u2713 emailed
+              </span>
+            )}
+          </div>
+        </div>
       </div>
     </Link>
   );

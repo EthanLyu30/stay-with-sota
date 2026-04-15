@@ -1,63 +1,75 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import type { Stats } from '@/lib/types';
+
+interface StatItem {
+  label: string;
+  value: string | number;
+  color: string;
+}
 
 export default function StatsBar() {
-  const [stats, setStats] = useState<Stats>({
-    totalDigests: 0,
-    todayItems: 0,
-    activeSources: 0,
-    lastEmailSent: null,
-  });
+  const [stats, setStats] = useState<StatItem[]>([
+    { label: '\u603B\u7B80\u62A5', value: '\u2014', color: '#10b981' },
+    { label: '\u4ECA\u65E5\u65B0\u589E', value: '\u2014', color: '#34d399' },
+    { label: '\u6D3B\u8DC3\u6570\u636E\u6E90', value: '\u2014', color: '#6ee7b7' },
+    { label: '\u4E0A\u6B21\u63A8\u9001', value: '\u2014', color: '#9ca3af' },
+  ]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch('/api/digests?page=1&pageSize=1')
-      .then(r => r.json())
-      .then(data => {
-        if (data.success) {
-          setStats(prev => ({ ...prev, totalDigests: data.total || 0 }));
-        }
-      })
-      .catch(() => {});
-
-    fetch('/api/sources')
-      .then(r => r.json())
-      .then(data => {
-        if (data.success) {
-          const active = (data.data || []).filter((s: { enabled: boolean }) => s.enabled).length;
-          setStats(prev => ({ ...prev, activeSources: active }));
-        }
-      })
-      .catch(() => {})
-      .finally(() => setLoading(false));
+    Promise.all([
+      fetch('/api/digests?page=1&pageSize=1').then(r => r.json()),
+      fetch('/api/sources').then(r => r.json()),
+    ]).then(([digestData, sourceData]) => {
+      const total = digestData.total || 0;
+      const sources = (sourceData.data || []).filter((s: { enabled: boolean }) => s.enabled).length;
+      setStats([
+        { label: '\u603B\u7B80\u62A5', value: total, color: '#10b981' },
+        { label: '\u4ECA\u65E5\u65B0\u589E', value: digestData.items?.[0] ? '\u2713' : '\u2014', color: '#34d399' },
+        { label: '\u6D3B\u8DC3\u6570\u636E\u6E90', value: sources, color: '#6ee7b7' },
+        { label: '\u4E0A\u6B21\u63A8\u9001', value: digestData.items?.[0]?.emailSent ? '\u2713 \u5DF2\u63A8\u9001' : '\u5F85\u63A8\u9001', color: '#9ca3af' },
+      ]);
+    }).catch(() => {}).finally(() => setLoading(false));
   }, []);
 
-  if (loading) {
-    return <div className="stats-bar"><div className="loading-spinner" /></div>;
-  }
+  if (loading) return null;
 
   return (
-    <div className="stats-bar">
-      <div className="stat-card">
-        <div className="stat-label">总简报数</div>
-        <div className="stat-value green">{stats.totalDigests}</div>
-      </div>
-      <div className="stat-card">
-        <div className="stat-label">今日新增</div>
-        <div className="stat-value blue">{stats.todayItems}</div>
-      </div>
-      <div className="stat-card">
-        <div className="stat-label">活跃数据源</div>
-        <div className="stat-value purple">{stats.activeSources}</div>
-      </div>
-      <div className="stat-card">
-        <div className="stat-label">上次推送</div>
-        <div className="stat-value pink" style={{ fontSize: '14px' }}>
-          {stats.lastEmailSent ? '✅ 已推送' : '⏳ 待推送'}
+    <div style={{
+      display: 'grid',
+      gridTemplateColumns: 'repeat(4, 1fr)',
+      gap: '1px',
+      background: 'rgba(255, 255, 255, 0.06)',
+      borderRadius: '8px',
+      overflow: 'hidden',
+      marginBottom: '24px',
+    }}>
+      {stats.map((stat, i) => (
+        <div key={i} style={{
+          background: '#000000',
+          padding: '16px 20px',
+        }}>
+          <div style={{
+            fontSize: '11px',
+            color: '#6b7280',
+            fontFamily: 'var(--font-mono)',
+            textTransform: 'uppercase',
+            letterSpacing: '0.05em',
+            marginBottom: '6px',
+          }}>
+            {stat.label}
+          </div>
+          <div style={{
+            fontSize: '22px',
+            fontWeight: 700,
+            fontFamily: 'var(--font-mono)',
+            color: stat.color,
+          }}>
+            {stat.value}
+          </div>
         </div>
-      </div>
+      ))}
     </div>
   );
 }

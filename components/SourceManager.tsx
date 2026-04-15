@@ -7,10 +7,10 @@ import { SOURCE_META } from '@/lib/utils';
 const SOURCE_TYPES: { value: SourceType; label: string }[] = [
   { value: 'github-trending', label: 'GitHub Trending' },
   { value: 'github-release', label: 'GitHub Release' },
-  { value: 'arxiv', label: 'ArXiv 论文' },
+  { value: 'arxiv', label: 'ArXiv \u8BBA\u6587' },
   { value: 'huggingface', label: 'HuggingFace Daily Papers' },
   { value: 'hackernews', label: 'Hacker News' },
-  { value: 'rss', label: 'RSS 订阅' },
+  { value: 'rss', label: 'RSS \u8BA2\u9605' },
 ];
 
 export default function SourceManager() {
@@ -53,7 +53,7 @@ export default function SourceManager() {
   };
 
   const handleDelete = async (id: string) => {
-    if (!confirm('确定要删除这个数据源吗？')) return;
+    if (!confirm('\u786E\u5B9A\u8981\u5220\u9664\u8FD9\u4E2A\u6570\u636E\u6E90\u5417\uFF1F')) return;
     try {
       await fetch(`/api/sources/${id}`, { method: 'DELETE' });
       setSources(prev => prev.filter(s => s.id !== id));
@@ -82,82 +82,268 @@ export default function SourceManager() {
   };
 
   if (loading) {
-    return <div className="loading"><div className="loading-spinner" /></div>;
+    return (
+      <div style={{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: '56px',
+        color: '#555',
+        fontFamily: 'var(--font-mono)',
+        fontSize: '13px',
+      }}>
+        <div style={{
+          width: '32px',
+          height: '32px',
+          border: '2px solid rgba(255, 255, 255, 0.06)',
+          borderTopColor: '#10b981',
+          borderRadius: '50%',
+          animation: 'spin 0.7s linear infinite',
+          marginBottom: '12px',
+        }} />
+        loading...
+      </div>
+    );
   }
 
   return (
     <div>
-      <div className="action-bar">
-        <button className="btn btn-primary" onClick={() => setShowForm(!showForm)}>
-          {showForm ? '✕ 取消' : '+ 添加数据源'}
+      <div style={{ display: 'flex', gap: '6px', marginBottom: '20px' }}>
+        <button
+          onClick={() => setShowForm(!showForm)}
+          style={{
+            height: '32px',
+            padding: '0 14px',
+            background: 'linear-gradient(135deg, #10b981, #34d399)',
+            border: 'none',
+            borderRadius: '6px',
+            color: '#000',
+            fontSize: '13px',
+            fontWeight: 700,
+            fontFamily: 'var(--font-mono)',
+            cursor: 'pointer',
+            letterSpacing: '-0.01em',
+            transition: 'all 150ms ease',
+          }}
+        >
+          {showForm ? '\u2715 \u53D6\u6D88' : '+ \u6DFB\u52A0\u6570\u636E\u6E90'}
         </button>
       </div>
 
       {showForm && (
-        <div className="card" style={{ marginBottom: '24px' }}>
+        <div style={{
+          marginBottom: '24px',
+          padding: '16px 20px',
+          background: 'rgba(255, 255, 255, 0.02)',
+          border: '1px solid rgba(255, 255, 255, 0.06)',
+          borderRadius: '6px',
+        }}>
           <form onSubmit={handleAdd}>
-            <div className="form-group">
-              <label className="form-label">类型</label>
+            <div style={{ marginBottom: '12px' }}>
+              <label style={{
+                display: 'block',
+                fontSize: '11px',
+                fontWeight: 600,
+                color: '#8b8b8b',
+                marginBottom: '3px',
+                fontFamily: 'var(--font-mono)',
+                textTransform: 'uppercase',
+                letterSpacing: '0.05em',
+              }}>
+                \u7C7B\u578B
+              </label>
               <select
-                className="form-select"
                 value={formData.type}
                 onChange={e => setFormData(prev => ({ ...prev, type: e.target.value as SourceType }))}
+                style={{
+                  width: '100%',
+                  padding: '6px 12px',
+                  background: '#0a0a0a',
+                  border: '1px solid rgba(255, 255, 255, 0.06)',
+                  borderRadius: '4px',
+                  color: '#e8e8e8',
+                  fontSize: '13px',
+                  fontFamily: 'var(--font-mono)',
+                  height: '32px',
+                  outline: 'none',
+                }}
               >
                 {SOURCE_TYPES.map(st => (
                   <option key={st.value} value={st.value}>{st.label}</option>
                 ))}
               </select>
             </div>
-            <div className="form-group">
-              <label className="form-label">名称</label>
+            <div style={{ marginBottom: '12px' }}>
+              <label style={{
+                display: 'block',
+                fontSize: '11px',
+                fontWeight: 600,
+                color: '#8b8b8b',
+                marginBottom: '3px',
+                fontFamily: 'var(--font-mono)',
+                textTransform: 'uppercase',
+                letterSpacing: '0.05em',
+              }}>
+                \u540D\u79F0
+              </label>
               <input
-                className="form-input"
                 value={formData.name}
                 onChange={e => setFormData(prev => ({ ...prev, name: e.target.value }))}
-                placeholder="数据源名称"
+                placeholder="\u6570\u636E\u6E90\u540D\u79F0"
                 required
+                style={{
+                  width: '100%',
+                  padding: '6px 12px',
+                  background: '#0a0a0a',
+                  border: '1px solid rgba(255, 255, 255, 0.06)',
+                  borderRadius: '4px',
+                  color: '#e8e8e8',
+                  fontSize: '13px',
+                  fontFamily: 'var(--font-mono)',
+                  height: '32px',
+                  outline: 'none',
+                }}
               />
             </div>
             {(formData.type === 'rss' || formData.type === 'github-release') && (
-              <div className="form-group">
-                <label className="form-label">
-                  {formData.type === 'rss' ? 'RSS URL' : '仓库地址 (owner/repo)'}
+              <div style={{ marginBottom: '12px' }}>
+                <label style={{
+                  display: 'block',
+                  fontSize: '11px',
+                  fontWeight: 600,
+                  color: '#8b8b8b',
+                  marginBottom: '3px',
+                  fontFamily: 'var(--font-mono)',
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.05em',
+                }}>
+                  {formData.type === 'rss' ? 'RSS URL' : '\u4ED3\u5E93\u5730\u5740 (owner/repo)'}
                 </label>
                 <input
-                  className="form-input"
                   value={formData.url}
                   onChange={e => setFormData(prev => ({ ...prev, url: e.target.value }))}
                   placeholder={formData.type === 'rss' ? 'https://example.com/feed.xml' : 'langgenius/dify'}
                   required
+                  style={{
+                    width: '100%',
+                    padding: '6px 12px',
+                    background: '#0a0a0a',
+                    border: '1px solid rgba(255, 255, 255, 0.06)',
+                    borderRadius: '4px',
+                    color: '#e8e8e8',
+                    fontSize: '13px',
+                    fontFamily: 'var(--font-mono)',
+                    height: '32px',
+                    outline: 'none',
+                  }}
                 />
               </div>
             )}
-            <button type="submit" className="btn btn-primary">添加</button>
+            <button type="submit" style={{
+              height: '32px',
+              padding: '0 14px',
+              background: 'linear-gradient(135deg, #10b981, #34d399)',
+              border: 'none',
+              borderRadius: '6px',
+              color: '#000',
+              fontSize: '13px',
+              fontWeight: 700,
+              fontFamily: 'var(--font-mono)',
+              cursor: 'pointer',
+              letterSpacing: '-0.01em',
+            }}>
+              \u6DFB\u52A0
+            </button>
           </form>
         </div>
       )}
 
-      <div className="source-list">
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '3px' }}>
         {sources.map(source => {
-          const meta = SOURCE_META[source.type] || { icon: '📡', label: source.type };
+          const meta = SOURCE_META[source.type] || { icon: '\uD83D\uDCE1', label: source.type };
           return (
-            <div key={source.id} className="source-item">
-              <div className="source-item-icon">{meta.icon}</div>
-              <div className="source-item-info">
-                <div className="source-item-name">{source.name}</div>
-                <div className="source-item-type">{source.type}</div>
+            <div key={source.id} style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '12px',
+              padding: '8px 12px',
+              borderBottom: '1px solid rgba(255, 255, 255, 0.03)',
+              transition: 'background 150ms ease',
+            }}
+            onMouseEnter={e => { (e.currentTarget as HTMLDivElement).style.background = 'rgba(255, 255, 255, 0.03)'; }}
+            onMouseLeave={e => { (e.currentTarget as HTMLDivElement).style.background = 'transparent'; }}
+            >
+              <div style={{ fontSize: '18px', width: '28px', textAlign: 'center' }}>{meta.icon}</div>
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <div style={{
+                  fontWeight: 600,
+                  fontSize: '13px',
+                  fontFamily: 'var(--font-mono)',
+                  color: '#e8e8e8',
+                }}>
+                  {source.name}
+                </div>
+                <div style={{
+                  fontSize: '11px',
+                  color: '#555',
+                  fontFamily: 'var(--font-mono)',
+                }}>
+                  {source.type}
+                </div>
               </div>
               <div
-                className={`toggle ${source.enabled ? 'active' : ''}`}
                 onClick={() => handleToggle(source)}
                 role="switch"
                 aria-checked={source.enabled}
-              />
-              <button
-                className="btn btn-danger btn-sm"
-                onClick={() => handleDelete(source.id)}
+                style={{
+                  position: 'relative',
+                  width: '36px',
+                  height: '20px',
+                  background: source.enabled ? 'rgba(16, 185, 129, 0.2)' : '#0a0a0a',
+                  borderRadius: '9999px',
+                  cursor: 'pointer',
+                  transition: 'background 150ms ease',
+                  border: `1px solid ${source.enabled ? '#10b981' : 'rgba(255, 255, 255, 0.06)'}`,
+                  flexShrink: 0,
+                }}
               >
-                删除
+                <div style={{
+                  position: 'absolute',
+                  top: '2px',
+                  left: source.enabled ? '18px' : '2px',
+                  width: '14px',
+                  height: '14px',
+                  background: source.enabled ? '#10b981' : '#555',
+                  borderRadius: '50%',
+                  transition: 'all 150ms ease',
+                  boxShadow: source.enabled ? '0 0 6px rgba(16, 185, 129, 0.4)' : 'none',
+                }} />
+              </div>
+              <button
+                onClick={() => handleDelete(source.id)}
+                style={{
+                  height: '26px',
+                  padding: '0 8px',
+                  background: 'rgba(239, 68, 68, 0.08)',
+                  border: '1px solid rgba(239, 68, 68, 0.15)',
+                  borderRadius: '4px',
+                  color: '#ef4444',
+                  fontSize: '11px',
+                  fontFamily: 'var(--font-mono)',
+                  cursor: 'pointer',
+                  transition: 'all 150ms ease',
+                }}
+                onMouseEnter={e => {
+                  (e.currentTarget as HTMLButtonElement).style.background = 'rgba(239, 68, 68, 0.15)';
+                  (e.currentTarget as HTMLButtonElement).style.borderColor = 'rgba(239, 68, 68, 0.3)';
+                }}
+                onMouseLeave={e => {
+                  (e.currentTarget as HTMLButtonElement).style.background = 'rgba(239, 68, 68, 0.08)';
+                  (e.currentTarget as HTMLButtonElement).style.borderColor = 'rgba(239, 68, 68, 0.15)';
+                }}
+              >
+                \u5220\u9664
               </button>
             </div>
           );
@@ -165,10 +351,29 @@ export default function SourceManager() {
       </div>
 
       {sources.length === 0 && (
-        <div className="empty-state">
-          <div className="empty-state-icon">📡</div>
-          <div className="empty-state-title">暂无数据源</div>
-          <div className="empty-state-text">点击上方按钮添加数据源</div>
+        <div style={{
+          textAlign: 'center',
+          padding: '56px',
+          color: '#555',
+        }}>
+          <div style={{ fontSize: '40px', marginBottom: '12px', opacity: 0.6 }}>\uD83D\uDCE1</div>
+          <div style={{
+            fontSize: '16px',
+            fontWeight: 600,
+            color: '#8b8b8b',
+            marginBottom: '3px',
+            fontFamily: 'var(--font-mono)',
+          }}>
+            \u6682\u65E0\u6570\u636E\u6E90
+          </div>
+          <div style={{
+            fontSize: '13px',
+            maxWidth: '400px',
+            margin: '0 auto',
+            lineHeight: 1.5,
+          }}>
+            \u70B9\u51FB\u4E0A\u65B9\u6309\u94AE\u6DFB\u52A0\u6570\u636E\u6E90
+          </div>
         </div>
       )}
     </div>
