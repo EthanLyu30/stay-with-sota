@@ -26,81 +26,94 @@ export default function DigestCard({ digest }: DigestCardProps) {
   return (
     <Link href={`/digest/${digest.id}`} style={{ textDecoration: 'none', display: 'block' }}>
       <div style={{
-        padding: '16px 20px',
-        borderBottom: '1px solid rgba(255, 255, 255, 0.06)',
-        transition: 'background 150ms ease',
+        padding: '20px',
+        marginBottom: '8px',
+        background: '#111827',
+        border: '1px solid rgba(255, 255, 255, 0.06)',
+        borderRadius: '12px',
+        transition: 'all 200ms ease',
         cursor: 'pointer',
       }}
-      onMouseEnter={e => { (e.currentTarget as HTMLDivElement).style.background = 'rgba(255, 255, 255, 0.03)'; }}
-      onMouseLeave={e => { (e.currentTarget as HTMLDivElement).style.background = 'transparent'; }}
+      onMouseEnter={e => {
+        (e.currentTarget as HTMLDivElement).style.borderColor = 'rgba(129, 140, 248, 0.2)';
+        (e.currentTarget as HTMLDivElement).style.background = '#151d2e';
+        (e.currentTarget as HTMLDivElement).style.transform = 'translateY(-1px)';
+      }}
+      onMouseLeave={e => {
+        (e.currentTarget as HTMLDivElement).style.borderColor = 'rgba(255, 255, 255, 0.06)';
+        (e.currentTarget as HTMLDivElement).style.background = '#111827';
+        (e.currentTarget as HTMLDivElement).style.transform = 'translateY(0)';
+      }}
       >
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '16px' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '20px' }}>
           <div style={{ flex: 1, minWidth: 0 }}>
             <div style={{
-              fontSize: '11px',
+              fontSize: '12px',
               fontFamily: 'var(--font-mono)',
-              color: '#6b7280',
-              marginBottom: '6px',
+              color: '#475569',
+              marginBottom: '8px',
             }}>
               {new Date(digest.date).toLocaleDateString('zh-CN', { month: 'short', day: 'numeric' })}
             </div>
             <div style={{
               fontSize: '15px',
               fontWeight: 600,
-              color: '#ffffff',
-              marginBottom: '8px',
+              color: '#edf2f7',
+              marginBottom: '10px',
               overflow: 'hidden',
               textOverflow: 'ellipsis',
               whiteSpace: 'nowrap',
+              fontFamily: 'var(--font-sans)',
             }}>
               {digest.title}
             </div>
             {digest.preview && digest.preview.length > 0 && (
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '3px' }}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
                 {digest.preview.slice(0, 2).map((item, idx) => (
                   <div key={idx} style={{
-                    fontSize: '12px',
-                    color: '#6b7280',
+                    fontSize: '13px',
+                    color: '#475569',
                     display: 'flex',
                     alignItems: 'center',
-                    gap: '6px',
+                    gap: '8px',
                     overflow: 'hidden',
                     textOverflow: 'ellipsis',
                     whiteSpace: 'nowrap',
                   }}>
-                    <span>{SOURCE_META[item.sourceType]?.icon || '\uD83D\uDCE1'}</span>
+                    <span>{SOURCE_META[item.sourceType]?.icon || '📡'}</span>
                     <span>{item.title}</span>
                   </div>
                 ))}
               </div>
             )}
           </div>
-          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '4px', flexShrink: 0 }}>
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '6px', flexShrink: 0 }}>
             <div style={{
-              fontSize: '13px',
+              fontSize: '14px',
               fontFamily: 'var(--font-mono)',
               fontWeight: 600,
-              color: '#10b981',
+              color: '#818CF8',
             }}>
-              {digest.totalFiltered} \u6761
+              {digest.totalFiltered} 条
             </div>
             <div style={{
-              fontSize: '11px',
+              fontSize: '12px',
               fontFamily: 'var(--font-mono)',
-              color: '#6b7280',
+              color: '#475569',
             }}>
-              {passRate}% \u901A\u8FC7
+              {passRate}% 通过
             </div>
             {digest.emailSent && (
               <span style={{
-                fontSize: '10px',
+                fontSize: '11px',
                 fontFamily: 'var(--font-mono)',
-                color: '#10b981',
-                background: 'rgba(16, 185, 129, 0.1)',
-                padding: '1px 6px',
-                borderRadius: '3px',
+                color: '#34d399',
+                background: 'rgba(52, 211, 153, 0.1)',
+                padding: '2px 8px',
+                borderRadius: '6px',
+                border: '1px solid rgba(52, 211, 153, 0.15)',
               }}>
-                \u2713 emailed
+                ✓ 已推送
               </span>
             )}
           </div>

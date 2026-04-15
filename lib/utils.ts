@@ -59,10 +59,10 @@ export function truncate(text: string, maxLength: number): string {
  * 数据源类型对应的图标和颜色
  */
 export const SOURCE_META: Record<string, { icon: string; color: string; label: string }> = {
-  'github-trending': { icon: '🐙', color: '#10b981', label: 'GitHub Trending' },
-  'github-release': { icon: '📦', color: '#34d399', label: 'GitHub Release' },
-  'arxiv': { icon: '📄', color: '#6ee7b7', label: 'ArXiv 论文' },
-  'huggingface': { icon: '🤗', color: '#10b981', label: 'HuggingFace' },
-  'hackernews': { icon: '🔥', color: '#f59e0b', label: 'Hacker News' },
-  'rss': { icon: '📡', color: '#34d399', label: 'RSS 订阅' },
+  'github-trending': { icon: '🐙', color: '#818CF8', label: 'GitHub Trending' },
+  'github-release': { icon: '📦', color: '#a5b4fc', label: 'GitHub Release' },
+  'arxiv': { icon: '📄', color: '#c4b5fd', label: 'ArXiv 论文' },
+  'huggingface': { icon: '🤗', color: '#818CF8', label: 'HuggingFace' },
+  'hackernews': { icon: '🔥', color: '#fbbf24', label: 'Hacker News' },
+  'rss': { icon: '📡', color: '#a5b4fc', label: 'RSS 订阅' },
 };
