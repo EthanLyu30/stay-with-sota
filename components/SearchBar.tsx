@@ -59,17 +59,14 @@ export default function SearchBar() {
         display: 'flex',
         alignItems: 'center',
         gap: '10px',
-        background: '#111827',
-        border: `1px solid ${focused ? 'rgba(129, 140, 248, 0.4)' : 'rgba(255, 255, 255, 0.06)'}`,
-        borderRadius: '12px',
+        background: '#3B4252',
+        border: `1px solid ${focused ? 'rgba(136, 192, 208, 0.3)' : 'rgba(216, 222, 233, 0.08)'}`,
+        borderRadius: '8px',
         padding: '0 16px',
-        transition: 'all 200ms ease',
-        boxShadow: focused ? '0 0 0 3px rgba(129, 140, 248, 0.08)' : 'none',
+        transition: 'all 150ms ease',
+        boxShadow: focused ? '0 0 0 3px rgba(136, 192, 208, 0.06)' : 'none',
       }}>
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#475569" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <circle cx="11" cy="11" r="8" />
-          <path d="m21 21-4.35-4.35" />
-        </svg>
+        <span style={{ fontSize: '14px', color: '#4C566A', flexShrink: 0 }}>🔍</span>
         <input
           type="text"
           placeholder="搜索历史简报..."
@@ -82,7 +79,7 @@ export default function SearchBar() {
             background: 'transparent',
             border: 'none',
             outline: 'none',
-            color: '#edf2f7',
+            color: '#ECEFF4',
             fontSize: '14px',
             fontFamily: 'var(--font-sans)',
             padding: '12px 0',
@@ -94,34 +91,16 @@ export default function SearchBar() {
           style={{
             background: 'transparent',
             border: 'none',
-            color: loading ? '#475569' : '#818CF8',
+            color: loading ? '#4C566A' : '#88C0D0',
             fontSize: '13px',
             fontFamily: 'var(--font-sans)',
             cursor: 'pointer',
             padding: '4px',
-            transition: 'color 200ms ease',
+            transition: 'color 150ms ease',
           }}
         >
           {loading ? '...' : '↵'}
         </button>
-        {!focused && !query && (
-          <div style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '4px',
-            padding: '3px 8px',
-            borderRadius: '6px',
-            border: '1px solid rgba(255, 255, 255, 0.06)',
-            background: 'rgba(255, 255, 255, 0.02)',
-            fontSize: '11px',
-            fontFamily: 'var(--font-mono)',
-            color: '#475569',
-            flexShrink: 0,
-          }}>
-            <span>⌘</span>
-            <span>K</span>
-          </div>
-        )}
       </div>
 
       {showResults && results.length > 0 && (
@@ -132,9 +111,9 @@ export default function SearchBar() {
           right: 0,
           zIndex: 50,
           marginTop: '8px',
-          background: '#1a2235',
-          border: '1px solid rgba(255, 255, 255, 0.06)',
-          borderRadius: '12px',
+          background: '#3B4252',
+          border: '1px solid rgba(216, 222, 233, 0.08)',
+          borderRadius: '8px',
           maxHeight: '400px',
           overflowY: 'auto',
           boxShadow: '0 8px 32px rgba(0, 0, 0, 0.4)',
@@ -144,8 +123,8 @@ export default function SearchBar() {
             padding: '10px 16px',
             fontSize: '12px',
             fontFamily: 'var(--font-mono)',
-            color: '#475569',
-            borderBottom: '1px solid rgba(255, 255, 255, 0.06)',
+            color: '#4C566A',
+            borderBottom: '1px solid rgba(216, 222, 233, 0.08)',
           }}>
             找到 {total} 条结果
           </div>
@@ -156,22 +135,22 @@ export default function SearchBar() {
               style={{
                 display: 'block',
                 padding: '12px 16px',
-                borderBottom: '1px solid rgba(255, 255, 255, 0.03)',
+                borderBottom: '1px solid rgba(216, 222, 233, 0.05)',
                 textDecoration: 'none',
                 color: 'inherit',
-                transition: 'background 200ms ease',
+                transition: 'background 150ms ease',
               }}
               onMouseEnter={e => {
-                (e.currentTarget as HTMLAnchorElement).style.background = 'rgba(129, 140, 248, 0.05)';
+                (e.currentTarget as HTMLAnchorElement).style.background = 'rgba(136, 192, 208, 0.05)';
               }}
               onMouseLeave={e => {
                 (e.currentTarget as HTMLAnchorElement).style.background = 'transparent';
               }}
             >
-              <div style={{ fontSize: '14px', color: '#edf2f7', marginBottom: '4px', fontWeight: 500 }}>
+              <div style={{ fontSize: '14px', color: '#ECEFF4', marginBottom: '4px', fontWeight: 500 }}>
                 {item.title}
               </div>
-              <div style={{ fontSize: '13px', color: '#475569', lineHeight: 1.5 }}>
+              <div style={{ fontSize: '13px', color: '#4C566A', lineHeight: 1.5 }}>
                 {item.summary.substring(0, 80)}...
               </div>
             </a>

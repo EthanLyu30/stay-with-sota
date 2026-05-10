@@ -10,14 +10,14 @@ export default function SettingsPage() {
           fontSize: '28px',
           fontWeight: 700,
           fontFamily: 'var(--font-sans)',
-          color: '#edf2f7',
+          color: '#ECEFF4',
           marginBottom: '6px',
           letterSpacing: '-0.03em',
         }}>
-          设置
+          ⚙️ 设置
         </h1>
         <p style={{
-          color: '#475569',
+          color: '#4C566A',
           fontSize: '14px',
           fontFamily: 'var(--font-sans)',
         }}>
@@ -29,9 +29,9 @@ export default function SettingsPage() {
       <div style={{
         marginBottom: '36px',
         padding: '24px',
-        background: '#111827',
-        border: '1px solid rgba(255, 255, 255, 0.06)',
-        borderRadius: '12px',
+        background: '#3B4252',
+        border: '1px solid rgba(216, 222, 233, 0.08)',
+        borderRadius: '8px',
       }}>
         <ProviderSelector />
       </div>
@@ -40,22 +40,22 @@ export default function SettingsPage() {
       <div style={{
         marginBottom: '36px',
         padding: '24px',
-        background: '#111827',
-        border: '1px solid rgba(255, 255, 255, 0.06)',
-        borderRadius: '12px',
+        background: '#3B4252',
+        border: '1px solid rgba(216, 222, 233, 0.08)',
+        borderRadius: '8px',
       }}>
         <h3 style={{
           marginBottom: '8px',
           fontSize: '16px',
           fontWeight: 700,
           fontFamily: 'var(--font-sans)',
-          color: '#edf2f7',
+          color: '#ECEFF4',
           letterSpacing: '-0.02em',
         }}>
           数据源管理
         </h3>
         <p style={{
-          color: '#94a3b8',
+          color: '#D8DEE9',
           fontSize: '13px',
           marginBottom: '20px',
           lineHeight: 1.6,
@@ -68,16 +68,16 @@ export default function SettingsPage() {
       {/* System Info */}
       <div style={{
         padding: '24px',
-        background: '#111827',
-        border: '1px solid rgba(255, 255, 255, 0.06)',
-        borderRadius: '12px',
+        background: '#3B4252',
+        border: '1px solid rgba(216, 222, 233, 0.08)',
+        borderRadius: '8px',
       }}>
         <h3 style={{
           marginBottom: '20px',
           fontSize: '16px',
           fontWeight: 700,
           fontFamily: 'var(--font-sans)',
-          color: '#edf2f7',
+          color: '#ECEFF4',
           letterSpacing: '-0.02em',
         }}>
           系统信息
@@ -87,7 +87,7 @@ export default function SettingsPage() {
           flexDirection: 'column',
           gap: '0',
           fontSize: '14px',
-          border: '1px solid rgba(255, 255, 255, 0.06)',
+          border: '1px solid rgba(216, 222, 233, 0.08)',
           borderRadius: '8px',
           overflow: 'hidden',
         }}>
@@ -105,11 +105,11 @@ export default function SettingsPage() {
               justifyContent: 'space-between',
               alignItems: 'center',
               padding: '12px 16px',
-              borderBottom: idx < 6 ? '1px solid rgba(255, 255, 255, 0.04)' : 'none',
-              background: idx % 2 === 0 ? 'rgba(255, 255, 255, 0.01)' : 'transparent',
+              borderBottom: idx < 6 ? '1px solid rgba(216, 222, 233, 0.08)' : 'none',
+              background: idx % 2 === 0 ? 'rgba(216, 222, 233, 0.02)' : 'transparent',
             }}>
-              <span style={{ color: '#94a3b8', fontSize: '13px' }}>{label}</span>
-              <span style={{ color: '#edf2f7', fontFamily: 'var(--font-mono)', fontSize: '12px' }}>{value}</span>
+              <span style={{ color: '#D8DEE9', fontSize: '13px' }}>{label}</span>
+              <span style={{ color: '#ECEFF4', fontFamily: 'var(--font-mono)', fontSize: '12px' }}>{value}</span>
             </div>
           ))}
         </div>

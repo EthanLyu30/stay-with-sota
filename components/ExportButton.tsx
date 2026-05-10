@@ -26,11 +26,11 @@ export default function ExportButton({ digestId }: ExportButtonProps) {
       }}
       onMouseEnter={e => {
         (e.currentTarget as HTMLButtonElement).style.borderColor = '#88C0D0';
-        (e.currentTarget as HTMLButtonElement).style.color = '#88C0D0';
+        (e.currentTarget as HTMLButtonElement).style.background = 'rgba(136, 192, 208, 0.1)';
       }}
       onMouseLeave={e => {
         (e.currentTarget as HTMLButtonElement).style.borderColor = 'rgba(136, 192, 208, 0.2)';
-        (e.currentTarget as HTMLButtonElement).style.color = '#88C0D0';
+        (e.currentTarget as HTMLButtonElement).style.background = 'transparent';
       }}
     >
       ↓ Markdown

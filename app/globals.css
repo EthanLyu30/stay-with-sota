@@ -14,6 +14,7 @@
   --bg-card-hover: #434C5E;
   --bg-glass: rgba(46, 52, 64, 0.9);
   --bg-elevated: #434C5E;
+  --bg-hover: #434C5E;
 
   /* Colors - Border */
   --border-default: rgba(216, 222, 233, 0.08);
@@ -89,7 +90,17 @@ a:hover {
   color: var(--accent-secondary);
 }
 
-/* --- 3. Typography System --- */
+/* --- 3. Focus & Interactive Transitions --- */
+*:focus-visible {
+  outline: 2px solid var(--accent-primary);
+  outline-offset: 2px;
+}
+
+button, a, input, select, textarea {
+  transition: all 150ms ease;
+}
+
+/* --- 4. Typography System --- */
 h1, h2, h3, h4, h5, h6 {
   font-weight: 700;
   line-height: 1.25;
@@ -108,7 +119,7 @@ code {
   border: 1px solid var(--accent-primary-border);
 }
 
-/* --- 4. Animations --- */
+/* --- 5. Animations --- */
 @keyframes spin {
   to { transform: rotate(360deg); }
 }
@@ -133,7 +144,7 @@ code {
   }
 }
 
-/* --- 5. Scrollbar (Nord-tinted) --- */
+/* --- 6. Scrollbar (Nord-tinted) --- */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
@@ -158,13 +169,13 @@ code {
   scrollbar-color: rgba(136, 192, 208, 0.15) transparent;
 }
 
-/* --- 6. Selection (Ice blue tint) --- */
+/* --- 7. Selection (Ice blue tint) --- */
 ::selection {
   background: rgba(136, 192, 208, 0.2);
   color: var(--text-primary);
 }
 
-/* --- 7. Responsive --- */
+/* --- 8. Responsive --- */
 @media (max-width: 768px) {
   .stats-grid-4 {
     grid-template-columns: repeat(2, 1fr) !important;

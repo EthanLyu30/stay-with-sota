@@ -7,6 +7,13 @@ interface StatItem {
   value: string | number;
 }
 
+const accentColors = [
+  '#88C0D0', // ice blue
+  '#81A1C1', // frost blue
+  '#A3BE8C', // green
+  '#B48EAD', // purple
+];
+
 export default function StatsBar() {
   const [stats, setStats] = useState<StatItem[]>([
     { label: '总简报', value: '—' },
@@ -39,32 +46,33 @@ export default function StatsBar() {
       display: 'grid',
       gridTemplateColumns: 'repeat(4, 1fr)',
       gap: '12px',
-      marginBottom: '28px',
+      marginBottom: '24px',
     }}>
       {stats.map((stat, i) => (
         <div key={i} style={{
-          background: '#111827',
-          border: '1px solid rgba(255, 255, 255, 0.06)',
-          borderRadius: '12px',
+          background: '#3B4252',
+          border: '1px solid rgba(216, 222, 233, 0.08)',
+          borderRadius: '8px',
           padding: '20px',
-          borderLeft: '3px solid rgba(129, 140, 248, 0.4)',
-          transition: 'border-color 200ms ease',
+          borderLeft: `3px solid ${accentColors[i]}`,
+          transition: 'border-color 150ms ease',
         }}>
           <div style={{
-            fontSize: '12px',
-            color: '#475569',
+            fontSize: '11px',
+            color: '#4C566A',
             fontFamily: 'var(--font-mono)',
             fontWeight: 500,
             marginBottom: '8px',
-            letterSpacing: '0.02em',
+            letterSpacing: '0.05em',
+            textTransform: 'uppercase',
           }}>
             {stat.label}
           </div>
           <div style={{
-            fontSize: '28px',
+            fontSize: '22px',
             fontWeight: 700,
             fontFamily: 'var(--font-sans)',
-            color: '#edf2f7',
+            color: '#ECEFF4',
             letterSpacing: '-0.02em',
           }}>
             {stat.value}

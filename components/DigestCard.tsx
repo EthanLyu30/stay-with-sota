@@ -28,21 +28,21 @@ export default function DigestCard({ digest }: DigestCardProps) {
       <div style={{
         padding: '20px',
         marginBottom: '8px',
-        background: '#111827',
-        border: '1px solid rgba(255, 255, 255, 0.06)',
-        borderRadius: '12px',
-        transition: 'all 200ms ease',
+        background: '#3B4252',
+        border: '1px solid rgba(216, 222, 233, 0.08)',
+        borderRadius: '8px',
+        transition: 'all 150ms ease',
         cursor: 'pointer',
       }}
       onMouseEnter={e => {
-        (e.currentTarget as HTMLDivElement).style.borderColor = 'rgba(129, 140, 248, 0.2)';
-        (e.currentTarget as HTMLDivElement).style.background = '#151d2e';
-        (e.currentTarget as HTMLDivElement).style.transform = 'scale(1.005)';
+        (e.currentTarget as HTMLDivElement).style.borderColor = 'rgba(136, 192, 208, 0.15)';
+        (e.currentTarget as HTMLDivElement).style.background = '#434C5E';
+        (e.currentTarget as HTMLDivElement).style.transform = 'translateY(-1px)';
       }}
       onMouseLeave={e => {
-        (e.currentTarget as HTMLDivElement).style.borderColor = 'rgba(255, 255, 255, 0.06)';
-        (e.currentTarget as HTMLDivElement).style.background = '#111827';
-        (e.currentTarget as HTMLDivElement).style.transform = 'scale(1)';
+        (e.currentTarget as HTMLDivElement).style.borderColor = 'rgba(216, 222, 233, 0.08)';
+        (e.currentTarget as HTMLDivElement).style.background = '#3B4252';
+        (e.currentTarget as HTMLDivElement).style.transform = 'translateY(0)';
       }}
       >
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '20px' }}>
@@ -50,7 +50,7 @@ export default function DigestCard({ digest }: DigestCardProps) {
             <div style={{
               fontSize: '12px',
               fontFamily: 'var(--font-mono)',
-              color: '#475569',
+              color: '#4C566A',
               marginBottom: '8px',
             }}>
               {new Date(digest.date).toLocaleDateString('zh-CN', { month: 'short', day: 'numeric' })}
@@ -58,7 +58,7 @@ export default function DigestCard({ digest }: DigestCardProps) {
             <div style={{
               fontSize: '15px',
               fontWeight: 600,
-              color: '#edf2f7',
+              color: '#ECEFF4',
               marginBottom: '10px',
               overflow: 'hidden',
               textOverflow: 'ellipsis',
@@ -72,7 +72,7 @@ export default function DigestCard({ digest }: DigestCardProps) {
                 {digest.preview.slice(0, 2).map((item, idx) => (
                   <div key={idx} style={{
                     fontSize: '13px',
-                    color: '#475569',
+                    color: '#4C566A',
                     display: 'flex',
                     alignItems: 'center',
                     gap: '8px',
@@ -92,14 +92,14 @@ export default function DigestCard({ digest }: DigestCardProps) {
               fontSize: '14px',
               fontFamily: 'var(--font-mono)',
               fontWeight: 600,
-              color: '#818CF8',
+              color: '#88C0D0',
             }}>
               {digest.totalFiltered} 条
             </div>
             <div style={{
               fontSize: '12px',
               fontFamily: 'var(--font-mono)',
-              color: '#475569',
+              color: '#4C566A',
             }}>
               {passRate}% 通过
             </div>
@@ -107,11 +107,11 @@ export default function DigestCard({ digest }: DigestCardProps) {
               <span style={{
                 fontSize: '11px',
                 fontFamily: 'var(--font-mono)',
-                color: '#34d399',
-                background: 'rgba(52, 211, 153, 0.1)',
+                color: '#A3BE8C',
+                background: 'rgba(163, 190, 140, 0.12)',
                 padding: '2px 8px',
                 borderRadius: '6px',
-                border: '1px solid rgba(52, 211, 153, 0.15)',
+                border: '1px solid rgba(163, 190, 140, 0.15)',
               }}>
                 ✓ 已推送
               </span>

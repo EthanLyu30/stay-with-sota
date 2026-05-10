@@ -89,14 +89,14 @@ export default function SourceManager() {
         alignItems: 'center',
         justifyContent: 'center',
         padding: '56px',
-        color: '#475569',
+        color: '#4C566A',
         fontSize: '13px',
       }}>
         <div style={{
           width: '28px',
           height: '28px',
-          border: '2px solid rgba(255, 255, 255, 0.06)',
-          borderTopColor: '#818CF8',
+          border: '2px solid rgba(216, 222, 233, 0.08)',
+          borderTopColor: '#88C0D0',
           borderRadius: '50%',
           animation: 'spin 0.7s linear infinite',
           marginBottom: '12px',
@@ -109,22 +109,22 @@ export default function SourceManager() {
   const inputStyle: React.CSSProperties = {
     width: '100%',
     padding: '8px 14px',
-    background: '#111827',
-    border: '1px solid rgba(255, 255, 255, 0.06)',
+    background: '#2E3440',
+    border: '1px solid rgba(216, 222, 233, 0.08)',
     borderRadius: '8px',
-    color: '#edf2f7',
+    color: '#ECEFF4',
     fontSize: '14px',
     fontFamily: 'var(--font-sans)',
     height: '38px',
     outline: 'none',
-    transition: 'border-color 200ms ease, box-shadow 200ms ease',
+    transition: 'border-color 150ms ease, box-shadow 150ms ease',
   };
 
   const labelStyle: React.CSSProperties = {
     display: 'block',
     fontSize: '12px',
     fontWeight: 500,
-    color: '#94a3b8',
+    color: '#D8DEE9',
     marginBottom: '6px',
     fontFamily: 'var(--font-mono)',
     letterSpacing: '0.02em',
@@ -138,24 +138,24 @@ export default function SourceManager() {
           style={{
             height: '36px',
             padding: '0 16px',
-            background: '#818CF8',
+            background: '#88C0D0',
             border: 'none',
             borderRadius: '8px',
-            color: '#0B0F19',
+            color: '#2E3440',
             fontSize: '13px',
             fontWeight: 600,
             fontFamily: 'var(--font-sans)',
             cursor: 'pointer',
-            transition: 'all 200ms ease',
+            transition: 'all 150ms ease',
             display: 'inline-flex',
             alignItems: 'center',
             gap: '6px',
           }}
           onMouseEnter={e => {
-            (e.currentTarget as HTMLButtonElement).style.background = '#a5b4fc';
+            (e.currentTarget as HTMLButtonElement).style.background = '#81A1C1';
           }}
           onMouseLeave={e => {
-            (e.currentTarget as HTMLButtonElement).style.background = '#818CF8';
+            (e.currentTarget as HTMLButtonElement).style.background = '#88C0D0';
           }}
         >
           <span style={{ fontSize: '16px', lineHeight: 1 }}>+</span>
@@ -167,9 +167,9 @@ export default function SourceManager() {
         <div style={{
           marginBottom: '24px',
           padding: '20px',
-          background: '#111827',
-          border: '1px solid rgba(255, 255, 255, 0.06)',
-          borderRadius: '12px',
+          background: '#3B4252',
+          border: '1px solid rgba(216, 222, 233, 0.08)',
+          borderRadius: '8px',
           animation: 'slideUp 0.2s ease',
         }}>
           <form onSubmit={handleAdd}>
@@ -183,16 +183,16 @@ export default function SourceManager() {
                   cursor: 'pointer',
                 }}
                 onFocus={e => {
-                  (e.currentTarget as HTMLSelectElement).style.borderColor = 'rgba(129, 140, 248, 0.4)';
-                  (e.currentTarget as HTMLSelectElement).style.boxShadow = '0 0 0 3px rgba(129, 140, 248, 0.08)';
+                  (e.currentTarget as HTMLSelectElement).style.borderColor = 'rgba(136, 192, 208, 0.3)';
+                  (e.currentTarget as HTMLSelectElement).style.boxShadow = '0 0 0 3px rgba(136, 192, 208, 0.06)';
                 }}
                 onBlur={e => {
-                  (e.currentTarget as HTMLSelectElement).style.borderColor = 'rgba(255, 255, 255, 0.06)';
+                  (e.currentTarget as HTMLSelectElement).style.borderColor = 'rgba(216, 222, 233, 0.08)';
                   (e.currentTarget as HTMLSelectElement).style.boxShadow = 'none';
                 }}
               >
                 {SOURCE_TYPES.map(st => (
-                  <option key={st.value} value={st.value} style={{ background: '#111827' }}>{st.label}</option>
+                  <option key={st.value} value={st.value} style={{ background: '#3B4252' }}>{st.label}</option>
                 ))}
               </select>
             </div>
@@ -205,11 +205,11 @@ export default function SourceManager() {
                 required
                 style={inputStyle}
                 onFocus={e => {
-                  (e.currentTarget as HTMLInputElement).style.borderColor = 'rgba(129, 140, 248, 0.4)';
-                  (e.currentTarget as HTMLInputElement).style.boxShadow = '0 0 0 3px rgba(129, 140, 248, 0.08)';
+                  (e.currentTarget as HTMLInputElement).style.borderColor = 'rgba(136, 192, 208, 0.3)';
+                  (e.currentTarget as HTMLInputElement).style.boxShadow = '0 0 0 3px rgba(136, 192, 208, 0.06)';
                 }}
                 onBlur={e => {
-                  (e.currentTarget as HTMLInputElement).style.borderColor = 'rgba(255, 255, 255, 0.06)';
+                  (e.currentTarget as HTMLInputElement).style.borderColor = 'rgba(216, 222, 233, 0.08)';
                   (e.currentTarget as HTMLInputElement).style.boxShadow = 'none';
                 }}
               />
@@ -224,11 +224,11 @@ export default function SourceManager() {
                   required
                   style={inputStyle}
                   onFocus={e => {
-                    (e.currentTarget as HTMLInputElement).style.borderColor = 'rgba(129, 140, 248, 0.4)';
-                    (e.currentTarget as HTMLInputElement).style.boxShadow = '0 0 0 3px rgba(129, 140, 248, 0.08)';
+                    (e.currentTarget as HTMLInputElement).style.borderColor = 'rgba(136, 192, 208, 0.3)';
+                    (e.currentTarget as HTMLInputElement).style.boxShadow = '0 0 0 3px rgba(136, 192, 208, 0.06)';
                   }}
                   onBlur={e => {
-                    (e.currentTarget as HTMLInputElement).style.borderColor = 'rgba(255, 255, 255, 0.06)';
+                    (e.currentTarget as HTMLInputElement).style.borderColor = 'rgba(216, 222, 233, 0.08)';
                     (e.currentTarget as HTMLInputElement).style.boxShadow = 'none';
                   }}
                 />
@@ -237,21 +237,21 @@ export default function SourceManager() {
             <button type="submit" style={{
               height: '36px',
               padding: '0 16px',
-              background: '#818CF8',
+              background: '#88C0D0',
               border: 'none',
               borderRadius: '8px',
-              color: '#0B0F19',
+              color: '#2E3440',
               fontSize: '13px',
               fontWeight: 600,
               fontFamily: 'var(--font-sans)',
               cursor: 'pointer',
-              transition: 'all 200ms ease',
+              transition: 'all 150ms ease',
             }}
             onMouseEnter={e => {
-              (e.currentTarget as HTMLButtonElement).style.background = '#a5b4fc';
+              (e.currentTarget as HTMLButtonElement).style.background = '#81A1C1';
             }}
             onMouseLeave={e => {
-              (e.currentTarget as HTMLButtonElement).style.background = '#818CF8';
+              (e.currentTarget as HTMLButtonElement).style.background = '#88C0D0';
             }}
             >
               添加
@@ -269,18 +269,18 @@ export default function SourceManager() {
               alignItems: 'center',
               gap: '14px',
               padding: '14px 16px',
-              background: '#111827',
-              border: '1px solid rgba(255, 255, 255, 0.06)',
-              borderRadius: '12px',
-              transition: 'all 200ms ease',
+              background: '#3B4252',
+              border: '1px solid rgba(216, 222, 233, 0.08)',
+              borderRadius: '8px',
+              transition: 'all 150ms ease',
             }}
             onMouseEnter={e => {
-              (e.currentTarget as HTMLDivElement).style.borderColor = 'rgba(129, 140, 248, 0.15)';
-              (e.currentTarget as HTMLDivElement).style.background = '#151d2e';
+              (e.currentTarget as HTMLDivElement).style.borderColor = 'rgba(136, 192, 208, 0.12)';
+              (e.currentTarget as HTMLDivElement).style.background = '#434C5E';
             }}
             onMouseLeave={e => {
-              (e.currentTarget as HTMLDivElement).style.borderColor = 'rgba(255, 255, 255, 0.06)';
-              (e.currentTarget as HTMLDivElement).style.background = '#111827';
+              (e.currentTarget as HTMLDivElement).style.borderColor = 'rgba(216, 222, 233, 0.08)';
+              (e.currentTarget as HTMLDivElement).style.background = '#3B4252';
             }}
             >
               <div style={{ fontSize: '18px', width: '28px', textAlign: 'center' }}>{meta.icon}</div>
@@ -289,13 +289,13 @@ export default function SourceManager() {
                   fontWeight: 600,
                   fontSize: '14px',
                   fontFamily: 'var(--font-sans)',
-                  color: '#edf2f7',
+                  color: '#ECEFF4',
                 }}>
                   {source.name}
                 </div>
                 <div style={{
                   fontSize: '12px',
-                  color: '#475569',
+                  color: '#4C566A',
                   fontFamily: 'var(--font-mono)',
                 }}>
                   {source.type}
@@ -309,11 +309,11 @@ export default function SourceManager() {
                   position: 'relative',
                   width: '40px',
                   height: '22px',
-                  background: source.enabled ? 'rgba(129, 140, 248, 0.2)' : 'rgba(255, 255, 255, 0.06)',
+                  background: source.enabled ? 'rgba(136, 192, 208, 0.2)' : 'rgba(216, 222, 233, 0.05)',
                   borderRadius: '9999px',
                   cursor: 'pointer',
-                  transition: 'background 200ms ease',
-                  border: `1px solid ${source.enabled ? 'rgba(129, 140, 248, 0.3)' : 'rgba(255, 255, 255, 0.06)'}`,
+                  transition: 'background 150ms ease',
+                  border: `1px solid ${source.enabled ? 'rgba(136, 192, 208, 0.3)' : 'rgba(216, 222, 233, 0.05)'}`,
                   flexShrink: 0,
                 }}
               >
@@ -323,10 +323,10 @@ export default function SourceManager() {
                   left: source.enabled ? '20px' : '2px',
                   width: '16px',
                   height: '16px',
-                  background: source.enabled ? '#818CF8' : '#475569',
+                  background: source.enabled ? '#88C0D0' : '#4C566A',
                   borderRadius: '50%',
-                  transition: 'all 200ms ease',
-                  boxShadow: source.enabled ? '0 0 8px rgba(129, 140, 248, 0.4)' : 'none',
+                  transition: 'all 150ms ease',
+                  boxShadow: source.enabled ? '0 0 8px rgba(136, 192, 208, 0.4)' : 'none',
                 }} />
               </div>
               <button
@@ -337,14 +337,14 @@ export default function SourceManager() {
                   background: 'transparent',
                   border: 'none',
                   borderRadius: '6px',
-                  color: '#f87171',
+                  color: '#BF616A',
                   fontSize: '12px',
                   fontFamily: 'var(--font-sans)',
                   cursor: 'pointer',
-                  transition: 'all 200ms ease',
+                  transition: 'all 150ms ease',
                 }}
                 onMouseEnter={e => {
-                  (e.currentTarget as HTMLButtonElement).style.background = 'rgba(248, 113, 113, 0.1)';
+                  (e.currentTarget as HTMLButtonElement).style.background = 'rgba(191, 97, 106, 0.1)';
                 }}
                 onMouseLeave={e => {
                   (e.currentTarget as HTMLButtonElement).style.background = 'transparent';
@@ -361,14 +361,14 @@ export default function SourceManager() {
         <div style={{
           textAlign: 'center',
           padding: '56px',
-          color: '#475569',
+          color: '#4C566A',
         }}>
           <div style={{
             width: '48px',
             height: '48px',
             borderRadius: '12px',
-            background: 'rgba(129, 140, 248, 0.08)',
-            border: '1px solid rgba(129, 140, 248, 0.15)',
+            background: 'rgba(136, 192, 208, 0.08)',
+            border: '1px solid rgba(136, 192, 208, 0.15)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
@@ -380,7 +380,7 @@ export default function SourceManager() {
           <div style={{
             fontSize: '16px',
             fontWeight: 600,
-            color: '#94a3b8',
+            color: '#D8DEE9',
             marginBottom: '6px',
             fontFamily: 'var(--font-sans)',
           }}>

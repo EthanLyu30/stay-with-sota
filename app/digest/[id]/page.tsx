@@ -41,14 +41,14 @@ export default function DigestPage() {
         alignItems: 'center',
         justifyContent: 'center',
         padding: '56px',
-        color: '#475569',
+        color: '#4C566A',
         fontSize: '13px',
       }}>
         <div style={{
           width: '28px',
           height: '28px',
-          border: '2px solid rgba(255, 255, 255, 0.06)',
-          borderTopColor: '#818CF8',
+          border: '2px solid rgba(216, 222, 233, 0.08)',
+          borderTopColor: '#88C0D0',
           borderRadius: '50%',
           animation: 'spin 0.7s linear infinite',
           marginBottom: '12px',
@@ -65,26 +65,26 @@ export default function DigestPage() {
           display: 'inline-flex',
           alignItems: 'center',
           gap: '6px',
-          color: '#475569',
+          color: '#4C566A',
           fontSize: '13px',
           marginBottom: '24px',
           textDecoration: 'none',
           fontFamily: 'var(--font-sans)',
-          transition: 'color 200ms ease',
+          transition: 'color 150ms ease',
         }}>
           ← 返回历史
         </Link>
         <div style={{
           textAlign: 'center',
           padding: '64px',
-          color: '#475569',
+          color: '#4C566A',
         }}>
           <div style={{
             width: '56px',
             height: '56px',
             borderRadius: '14px',
-            background: 'rgba(248, 113, 113, 0.08)',
-            border: '1px solid rgba(248, 113, 113, 0.15)',
+            background: 'rgba(191, 97, 106, 0.08)',
+            border: '1px solid rgba(191, 97, 106, 0.15)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
@@ -96,7 +96,7 @@ export default function DigestPage() {
           <div style={{
             fontSize: '18px',
             fontWeight: 600,
-            color: '#94a3b8',
+            color: '#D8DEE9',
             marginBottom: '8px',
             fontFamily: 'var(--font-sans)',
           }}>
@@ -122,14 +122,14 @@ export default function DigestPage() {
           display: 'inline-flex',
           alignItems: 'center',
           gap: '6px',
-          color: '#475569',
+          color: '#4C566A',
           fontSize: '13px',
           textDecoration: 'none',
           fontFamily: 'var(--font-sans)',
-          transition: 'color 200ms ease',
+          transition: 'color 150ms ease',
         }}
-        onMouseEnter={e => { (e.currentTarget as HTMLAnchorElement).style.color = '#818CF8'; }}
-        onMouseLeave={e => { (e.currentTarget as HTMLAnchorElement).style.color = '#475569'; }}
+        onMouseEnter={e => { (e.currentTarget as HTMLAnchorElement).style.color = '#88C0D0'; }}
+        onMouseLeave={e => { (e.currentTarget as HTMLAnchorElement).style.color = '#4C566A'; }}
         >
           ← 返回历史
         </Link>

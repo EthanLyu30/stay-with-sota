@@ -114,17 +114,17 @@ export default function DashboardPage() {
       {/* Page Header */}
       <div style={{ marginBottom: '28px' }}>
         <h1 style={{
-          fontSize: '28px',
+          fontSize: '26px',
           fontWeight: 700,
           fontFamily: 'var(--font-sans)',
-          color: '#edf2f7',
+          color: '#88C0D0',
           marginBottom: '6px',
           letterSpacing: '-0.03em',
         }}>
           SOTA Daily
         </h1>
         <p style={{
-          color: '#475569',
+          color: '#4C566A',
           fontSize: '14px',
           fontFamily: 'var(--font-sans)',
         }}>
@@ -148,25 +148,25 @@ export default function DashboardPage() {
           style={{
             height: '36px',
             padding: '0 18px',
-            background: '#818CF8',
+            background: '#88C0D0',
             border: 'none',
             borderRadius: '8px',
-            color: '#0B0F19',
+            color: '#2E3440',
             fontSize: '13px',
             fontWeight: 600,
             fontFamily: 'var(--font-sans)',
             cursor: fetching ? 'not-allowed' : 'pointer',
             opacity: fetching ? 0.5 : 1,
-            transition: 'all 200ms ease',
+            transition: 'all 150ms ease',
             display: 'inline-flex',
             alignItems: 'center',
             gap: '6px',
           }}
           onMouseEnter={e => {
-            if (!fetching) (e.currentTarget as HTMLButtonElement).style.background = '#a5b4fc';
+            if (!fetching) (e.currentTarget as HTMLButtonElement).style.background = '#81A1C1';
           }}
           onMouseLeave={e => {
-            if (!fetching) (e.currentTarget as HTMLButtonElement).style.background = '#818CF8';
+            if (!fetching) (e.currentTarget as HTMLButtonElement).style.background = '#88C0D0';
           }}
         >
           {fetching ? '⏳ 抓取中...' : '🔄 立即抓取'}
@@ -178,27 +178,27 @@ export default function DashboardPage() {
             height: '36px',
             padding: '0 18px',
             background: 'transparent',
-            border: '1px solid rgba(129, 140, 248, 0.2)',
+            border: '1px solid rgba(136, 192, 208, 0.2)',
             borderRadius: '8px',
-            color: '#818CF8',
+            color: '#88C0D0',
             fontSize: '13px',
             fontFamily: 'var(--font-sans)',
             cursor: sendingEmail ? 'not-allowed' : 'pointer',
             opacity: sendingEmail ? 0.5 : 1,
-            transition: 'all 200ms ease',
+            transition: 'all 150ms ease',
             display: 'inline-flex',
             alignItems: 'center',
             gap: '6px',
           }}
           onMouseEnter={e => {
             if (!sendingEmail) {
-              (e.currentTarget as HTMLButtonElement).style.background = 'rgba(129, 140, 248, 0.1)';
-              (e.currentTarget as HTMLButtonElement).style.borderColor = 'rgba(129, 140, 248, 0.3)';
+              (e.currentTarget as HTMLButtonElement).style.background = 'rgba(136, 192, 208, 0.1)';
+              (e.currentTarget as HTMLButtonElement).style.borderColor = 'rgba(136, 192, 208, 0.3)';
             }
           }}
           onMouseLeave={e => {
             (e.currentTarget as HTMLButtonElement).style.background = 'transparent';
-            (e.currentTarget as HTMLButtonElement).style.borderColor = 'rgba(129, 140, 248, 0.2)';
+            (e.currentTarget as HTMLButtonElement).style.borderColor = 'rgba(136, 192, 208, 0.2)';
           }}
         >
           {sendingEmail ? '⏳ 发送中...' : '📧 发送测试邮件'}
@@ -216,23 +216,23 @@ export default function DashboardPage() {
           display: 'flex',
           alignItems: 'center',
           gap: '14px',
-          background: '#111827',
-          border: '1px solid rgba(129, 140, 248, 0.15)',
-          borderRadius: '12px',
+          background: '#3B4252',
+          border: '1px solid rgba(136, 192, 208, 0.15)',
+          borderRadius: '8px',
           animation: 'fadeIn 0.3s ease',
         }}>
           <div style={{
             width: '24px',
             height: '24px',
-            border: '2px solid rgba(255, 255, 255, 0.06)',
-            borderTopColor: '#818CF8',
+            border: '2px solid rgba(216, 222, 233, 0.08)',
+            borderTopColor: '#88C0D0',
             borderRadius: '50%',
             animation: 'spin 0.7s linear infinite',
             flexShrink: 0,
           }} />
           <div>
-            <div style={{ fontWeight: 600, marginBottom: '4px', color: '#edf2f7', fontSize: '14px' }}>正在抓取中...</div>
-            <div style={{ fontSize: '13px', color: '#94a3b8' }}>{fetchStatus}</div>
+            <div style={{ fontWeight: 600, marginBottom: '4px', color: '#ECEFF4', fontSize: '14px' }}>正在抓取中...</div>
+            <div style={{ fontSize: '13px', color: '#D8DEE9' }}>{fetchStatus}</div>
           </div>
         </div>
       )}
@@ -245,14 +245,14 @@ export default function DashboardPage() {
           alignItems: 'center',
           justifyContent: 'center',
           padding: '56px',
-          color: '#475569',
+          color: '#4C566A',
           fontSize: '13px',
         }}>
           <div style={{
             width: '28px',
             height: '28px',
-            border: '2px solid rgba(255, 255, 255, 0.06)',
-            borderTopColor: '#818CF8',
+            border: '2px solid rgba(216, 222, 233, 0.08)',
+            borderTopColor: '#88C0D0',
             borderRadius: '50%',
             animation: 'spin 0.7s linear infinite',
             marginBottom: '12px',
@@ -265,14 +265,14 @@ export default function DashboardPage() {
         <div style={{
           textAlign: 'center',
           padding: '64px',
-          color: '#475569',
+          color: '#4C566A',
         }}>
           <div style={{
             width: '56px',
             height: '56px',
             borderRadius: '14px',
-            background: 'rgba(129, 140, 248, 0.08)',
-            border: '1px solid rgba(129, 140, 248, 0.15)',
+            background: 'rgba(136, 192, 208, 0.08)',
+            border: '1px solid rgba(136, 192, 208, 0.15)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
@@ -284,7 +284,7 @@ export default function DashboardPage() {
           <div style={{
             fontSize: '18px',
             fontWeight: 600,
-            color: '#94a3b8',
+            color: '#D8DEE9',
             marginBottom: '8px',
             fontFamily: 'var(--font-sans)',
           }}>
@@ -308,10 +308,10 @@ export default function DashboardPage() {
           bottom: '24px',
           right: '24px',
           padding: '12px 20px',
-          background: '#111827',
-          border: `1px solid ${toast.type === 'success' ? 'rgba(52, 211, 153, 0.2)' : 'rgba(248, 113, 113, 0.2)'}`,
-          borderRadius: '12px',
-          color: toast.type === 'success' ? '#34d399' : '#f87171',
+          background: '#3B4252',
+          border: `1px solid ${toast.type === 'success' ? 'rgba(163, 190, 140, 0.2)' : 'rgba(191, 97, 106, 0.2)'}`,
+          borderRadius: '8px',
+          color: toast.type === 'success' ? '#A3BE8C' : '#BF616A',
           fontSize: '13px',
           fontFamily: 'var(--font-sans)',
           boxShadow: '0 8px 32px rgba(0, 0, 0, 0.4)',

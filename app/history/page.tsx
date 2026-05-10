@@ -63,14 +63,14 @@ export default function HistoryPage() {
           fontSize: '28px',
           fontWeight: 700,
           fontFamily: 'var(--font-sans)',
-          color: '#edf2f7',
+          color: '#ECEFF4',
           marginBottom: '6px',
           letterSpacing: '-0.03em',
         }}>
-          历史简报
+          📋 历史简报
         </h1>
         <p style={{
-          color: '#475569',
+          color: '#4C566A',
           fontSize: '14px',
           fontFamily: 'var(--font-sans)',
         }}>
@@ -85,14 +85,14 @@ export default function HistoryPage() {
           alignItems: 'center',
           justifyContent: 'center',
           padding: '56px',
-          color: '#475569',
+          color: '#4C566A',
           fontSize: '13px',
         }}>
           <div style={{
             width: '28px',
             height: '28px',
-            border: '2px solid rgba(255, 255, 255, 0.06)',
-            borderTopColor: '#818CF8',
+            border: '2px solid rgba(216, 222, 233, 0.08)',
+            borderTopColor: '#88C0D0',
             borderRadius: '50%',
             animation: 'spin 0.7s linear infinite',
             marginBottom: '12px',
@@ -112,21 +112,21 @@ export default function HistoryPage() {
                   height: '36px',
                   padding: '0 20px',
                   background: 'transparent',
-                  border: '1px solid rgba(129, 140, 248, 0.2)',
+                  border: '1px solid rgba(136, 192, 208, 0.2)',
                   borderRadius: '8px',
-                  color: '#818CF8',
+                  color: '#88C0D0',
                   fontSize: '13px',
                   fontFamily: 'var(--font-sans)',
                   cursor: 'pointer',
-                  transition: 'all 200ms ease',
+                  transition: 'all 150ms ease',
                 }}
                 onMouseEnter={e => {
-                  (e.currentTarget as HTMLButtonElement).style.background = 'rgba(129, 140, 248, 0.1)';
-                  (e.currentTarget as HTMLButtonElement).style.borderColor = 'rgba(129, 140, 248, 0.3)';
+                  (e.currentTarget as HTMLButtonElement).style.background = 'rgba(136, 192, 208, 0.1)';
+                  (e.currentTarget as HTMLButtonElement).style.borderColor = 'rgba(136, 192, 208, 0.3)';
                 }}
                 onMouseLeave={e => {
                   (e.currentTarget as HTMLButtonElement).style.background = 'transparent';
-                  (e.currentTarget as HTMLButtonElement).style.borderColor = 'rgba(129, 140, 248, 0.2)';
+                  (e.currentTarget as HTMLButtonElement).style.borderColor = 'rgba(136, 192, 208, 0.2)';
                 }}
               >
                 加载更多
@@ -138,14 +138,14 @@ export default function HistoryPage() {
         <div style={{
           textAlign: 'center',
           padding: '64px',
-          color: '#475569',
+          color: '#4C566A',
         }}>
           <div style={{
             width: '56px',
             height: '56px',
             borderRadius: '14px',
-            background: 'rgba(129, 140, 248, 0.08)',
-            border: '1px solid rgba(129, 140, 248, 0.15)',
+            background: 'rgba(136, 192, 208, 0.08)',
+            border: '1px solid rgba(136, 192, 208, 0.15)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
@@ -157,7 +157,7 @@ export default function HistoryPage() {
           <div style={{
             fontSize: '18px',
             fontWeight: 600,
-            color: '#94a3b8',
+            color: '#D8DEE9',
             marginBottom: '8px',
             fontFamily: 'var(--font-sans)',
           }}>

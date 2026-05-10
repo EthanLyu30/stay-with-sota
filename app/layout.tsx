@@ -28,16 +28,16 @@ export default function RootLayout({
       <body className={`${inter.variable} ${jetbrainsMono.variable}`}>
         <Navigation />
         <main style={{
-          paddingTop: '52px',
+          paddingTop: '56px',
           minHeight: '100vh',
-          background: '#0B0F19',
+          background: '#2E3440',
           position: 'relative',
           zIndex: 1,
         }}>
           <div style={{
-            maxWidth: '1100px',
+            maxWidth: '1200px',
             margin: '0 auto',
-            padding: '32px',
+            padding: '24px',
           }}>
             {children}
           </div>
