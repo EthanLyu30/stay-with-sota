@@ -5,6 +5,7 @@ import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import DigestDetail from '@/components/DigestDetail';
 import ExportButton from '@/components/ExportButton';
+import LoadingSpinner from '@/components/LoadingSpinner';
 import type { Digest } from '@/lib/types';
 
 export default function DigestPage() {
@@ -34,28 +35,7 @@ export default function DigestPage() {
   }, [id]);
 
   if (loading) {
-    return (
-      <div style={{
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        padding: '56px',
-        color: '#4C566A',
-        fontSize: '13px',
-      }}>
-        <div style={{
-          width: '28px',
-          height: '28px',
-          border: '2px solid rgba(216, 222, 233, 0.08)',
-          borderTopColor: '#88C0D0',
-          borderRadius: '50%',
-          animation: 'spin 0.7s linear infinite',
-          marginBottom: '12px',
-        }} />
-        加载中...
-      </div>
-    );
+    return <LoadingSpinner />;
   }
 
   if (error || !digest) {
@@ -133,7 +113,7 @@ export default function DigestPage() {
         >
           ← 返回历史
         </Link>
-        <ExportButton digestId={digest.id} date={digest.date} />
+        <ExportButton digestId={digest.id} />
       </div>
       <DigestDetail digest={digest} />
     </div>

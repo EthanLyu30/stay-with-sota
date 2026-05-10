@@ -8,7 +8,7 @@ export async function POST() {
   } catch (error) {
     console.error('Test email error:', error);
     return NextResponse.json(
-      { error: 'Failed to send test email', details: String(error) },
+      { error: '操作失败' },
       { status: 500 }
     );
   }

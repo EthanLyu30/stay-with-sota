@@ -3,6 +3,8 @@
 import { useEffect, useState, useCallback } from 'react';
 import type { Source, SourceType } from '@/lib/types';
 import { SOURCE_META } from '@/lib/utils';
+import LoadingSpinner from '@/components/LoadingSpinner';
+import EmptyState from '@/components/EmptyState';
 
 const SOURCE_TYPES: { value: SourceType; label: string }[] = [
   { value: 'github-trending', label: 'GitHub Trending' },
@@ -82,28 +84,7 @@ export default function SourceManager() {
   };
 
   if (loading) {
-    return (
-      <div style={{
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        padding: '56px',
-        color: '#4C566A',
-        fontSize: '13px',
-      }}>
-        <div style={{
-          width: '28px',
-          height: '28px',
-          border: '2px solid rgba(216, 222, 233, 0.08)',
-          borderTopColor: '#88C0D0',
-          borderRadius: '50%',
-          animation: 'spin 0.7s linear infinite',
-          marginBottom: '12px',
-        }} />
-        加载中...
-      </div>
-    );
+    return <LoadingSpinner />;
   }
 
   const inputStyle: React.CSSProperties = {
@@ -358,43 +339,11 @@ export default function SourceManager() {
       </div>
 
       {sources.length === 0 && (
-        <div style={{
-          textAlign: 'center',
-          padding: '56px',
-          color: '#4C566A',
-        }}>
-          <div style={{
-            width: '48px',
-            height: '48px',
-            borderRadius: '12px',
-            background: 'rgba(136, 192, 208, 0.08)',
-            border: '1px solid rgba(136, 192, 208, 0.15)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            margin: '0 auto 16px',
-            fontSize: '20px',
-          }}>
-            📡
-          </div>
-          <div style={{
-            fontSize: '16px',
-            fontWeight: 600,
-            color: '#D8DEE9',
-            marginBottom: '6px',
-            fontFamily: 'var(--font-sans)',
-          }}>
-            暂无数据源
-          </div>
-          <div style={{
-            fontSize: '13px',
-            maxWidth: '400px',
-            margin: '0 auto',
-            lineHeight: 1.6,
-          }}>
-            点击上方按钮添加数据源
-          </div>
-        </div>
+        <EmptyState
+          icon="📡"
+          title="暂无数据源"
+          description="点击上方按钮添加数据源"
+        />
       )}
     </div>
   );

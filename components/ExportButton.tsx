@@ -2,7 +2,6 @@
 
 interface ExportButtonProps {
   digestId: string;
-  date: string;
 }
 
 export default function ExportButton({ digestId }: ExportButtonProps) {

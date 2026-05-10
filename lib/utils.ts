@@ -1,10 +1,8 @@
 /**
  * 生成唯一 ID
  */
-let idCounter = 0;
 export function generateId(): string {
-  idCounter++;
-  return `${Date.now()}-${idCounter}-${Math.random().toString(36).substring(2, 7)}`;
+  return crypto.randomUUID();
 }
 
 /**

@@ -2,6 +2,8 @@
 
 import { useEffect, useState, useCallback } from 'react';
 import DigestCard from '@/components/DigestCard';
+import LoadingSpinner from '@/components/LoadingSpinner';
+import EmptyState from '@/components/EmptyState';
 
 interface DigestPreview {
   id: string;
@@ -79,26 +81,7 @@ export default function HistoryPage() {
       </div>
 
       {loading ? (
-        <div style={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'center',
-          padding: '56px',
-          color: '#4C566A',
-          fontSize: '13px',
-        }}>
-          <div style={{
-            width: '28px',
-            height: '28px',
-            border: '2px solid rgba(216, 222, 233, 0.08)',
-            borderTopColor: '#88C0D0',
-            borderRadius: '50%',
-            animation: 'spin 0.7s linear infinite',
-            marginBottom: '12px',
-          }} />
-          加载中...
-        </div>
+        <LoadingSpinner />
       ) : digests.length > 0 ? (
         <>
           {uniqueDigests.map(digest => (
@@ -135,43 +118,11 @@ export default function HistoryPage() {
           )}
         </>
       ) : (
-        <div style={{
-          textAlign: 'center',
-          padding: '64px',
-          color: '#4C566A',
-        }}>
-          <div style={{
-            width: '56px',
-            height: '56px',
-            borderRadius: '14px',
-            background: 'rgba(136, 192, 208, 0.08)',
-            border: '1px solid rgba(136, 192, 208, 0.15)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            margin: '0 auto 16px',
-            fontSize: '24px',
-          }}>
-            📋
-          </div>
-          <div style={{
-            fontSize: '18px',
-            fontWeight: 600,
-            color: '#D8DEE9',
-            marginBottom: '8px',
-            fontFamily: 'var(--font-sans)',
-          }}>
-            暂无历史简报
-          </div>
-          <div style={{
-            fontSize: '14px',
-            maxWidth: '400px',
-            margin: '0 auto',
-            lineHeight: 1.6,
-          }}>
-            首次抓取后，简报将显示在这里
-          </div>
-        </div>
+        <EmptyState
+          icon="📋"
+          title="暂无历史简报"
+          description="首次抓取后，简报将显示在这里"
+        />
       )}
     </div>
   );

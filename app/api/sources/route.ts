@@ -1,7 +1,16 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getSources, addSource, initDefaultSources } from '@/lib/db';
 import { generateId } from '@/lib/utils';
-import type { Source } from '@/lib/types';
+import type { Source, SourceType } from '@/lib/types';
+
+const VALID_SOURCE_TYPES: SourceType[] = [
+  'github-trending',
+  'github-release',
+  'arxiv',
+  'huggingface',
+  'hackernews',
+  'rss',
+];
 
 export async function GET() {
   try {
@@ -13,7 +22,7 @@ export async function GET() {
     return NextResponse.json({ success: true, data: sources });
   } catch (error) {
     console.error('Get sources error:', error);
-    return NextResponse.json({ error: 'Failed to fetch sources' }, { status: 500 });
+    return NextResponse.json({ error: '操作失败' }, { status: 500 });
   }
 }
 
@@ -26,9 +35,14 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'type and name are required' }, { status: 400 });
     }
 
+    // 验证数据源类型
+    if (!VALID_SOURCE_TYPES.includes(type as SourceType)) {
+      return NextResponse.json({ error: '无效的数据源类型' }, { status: 400 });
+    }
+
     const source: Source = {
       id: generateId(),
-      type,
+      type: type as SourceType,
       name,
       url,
       config: config || {},
@@ -40,6 +54,6 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ success: true, data: source }, { status: 201 });
   } catch (error) {
     console.error('Add source error:', error);
-    return NextResponse.json({ error: 'Failed to add source' }, { status: 500 });
+    return NextResponse.json({ error: '操作失败' }, { status: 500 });
   }
 }

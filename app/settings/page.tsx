@@ -1,5 +1,11 @@
+import type { Metadata } from 'next';
 import SourceManager from '@/components/SourceManager';
 import ProviderSelector from '@/components/ProviderSelector';
+
+export const metadata: Metadata = {
+  title: '设置 - SOTA Daily',
+  description: '管理数据源、AI 模型和系统配置',
+};
 
 export default function SettingsPage() {
   return (

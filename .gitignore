@@ -1,6 +1,27 @@
 node_modules/
 .next/
 .env
-.env.local
+.env*.local
 *.tsbuildinfo
 next-env.d.ts
+
+# Logs
+*.log
+npm-debug.log*
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+
+# Vercel
+.vercel/
+
+# Build output
+out/
+
+# Workers
+workers/.wrangler/

@@ -5,6 +5,8 @@ import StatsBar from '@/components/StatsBar';
 import DigestDetail from '@/components/DigestDetail';
 import SearchBar from '@/components/SearchBar';
 import ExportButton from '@/components/ExportButton';
+import LoadingSpinner from '@/components/LoadingSpinner';
+import EmptyState from '@/components/EmptyState';
 import type { Digest } from '@/lib/types';
 
 export default function DashboardPage() {
@@ -204,7 +206,7 @@ export default function DashboardPage() {
           {sendingEmail ? '⏳ 发送中...' : '📧 发送测试邮件'}
         </button>
         {latestDigest && (
-          <ExportButton digestId={latestDigest.id} date={latestDigest.date} />
+          <ExportButton digestId={latestDigest.id} />
         )}
       </div>
 
@@ -239,66 +241,15 @@ export default function DashboardPage() {
 
       {/* Content */}
       {loading ? (
-        <div style={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'center',
-          padding: '56px',
-          color: '#4C566A',
-          fontSize: '13px',
-        }}>
-          <div style={{
-            width: '28px',
-            height: '28px',
-            border: '2px solid rgba(216, 222, 233, 0.08)',
-            borderTopColor: '#88C0D0',
-            borderRadius: '50%',
-            animation: 'spin 0.7s linear infinite',
-            marginBottom: '12px',
-          }} />
-          加载中...
-        </div>
+        <LoadingSpinner />
       ) : latestDigest ? (
         <DigestDetail digest={latestDigest} />
       ) : (
-        <div style={{
-          textAlign: 'center',
-          padding: '64px',
-          color: '#4C566A',
-        }}>
-          <div style={{
-            width: '56px',
-            height: '56px',
-            borderRadius: '14px',
-            background: 'rgba(136, 192, 208, 0.08)',
-            border: '1px solid rgba(136, 192, 208, 0.15)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            margin: '0 auto 16px',
-            fontSize: '24px',
-          }}>
-            🚀
-          </div>
-          <div style={{
-            fontSize: '18px',
-            fontWeight: 600,
-            color: '#D8DEE9',
-            marginBottom: '8px',
-            fontFamily: 'var(--font-sans)',
-          }}>
-            暂无简报
-          </div>
-          <div style={{
-            fontSize: '14px',
-            maxWidth: '400px',
-            margin: '0 auto',
-            lineHeight: 1.6,
-          }}>
-            点击「立即抓取」按钮获取最新 AI 领域动态，或等待每日自动推送
-          </div>
-        </div>
+        <EmptyState
+          icon="🚀"
+          title="暂无简报"
+          description="点击「立即抓取」按钮获取最新 AI 领域动态，或等待每日自动推送"
+        />
       )}
 
       {/* Toast */}

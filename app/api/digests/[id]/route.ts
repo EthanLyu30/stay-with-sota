@@ -16,6 +16,6 @@ export async function GET(
     return NextResponse.json({ success: true, data: digest });
   } catch (error) {
     console.error('Get digest error:', error);
-    return NextResponse.json({ error: 'Failed to fetch digest' }, { status: 500 });
+    return NextResponse.json({ error: '操作失败' }, { status: 500 });
   }
 }

@@ -41,8 +41,12 @@ export async function GET(request: NextRequest) {
     const authHeader = request.headers.get('authorization');
     const cronSecret = process.env.CRON_SECRET;
 
-    if (cronSecret && authHeader !== `Bearer ${cronSecret}`) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    if (cronSecret) {
+      if (authHeader !== `Bearer ${cronSecret}`) {
+        return NextResponse.json({ error: '未授权访问' }, { status: 401 });
+      }
+    } else {
+      console.warn('[SECURITY] CRON_SECRET is not set, cron endpoint is unprotected');
     }
 
     // 初始化默认数据源
@@ -89,9 +93,9 @@ export async function GET(request: NextRequest) {
     console.log(`[Cron] Total fetched: ${allItems.length} items`);
 
     if (allItems.length === 0) {
-      return NextResponse.json({ 
-        success: false, 
-        error: '所有数据源抓取结果为空。可能原因：网络问题、GitHub/HuggingFace 访问受限、或数据源配置有误。请检查终端日志。' 
+      return NextResponse.json({
+        success: false,
+        error: '所有数据源抓取结果为空。可能原因：网络问题、GitHub/HuggingFace 访问受限、或数据源配置有误。请检查终端日志。'
       });
     }
 
@@ -106,9 +110,9 @@ export async function GET(request: NextRequest) {
     console.log(`[Cron] AI filtered: ${digestItems.length} items`);
 
     if (digestItems.length === 0) {
-      return NextResponse.json({ 
-        success: false, 
-        error: 'AI 筛选后没有内容通过。可能原因：本地 Ollama 模型未运行、模型未拉取、或 API 调用失败。请检查终端日志。' 
+      return NextResponse.json({
+        success: false,
+        error: 'AI 筛选后没有内容通过。可能原因：本地 Ollama 模型未运行、模型未拉取、或 API 调用失败。请检查终端日志。'
       });
     }
 
@@ -156,7 +160,7 @@ export async function GET(request: NextRequest) {
   } catch (error) {
     console.error('[Cron] Fatal error:', error);
     return NextResponse.json(
-      { success: false, error: 'Internal server error', details: String(error) },
+      { success: false, error: '操作失败' },
       { status: 500 }
     );
   }

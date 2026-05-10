@@ -1,5 +1,5 @@
 import type { LLMProviderConfig } from './types';
-import { SYSTEM_PROMPT } from './types';
+import { SYSTEM_PROMPT, BUILTIN_PROVIDERS } from './types';
 
 /**
  * 解析 LLM 响应，提取 JSON
@@ -137,7 +137,6 @@ export function getActiveProvider(): LLMProviderConfig {
   }
 
   // 从内置列表查找
-  const { BUILTIN_PROVIDERS } = require('./types');
   const provider = BUILTIN_PROVIDERS.find((p: LLMProviderConfig) => p.id === providerId);
   if (provider) {
     // 用环境变量覆盖 apiKey（如果设置了）

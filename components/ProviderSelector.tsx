@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import LoadingSpinner from '@/components/LoadingSpinner';
 
 interface Provider {
   id: string;
@@ -31,16 +32,7 @@ export default function ProviderSelector() {
   }, []);
 
   if (loading) {
-    return (
-      <div style={{
-        width: '28px',
-        height: '28px',
-        border: '2px solid rgba(216, 222, 233, 0.08)',
-        borderTopColor: '#88C0D0',
-        borderRadius: '50%',
-        animation: 'spin 0.7s linear infinite',
-      }} />
-    );
+    return <LoadingSpinner size={20} text="" />;
   }
 
   return (

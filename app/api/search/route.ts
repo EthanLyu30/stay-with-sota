@@ -5,8 +5,9 @@ export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
     const query = (searchParams.get('q') || '').trim().toLowerCase();
-    const page = parseInt(searchParams.get('page') || '1');
-    const pageSize = parseInt(searchParams.get('pageSize') || '20');
+    const rawPage = parseInt(searchParams.get('page') || '1');
+    const page = Number.isFinite(rawPage) && rawPage > 0 ? rawPage : 1;
+    const pageSize = Math.min(parseInt(searchParams.get('pageSize') || '20'), 50);
 
     if (!query) {
       return NextResponse.json({ success: false, error: '搜索关键词不能为空' }, { status: 400 });
@@ -63,6 +64,6 @@ export async function GET(request: NextRequest) {
     });
   } catch (error) {
     console.error('Search error:', error);
-    return NextResponse.json({ error: '搜索失败' }, { status: 500 });
+    return NextResponse.json({ error: '操作失败' }, { status: 500 });
   }
 }

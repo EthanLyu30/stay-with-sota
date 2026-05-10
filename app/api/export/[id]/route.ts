@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getDigest } from '@/lib/db';
 import { SOURCE_META } from '@/lib/utils';
+import type { Digest } from '@/lib/types';
 
 export async function GET(
   request: NextRequest,
@@ -28,7 +29,7 @@ export async function GET(
   }
 }
 
-function generateMarkdown(digest: any): string {
+function generateMarkdown(digest: Digest): string {
   const date = new Date(digest.date).toLocaleDateString('zh-CN', {
     year: 'numeric',
     month: 'long',
@@ -45,7 +46,7 @@ function generateMarkdown(digest: any): string {
   md += `---\n\n`;
 
   // 按数据源分组
-  const grouped = new Map<string, typeof digest.items[]>();
+  const grouped = new Map<string, typeof digest.items>();
   for (const item of digest.items) {
     const key = item.sourceType;
     if (!grouped.has(key)) grouped.set(key, []);

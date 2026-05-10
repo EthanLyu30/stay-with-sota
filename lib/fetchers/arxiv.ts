@@ -7,7 +7,7 @@ export async function fetchArxiv(config?: Record<string, unknown>): Promise<Fetc
   try {
     // 查询最近提交的论文
     const query = categories.map(cat => `cat:${cat}`).join(' OR ');
-    const url = `http://export.arxiv.org/api/query?search_query=${encodeURIComponent(query)}&sortBy=submittedDate&sortOrder=descending&max_results=30&start=0`;
+    const url = `https://export.arxiv.org/api/query?search_query=${encodeURIComponent(query)}&sortBy=submittedDate&sortOrder=descending&max_results=30&start=0`;
 
     const res = await fetch(url, {
       headers: { 'User-Agent': 'SOTA-Bot/1.0' },

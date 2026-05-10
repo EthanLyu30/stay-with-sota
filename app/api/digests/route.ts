@@ -4,10 +4,11 @@ import { getDigests } from '@/lib/db';
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
-    const page = parseInt(searchParams.get('page') || '1');
-    const pageSize = parseInt(searchParams.get('pageSize') || '10');
+    const rawPage = parseInt(searchParams.get('page') || '1');
+    const page = Number.isFinite(rawPage) && rawPage > 0 ? rawPage : 1;
+    const pageSize = Math.min(parseInt(searchParams.get('pageSize') || '10'), 50);
 
-    const result = await getDigests(page, Math.min(pageSize, 50));
+    const result = await getDigests(page, pageSize);
 
     return NextResponse.json({
       success: true,
@@ -30,6 +31,6 @@ export async function GET(request: NextRequest) {
     });
   } catch (error) {
     console.error('Get digests error:', error);
-    return NextResponse.json({ error: 'Failed to fetch digests' }, { status: 500 });
+    return NextResponse.json({ error: '操作失败' }, { status: 500 });
   }
 }
