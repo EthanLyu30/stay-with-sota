@@ -1,4 +1,5 @@
 import Parser from 'rss-parser';
+import { logger } from '../logger';
 import type { FetchedItem } from '../types';
 
 const parser = new Parser({
@@ -27,7 +28,7 @@ export async function fetchRSS(url: string, name?: string): Promise<FetchedItem[
       });
     }
   } catch (err) {
-    console.error(`Failed to fetch RSS ${url}:`, err);
+    logger.error({ type: 'fetch_error', source: 'rss', url, error: err instanceof Error ? err.message : String(err) });
   }
 
   return items;

@@ -1,10 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { logApiRequest, logApiResponse } from './lib/logger';
 
 /**
  * 安全中间件
  * - 添加安全响应头
  * - API 速率限制
  * - 敏感路由认证检查
+ * - 请求/响应日志记录
  */
 
 // ============ 速率限制配置 ============
@@ -187,6 +189,13 @@ function matchRoute(pathname: string): {
 
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
+  const startTime = Date.now();
+  
+  // 记录 API 请求
+  if (pathname.startsWith('/api/')) {
+    logApiRequest(request, { pathname });
+  }
+  
   const response = NextResponse.next();
 
   // 1. 添加安全头到所有响应
@@ -254,11 +263,19 @@ export function middleware(request: NextRequest) {
     const ip = getClientIp(request);
     const allowed = checkRateLimit(ip, routeInfo.rateLimitKey!, routeInfo.rateLimitRule);
     if (!allowed) {
+      const durationMs = Date.now() - startTime;
+      logApiResponse(request, 429, durationMs, { pathname, rateLimited: true });
       return NextResponse.json(
         { error: '请求过于频繁，请稍后再试' },
         { status: 429 }
       );
     }
+  }
+
+  // 记录 API 响应
+  if (pathname.startsWith('/api/')) {
+    const durationMs = Date.now() - startTime;
+    logApiResponse(request, response.status, durationMs, { pathname });
   }
 
   return response;

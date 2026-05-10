@@ -1,4 +1,5 @@
 import { Redis } from '@upstash/redis';
+import { logger } from './logger';
 import type { Source, Digest, Stats } from './types';
 import { getToday } from './utils';
 
@@ -74,7 +75,7 @@ export async function updateSource(id: string, updates: Partial<Source>): Promis
 // ============ Digests CRUD ============
 
 export async function saveDigest(digest: Digest): Promise<void> {
-  console.log(`[DB] Saving digest ${digest.id} with ${digest.items.length} items`);
+  logger.debug({ type: 'db_save_digest', digestId: digest.id, itemCount: digest.items.length }, 'Saving digest');
   
   // 保存简报详情
   await kv.set(KEYS.DIGEST(digest.id), JSON.stringify(digest), { ex: 90 * 24 * 3600 });
@@ -84,14 +85,14 @@ export async function saveDigest(digest: Digest): Promise<void> {
   list.unshift(digest.id);
   if (list.length > 365) list.length = 365;
   await kv.set(KEYS.DIGEST_LIST, JSON.stringify(list));
-  console.log(`[DB] Digest list now has ${list.length} items`);
+  logger.debug({ type: 'db_digest_list', count: list.length });
 
   // 按日期索引
   await kv.set(KEYS.DIGEST_BY_DATE(digest.date), digest.id, { ex: 90 * 24 * 3600 });
 
   // 更新最后简报
   await kv.set(KEYS.LAST_DIGEST, digest.id);
-  console.log(`[DB] Digest saved successfully`);
+  logger.debug({ type: 'db_save_complete', digestId: digest.id });
 }
 
 export async function getDigest(id: string): Promise<Digest | null> {
@@ -109,18 +110,18 @@ export async function getDigests(page: number = 1, pageSize: number = 10): Promi
   const end = start + pageSize;
   const pageIds = list.slice(start, end);
 
-  console.log(`[DB] getDigests: list has ${list.length} IDs, fetching page ${page}`);
+  logger.debug({ type: 'db_get_digests', listLength: list.length, page });
 
   const items = await Promise.all(
     pageIds.map(async id => {
       const d = await getDigest(id);
-      if (!d) console.log(`[DB] Warning: digest ${id} not found`);
+      if (!d) logger.warn({ type: 'db_digest_not_found', digestId: id });
       return d;
     })
   );
 
   const validItems = items.filter((d): d is Digest => d !== null);
-  console.log(`[DB] getDigests: returning ${validItems.length} valid items`);
+  logger.debug({ type: 'db_get_digests_result', validCount: validItems.length });
 
   return {
     items: validItems,
@@ -197,5 +198,5 @@ export async function initDefaultSources(): Promise<void> {
   ];
 
   await kv.set(KEYS.SOURCES, JSON.stringify(defaults));
-  console.log('[DB] Default sources initialized');
+  logger.info({ type: 'db_init_defaults', count: defaults.length });
 }

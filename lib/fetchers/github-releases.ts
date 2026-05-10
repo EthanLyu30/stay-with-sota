@@ -1,3 +1,4 @@
+import { logger } from '../logger';
 import type { FetchedItem } from '../types';
 
 export async function fetchGitHubReleases(config?: Record<string, unknown>): Promise<FetchedItem[]> {
@@ -55,7 +56,7 @@ export async function fetchGitHubReleases(config?: Record<string, unknown>): Pro
         });
       }
     } catch (err) {
-      console.error(`Failed to fetch releases for ${repo}:`, err);
+      logger.error({ type: 'fetch_error', source: 'github-releases', repo, error: err instanceof Error ? err.message : String(err) });
     }
   }
 

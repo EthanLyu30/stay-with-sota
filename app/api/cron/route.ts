@@ -10,6 +10,7 @@ import { summarizeItems } from '@/lib/ai/summarizer';
 import { sendDigestEmail } from '@/lib/email/sender';
 import { deduplicateItems } from '@/lib/dedup';
 import { generateId, getToday } from '@/lib/utils';
+import { logger, logCronJob } from '@/lib/logger';
 import type { FetchedItem, Source } from '@/lib/types';
 
 // Vercel Cron Job handler
@@ -46,7 +47,7 @@ export async function GET(request: NextRequest) {
         return NextResponse.json({ error: '未授权访问' }, { status: 401 });
       }
     } else {
-      console.warn('[SECURITY] CRON_SECRET is not set, cron endpoint is unprotected');
+      logger.warn({ type: 'security', message: 'CRON_SECRET is not set, cron endpoint is unprotected' }, 'Security warning');
     }
 
     // 初始化默认数据源
@@ -58,7 +59,7 @@ export async function GET(request: NextRequest) {
 
     // 兜底：如果 Redis 没有数据源，直接用内置默认值
     if (enabledSources.length === 0) {
-      console.log('[Cron] No sources in Redis, using built-in defaults');
+      logger.info({ type: 'cron_fallback', message: 'No sources in Redis, using built-in defaults' });
       enabledSources = [
         { id: 'builtin-1', type: 'github-trending', name: 'GitHub Trending', config: { languages: ['python', 'typescript', 'rust'], since: 'daily' }, enabled: true, createdAt: '' },
         { id: 'builtin-2', type: 'arxiv', name: 'ArXiv AI Papers', config: { categories: ['cs.AI', 'cs.CL', 'cs.CV', 'cs.LG'] }, enabled: true, createdAt: '' },
@@ -68,15 +69,15 @@ export async function GET(request: NextRequest) {
     }
 
     // 并行抓取所有数据源
-    console.log(`[Cron] Starting fetch from ${enabledSources.length} sources...`);
+    logCronJob('started', { sourceCount: enabledSources.length });
     const fetchResults = await Promise.allSettled(
       enabledSources.map(async (source) => {
         try {
           const items = await fetchFromSource(source);
-          console.log(`[Cron] ${source.name}: ${items.length} items fetched`);
+          logger.info({ type: 'fetch_result', source: source.name, itemCount: items.length });
           return items;
         } catch (err) {
-          console.error(`[Cron] ${source.name} failed:`, err);
+          logger.error({ type: 'fetch_error', source: source.name, error: err instanceof Error ? err.message : String(err) });
           return [];
         }
       })
@@ -90,7 +91,7 @@ export async function GET(request: NextRequest) {
       }
     }
 
-    console.log(`[Cron] Total fetched: ${allItems.length} items`);
+    logger.info({ type: 'fetch_total', totalItems: allItems.length });
 
     if (allItems.length === 0) {
       return NextResponse.json({
@@ -102,12 +103,12 @@ export async function GET(request: NextRequest) {
     // 跨源去重
     const dedupedItems = deduplicateItems(allItems);
     const dedupCount = allItems.length - dedupedItems.length;
-    console.log(`[Cron] After dedup: ${dedupedItems.length} items (removed ${dedupCount} duplicates)`);
+    logger.info({ type: 'dedup_result', afterDedup: dedupedItems.length, removed: dedupCount });
 
     // AI 筛选和摘要
-    console.log(`[Cron] Calling AI summarizer...`);
+    logger.info({ type: 'ai_summarize_start', itemCount: dedupedItems.length });
     const { digestItems, digestTitle } = await summarizeItems(dedupedItems);
-    console.log(`[Cron] AI filtered: ${digestItems.length} items`);
+    logger.info({ type: 'ai_summarize_complete', filteredCount: digestItems.length });
 
     if (digestItems.length === 0) {
       return NextResponse.json({
@@ -140,10 +141,10 @@ export async function GET(request: NextRequest) {
         await saveDigest(digest);
       }
     } catch (err) {
-      console.error('[Cron] Email failed:', err);
+      logger.error({ type: 'email_error', error: err instanceof Error ? err.message : String(err) });
     }
 
-    console.log(`[Cron] Done! ${digestItems.length} items, email sent: ${emailSent}`);
+    logCronJob('completed', { itemCount: digestItems.length, emailSent });
 
     return NextResponse.json({
       success: true,
@@ -158,7 +159,8 @@ export async function GET(request: NextRequest) {
       },
     });
   } catch (error) {
-    console.error('[Cron] Fatal error:', error);
+    logCronJob('failed', { error: error instanceof Error ? error.message : String(error) });
+    logger.error({ type: 'cron_fatal', error: error instanceof Error ? error.message : String(error), stack: error instanceof Error ? error.stack : undefined });
     return NextResponse.json(
       { success: false, error: '操作失败' },
       { status: 500 }

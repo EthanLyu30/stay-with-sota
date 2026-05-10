@@ -1,3 +1,4 @@
+import { logger } from '../logger';
 import type { FetchedItem } from '../types';
 
 export async function fetchArxiv(config?: Record<string, unknown>): Promise<FetchedItem[]> {
@@ -39,7 +40,7 @@ export async function fetchArxiv(config?: Record<string, unknown>): Promise<Fetc
       });
     }
   } catch (err) {
-    console.error('Failed to fetch ArXiv:', err);
+    logger.error({ type: 'fetch_error', source: 'arxiv', error: err instanceof Error ? err.message : String(err) });
   }
 
   return items;

@@ -1,3 +1,4 @@
+import { logger } from '../logger';
 import type { FetchedItem } from '../types';
 
 interface HFPaper {
@@ -27,7 +28,7 @@ export async function fetchHuggingFace(_config?: Record<string, unknown>): Promi
           useProxy = true;
         }
       } catch {
-        console.log('[HF] Cloudflare proxy failed, trying local proxy...');
+        logger.debug({ type: 'fetch_fallback', source: 'huggingface', from: 'cloudflare', to: 'local' });
       }
     }
 
@@ -42,7 +43,7 @@ export async function fetchHuggingFace(_config?: Record<string, unknown>): Promi
           useProxy = true;
         }
       } catch {
-        console.log('[HF] Local proxy failed, trying direct...');
+        logger.debug({ type: 'fetch_fallback', source: 'huggingface', from: 'local', to: 'direct' });
       }
     }
 
@@ -57,7 +58,7 @@ export async function fetchHuggingFace(_config?: Record<string, unknown>): Promi
       }
     }
 
-    console.log(`[HF] Fetched ${papers.length} papers (proxy: ${useProxy})`);
+    logger.info({ type: 'fetch_result', source: 'huggingface', itemCount: papers.length, useProxy });
 
     for (const paper of papers.slice(0, 15)) {
       items.push({
@@ -74,7 +75,7 @@ export async function fetchHuggingFace(_config?: Record<string, unknown>): Promi
       });
     }
   } catch (err) {
-    console.error('Failed to fetch HuggingFace:', err);
+    logger.error({ type: 'fetch_error', source: 'huggingface', error: err instanceof Error ? err.message : String(err) });
   }
 
   return items;

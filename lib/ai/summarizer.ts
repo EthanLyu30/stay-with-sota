@@ -1,3 +1,4 @@
+import { logger } from '../logger';
 import type { FetchedItem, DigestItem } from '../types';
 import { generateId } from '../utils';
 import { callLLM, parseLLMResponse, getActiveProvider } from './provider';
@@ -62,7 +63,7 @@ export async function summarizeItems(items: FetchedItem[]): Promise<{
         digestTitle = result.digestTitle;
       }
     } catch (err) {
-      console.error(`Failed to summarize batch ${i} with ${provider.name}:`, err);
+      logger.error({ type: 'ai_summarize_error', batch: i, provider: provider.name, error: err instanceof Error ? err.message : String(err) });
       // 降级：直接使用原始内容
       for (const item of batch) {
         allDigestItems.push({

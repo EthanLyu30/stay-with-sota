@@ -1,3 +1,4 @@
+import { logger } from '../logger';
 import type { FetchedItem } from '../types';
 
 interface TrendingRepo {
@@ -44,7 +45,7 @@ export async function fetchGitHubTrending(config?: Record<string, unknown>): Pro
         });
       }
     } catch (err) {
-      console.error(`Failed to fetch GitHub Trending for ${lang}:`, err);
+      logger.error({ type: 'fetch_error', source: 'github-trending', language: lang, error: err instanceof Error ? err.message : String(err) });
     }
   }
 

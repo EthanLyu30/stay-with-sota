@@ -1,3 +1,4 @@
+import { logger } from '../logger';
 import type { FetchedItem } from '../types';
 
 interface HNItem {
@@ -65,7 +66,7 @@ export async function fetchHackerNews(config?: Record<string, unknown>): Promise
       });
     }
   } catch (err) {
-    console.error('Failed to fetch Hacker News:', err);
+    logger.error({ type: 'fetch_error', source: 'hackernews', error: err instanceof Error ? err.message : String(err) });
   }
 
   return items;
