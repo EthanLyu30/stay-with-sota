@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { useEffect, useState } from 'react';
 
 const navItems = [
   { href: '/', label: 'Dashboard', icon: '⚡' },
@@ -11,6 +12,21 @@ const navItems = [
 
 export default function Navigation() {
   const pathname = usePathname();
+  const [isOnline, setIsOnline] = useState(true);
+
+  useEffect(() => {
+    const checkHealth = async () => {
+      try {
+        const res = await fetch('/api/health', { signal: AbortSignal.timeout(3000) });
+        setIsOnline(res.ok);
+      } catch {
+        setIsOnline(false);
+      }
+    };
+    checkHealth();
+    const interval = setInterval(checkHealth, 30000); // Check every 30s
+    return () => clearInterval(interval);
+  }, []);
 
   return (
     <header style={{
@@ -83,8 +99,10 @@ export default function Navigation() {
           width: '7px',
           height: '7px',
           borderRadius: '50%',
-          background: '#A3BE8C',
-          boxShadow: '0 0 8px rgba(163, 190, 140, 0.5)',
+          background: isOnline ? '#A3BE8C' : '#BF616A',
+          boxShadow: isOnline
+            ? '0 0 8px rgba(163, 190, 140, 0.5)'
+            : '0 0 8px rgba(191, 97, 106, 0.5)',
           display: 'inline-block',
         }} />
         <span style={{
@@ -92,7 +110,7 @@ export default function Navigation() {
           fontFamily: 'var(--font-mono)',
           color: '#4C566A',
         }}>
-          online
+          {isOnline ? 'online' : 'offline'}
         </span>
       </div>
     </header>

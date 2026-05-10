@@ -18,6 +18,13 @@ export const metadata: Metadata = {
   description: '自动抓取 AI 领域最新动态，通过 LLM 智能筛选摘要，每日推送至邮箱',
 };
 
+export const viewport = {
+  themeColor: '#88C0D0',
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 1,
+};
+
 export default function RootLayout({
   children,
 }: {

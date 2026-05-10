@@ -2,15 +2,29 @@ import nodemailer from 'nodemailer';
 import { generateEmailHtml } from './template';
 import type { Digest } from '../types';
 
-const transporter = nodemailer.createTransport({
-  host: 'smtp.qq.com',
-  port: 465,
-  secure: true,
-  auth: {
-    user: process.env.QQ_EMAIL,
-    pass: process.env.QQ_EMAIL_AUTH_CODE,
-  },
-});
+let transporter: nodemailer.Transporter | null = null;
+
+function getTransporter(): nodemailer.Transporter {
+  if (!transporter) {
+    const email = process.env.QQ_EMAIL;
+    const authCode = process.env.QQ_EMAIL_AUTH_CODE;
+
+    if (!email || !authCode) {
+      throw new Error('QQ_EMAIL 和 QQ_EMAIL_AUTH_CODE 环境变量未设置');
+    }
+
+    transporter = nodemailer.createTransport({
+      host: 'smtp.qq.com',
+      port: 465,
+      secure: true,
+      auth: {
+        user: email,
+        pass: authCode,
+      },
+    });
+  }
+  return transporter;
+}
 
 /**
  * 发送简报邮件
@@ -25,7 +39,7 @@ export async function sendDigestEmail(digest: Digest): Promise<boolean> {
   try {
     const html = generateEmailHtml(digest);
 
-    await transporter.sendMail({
+    await getTransporter().sendMail({
       from: `"SOTA Daily" <${email}>`,
       to: email,
       subject: digest.title,
@@ -82,7 +96,7 @@ export async function sendTestEmail(): Promise<boolean> {
 
   const html = generateEmailHtml(testDigest);
 
-  await transporter.sendMail({
+  await getTransporter().sendMail({
     from: `"SOTA Daily" <${email}>`,
     to: email,
     subject: '📧 SOTA Daily — 测试邮件',

@@ -81,11 +81,11 @@ export default function DashboardPage() {
         showToast(data.error || '抓取失败', 'error');
         setFetchStatus('');
       }
-    } catch (err: any) {
-      if (err.name === 'AbortError') {
+    } catch (err: unknown) {
+      if (err instanceof Error && err.name === 'AbortError') {
         showToast('抓取超时（超过 10 分钟），请重试', 'error');
       } else {
-        showToast('抓取请求失败: ' + (err.message || ''), 'error');
+        showToast('抓取请求失败: ' + (err instanceof Error ? err.message : '未知错误'), 'error');
       }
       setFetchStatus('');
     } finally {

@@ -36,7 +36,9 @@ export default function StatsBar() {
         { label: '活跃数据源', value: sources },
         { label: '上次推送', value: digestData.items?.[0]?.emailSent ? '✓ 已推送' : '待推送' },
       ]);
-    }).catch(() => {}).finally(() => setLoading(false));
+    }).catch((err) => {
+      console.error('[StatsBar] Failed to load stats:', err);
+    }).finally(() => setLoading(false));
   }, []);
 
   if (loading) return null;
