@@ -1,3 +1,4 @@
+import React from 'react';
 import type { Digest } from '@/lib/types';
 import { SOURCE_META } from '@/lib/utils';
 
@@ -5,7 +6,7 @@ interface DigestDetailProps {
   digest: Digest;
 }
 
-export default function DigestDetail({ digest }: DigestDetailProps) {
+function DigestDetail({ digest }: DigestDetailProps) {
   const passRate = Math.round(
     (digest.totalFiltered / Math.max(digest.totalFetched, 1)) * 100
   );
@@ -251,3 +252,5 @@ export default function DigestDetail({ digest }: DigestDetailProps) {
     </div>
   );
 }
+
+export default React.memo(DigestDetail);

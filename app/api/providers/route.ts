@@ -15,8 +15,13 @@ export async function GET() {
 
   const activeProvider = process.env.LLM_PROVIDER || 'ollama-gemma4';
 
-  return NextResponse.json({
+  const response = NextResponse.json({
     success: true,
     data: { providers, activeProvider }
   });
+
+  // 缓存 5 分钟
+  response.headers.set('Cache-Control', 'public, s-maxage=300, stale-while-revalidate=600');
+
+  return response;
 }

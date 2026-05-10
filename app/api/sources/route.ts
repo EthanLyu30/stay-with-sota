@@ -19,7 +19,12 @@ export async function GET() {
       await initDefaultSources();
       sources = await getSources();
     }
-    return NextResponse.json({ success: true, data: sources });
+    const response = NextResponse.json({ success: true, data: sources });
+
+    // 缓存 30 秒
+    response.headers.set('Cache-Control', 'public, s-maxage=30, stale-while-revalidate=60');
+
+    return response;
   } catch (error) {
     console.error('Get sources error:', error);
     return NextResponse.json({ success: false, error: '操作失败' }, { status: 500 });

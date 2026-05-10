@@ -1,11 +1,7 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-
-interface StatItem {
-  label: string;
-  value: string | number;
-}
+import React from 'react';
+import { useStats } from '@/lib/hooks';
 
 const accentColors = [
   '#88C0D0', // ice blue
@@ -14,35 +10,22 @@ const accentColors = [
   '#B48EAD', // purple
 ];
 
-export default function StatsBar() {
-  const [stats, setStats] = useState<StatItem[]>([
+function StatsBar() {
+  const { stats, isLoading } = useStats();
+
+  const statItems = stats ? [
+    { label: '总简报', value: stats.totalDigests },
+    { label: '今日新增', value: stats.todayItems > 0 ? '✓' : '—' },
+    { label: '活跃数据源', value: stats.activeSources },
+    { label: '上次推送', value: stats.lastEmailSent ? '✓ 已推送' : '待推送' },
+  ] : [
     { label: '总简报', value: '—' },
     { label: '今日新增', value: '—' },
     { label: '活跃数据源', value: '—' },
     { label: '上次推送', value: '—' },
-  ]);
-  const [loading, setLoading] = useState(true);
+  ];
 
-  useEffect(() => {
-    Promise.all([
-      fetch('/api/digests?page=1&pageSize=1').then(r => r.json()),
-      fetch('/api/sources').then(r => r.json()),
-    ]).then(([digestData, sourceData]) => {
-      const total = digestData.meta?.total || 0;
-      const items = digestData.data || [];
-      const sources = (sourceData.data || []).filter((s: { enabled: boolean }) => s.enabled).length;
-      setStats([
-        { label: '总简报', value: total },
-        { label: '今日新增', value: items[0] ? '✓' : '—' },
-        { label: '活跃数据源', value: sources },
-        { label: '上次推送', value: items[0]?.emailSent ? '✓ 已推送' : '待推送' },
-      ]);
-    }).catch((err) => {
-      console.error('[StatsBar] Failed to load stats:', err);
-    }).finally(() => setLoading(false));
-  }, []);
-
-  if (loading) {
+  if (isLoading) {
     return (
       <div className="stats-grid-4" style={{ display: 'grid', gap: '12px', marginBottom: '24px' }}>
         {[1, 2, 3, 4].map((i) => (
@@ -67,7 +50,7 @@ export default function StatsBar() {
       gap: '12px',
       marginBottom: '24px',
     }}>
-      {stats.map((stat, i) => (
+      {statItems.map((stat, i) => (
         <div key={i} style={{
           background: '#3B4252',
           border: '1px solid rgba(216, 222, 233, 0.08)',
@@ -101,3 +84,5 @@ export default function StatsBar() {
     </div>
   );
 }
+
+export default React.memo(StatsBar);

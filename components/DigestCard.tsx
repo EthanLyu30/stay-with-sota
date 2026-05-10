@@ -1,3 +1,4 @@
+import React from 'react';
 import Link from 'next/link';
 import { SOURCE_META } from '@/lib/utils';
 
@@ -18,7 +19,7 @@ interface DigestCardProps {
   };
 }
 
-export default function DigestCard({ digest }: DigestCardProps) {
+function DigestCard({ digest }: DigestCardProps) {
   const passRate = Math.round(
     (digest.totalFiltered / Math.max(digest.totalFetched, 1)) * 100
   );
@@ -122,3 +123,5 @@ export default function DigestCard({ digest }: DigestCardProps) {
     </Link>
   );
 }
+
+export default React.memo(DigestCard);

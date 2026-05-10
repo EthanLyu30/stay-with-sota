@@ -1,8 +1,9 @@
 'use client';
 
-import { useEffect, useState, useCallback } from 'react';
+import { useState, useCallback } from 'react';
 import type { Source, SourceType } from '@/lib/types';
 import { SOURCE_META } from '@/lib/utils';
+import { useSources } from '@/lib/hooks';
 import LoadingSpinner from '@/components/LoadingSpinner';
 import EmptyState from '@/components/EmptyState';
 
@@ -16,28 +17,13 @@ const SOURCE_TYPES: { value: SourceType; label: string }[] = [
 ];
 
 export default function SourceManager() {
-  const [sources, setSources] = useState<Source[]>([]);
-  const [loading, setLoading] = useState(true);
+  const { sources, isLoading, mutate } = useSources();
   const [showForm, setShowForm] = useState(false);
   const [formData, setFormData] = useState({
     type: 'rss' as SourceType,
     name: '',
     url: '',
   });
-
-  const fetchSources = useCallback(async () => {
-    try {
-      const res = await fetch('/api/sources');
-      const data = await res.json();
-      if (data.success) setSources(data.data || []);
-    } catch (err) {
-      console.error('Failed to fetch sources:', err);
-    } finally {
-      setLoading(false);
-    }
-  }, []);
-
-  useEffect(() => { fetchSources(); }, [fetchSources]);
 
   const handleToggle = async (source: Source) => {
     try {
@@ -46,9 +32,8 @@ export default function SourceManager() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ enabled: !source.enabled }),
       });
-      setSources(prev =>
-        prev.map(s => s.id === source.id ? { ...s, enabled: !s.enabled } : s)
-      );
+      // 重新验证数据
+      mutate();
     } catch (err) {
       console.error('Failed to toggle source:', err);
     }
@@ -58,7 +43,8 @@ export default function SourceManager() {
     if (!confirm('确定要删除这个数据源吗？')) return;
     try {
       await fetch(`/api/sources/${id}`, { method: 'DELETE' });
-      setSources(prev => prev.filter(s => s.id !== id));
+      // 重新验证数据
+      mutate();
     } catch (err) {
       console.error('Failed to delete source:', err);
     }
@@ -74,16 +60,17 @@ export default function SourceManager() {
       });
       const data = await res.json();
       if (data.success) {
-        setSources(prev => [...prev, data.data]);
         setFormData({ type: 'rss', name: '', url: '' });
         setShowForm(false);
+        // 重新验证数据
+        mutate();
       }
     } catch (err) {
       console.error('Failed to add source:', err);
     }
   };
 
-  if (loading) {
+  if (isLoading) {
     return <LoadingSpinner />;
   }
 
@@ -242,7 +229,7 @@ export default function SourceManager() {
       )}
 
       <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-        {sources.map(source => {
+        {sources?.map(source => {
           const meta = SOURCE_META[source.type] || { icon: '📡', label: source.type };
           return (
             <div key={source.id} style={{
@@ -346,7 +333,7 @@ export default function SourceManager() {
         })}
       </div>
 
-      {sources.length === 0 && (
+      {sources?.length === 0 && (
         <EmptyState
           icon="📡"
           title="暂无数据源"

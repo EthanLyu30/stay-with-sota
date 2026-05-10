@@ -10,7 +10,7 @@ export async function GET(request: NextRequest) {
 
     const result = await getDigests(page, pageSize);
 
-    return NextResponse.json({
+    const response = NextResponse.json({
       success: true,
       data: result.items.map(d => ({
         id: d.id,
@@ -28,6 +28,11 @@ export async function GET(request: NextRequest) {
       })),
       meta: { page, pageSize, total: result.total, hasMore: result.hasMore }
     });
+
+    // 缓存 1 分钟
+    response.headers.set('Cache-Control', 'public, s-maxage=60, stale-while-revalidate=300');
+
+    return response;
   } catch (error) {
     console.error('Get digests error:', error);
     return NextResponse.json({ success: false, error: '操作失败' }, { status: 500 });
