@@ -13,6 +13,7 @@ const navItems = [
 export default function Navigation() {
   const pathname = usePathname();
   const [isOnline, setIsOnline] = useState(true);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     const checkHealth = async () => {
@@ -59,8 +60,14 @@ export default function Navigation() {
         </span>
       </Link>
 
-      {/* Nav Links */}
-      <nav style={{ display: 'flex', gap: '2px' }}>
+      {/* Desktop Nav Links */}
+      <nav style={{
+        display: 'flex',
+        gap: '2px',
+        '@media (max-width: 768px)': {
+          display: 'none',
+        },
+      } as React.CSSProperties}>
         {navItems.map(item => {
           const isActive = pathname === item.href;
           return (
@@ -89,12 +96,34 @@ export default function Navigation() {
         })}
       </nav>
 
+      {/* Mobile Menu Button */}
+      <button
+        onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+        style={{
+          display: 'none',
+          alignItems: 'center',
+          justifyContent: 'center',
+          width: '40px',
+          height: '40px',
+          background: 'transparent',
+          border: '1px solid rgba(216, 222, 233, 0.12)',
+          borderRadius: '6px',
+          color: '#D8DEE9',
+          fontSize: '18px',
+          cursor: 'pointer',
+          transition: 'all 150ms ease',
+        }}
+        className="mobile-menu-btn"
+      >
+        ☰
+      </button>
+
       {/* Online Status */}
       <div style={{
         display: 'flex',
         alignItems: 'center',
         gap: '8px',
-      }}>
+      }} className="online-status">
         <span style={{
           width: '7px',
           height: '7px',
@@ -113,6 +142,67 @@ export default function Navigation() {
           {isOnline ? 'online' : 'offline'}
         </span>
       </div>
+
+      {/* Mobile Menu Dropdown */}
+      {mobileMenuOpen && (
+        <div style={{
+          position: 'absolute',
+          top: '56px',
+          left: 0,
+          right: 0,
+          background: 'rgba(46, 52, 64, 0.98)',
+          backdropFilter: 'blur(12px)',
+          WebkitBackdropFilter: 'blur(12px)',
+          borderBottom: '1px solid rgba(216, 222, 233, 0.08)',
+          padding: '12px',
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '4px',
+          zIndex: 99,
+        }} className="mobile-menu">
+          {navItems.map(item => {
+            const isActive = pathname === item.href;
+            return (
+              <Link
+                key={item.href}
+                href={item.href}
+                onClick={() => setMobileMenuOpen(false)}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '10px',
+                  padding: '12px 16px',
+                  borderRadius: '6px',
+                  fontSize: '14px',
+                  fontWeight: 500,
+                  fontFamily: 'var(--font-sans)',
+                  textDecoration: 'none',
+                  color: isActive ? '#88C0D0' : '#D8DEE9',
+                  background: isActive ? 'rgba(136, 192, 208, 0.1)' : 'transparent',
+                  transition: 'all 150ms ease',
+                }}
+              >
+                <span style={{ fontSize: '16px' }}>{item.icon}</span>
+                {item.label}
+              </Link>
+            );
+          })}
+        </div>
+      )}
+
+      <style jsx>{`
+        @media (max-width: 768px) {
+          .mobile-menu-btn {
+            display: flex !important;
+          }
+          nav {
+            display: none !important;
+          }
+          .online-status {
+            display: none !important;
+          }
+        }
+      `}</style>
     </header>
   );
 }

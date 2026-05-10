@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { Inter, JetBrains_Mono } from 'next/font/google';
 import Navigation from '@/components/Navigation';
+import PageTransition from '@/components/PageTransition';
 import SkipLink from './accessibility';
 import './globals.css';
 
@@ -48,7 +49,9 @@ export default function RootLayout({
             margin: '0 auto',
             padding: '24px',
           }}>
-            {children}
+            <PageTransition>
+              {children}
+            </PageTransition>
           </div>
         </main>
       </body>
