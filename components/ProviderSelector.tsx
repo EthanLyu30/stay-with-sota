@@ -22,9 +22,9 @@ export default function ProviderSelector() {
     fetch('/api/providers')
       .then(r => r.json())
       .then(data => {
-        if (data.success) {
-          setProviders(data.providers || []);
-          setActiveProvider(data.activeProvider || '');
+        if (data.success && data.data) {
+          setProviders(data.data.providers || []);
+          setActiveProvider(data.data.activeProvider || '');
         }
       })
       .catch(console.error)

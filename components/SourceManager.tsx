@@ -284,8 +284,16 @@ export default function SourceManager() {
               </div>
               <div
                 onClick={() => handleToggle(source)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    handleToggle(source);
+                  }
+                }}
                 role="switch"
                 aria-checked={source.enabled}
+                aria-label={`切换数据源: ${source.name}`}
+                tabIndex={0}
                 style={{
                   position: 'relative',
                   width: '40px',

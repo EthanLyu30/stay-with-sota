@@ -2,7 +2,7 @@ import { Redis } from '@upstash/redis';
 import type { Source, Digest, Stats } from './types';
 import { getToday } from './utils';
 
-const kv = new Redis({
+export const kv = new Redis({
   url: process.env.KV_REST_API_URL!,
   token: process.env.KV_REST_API_TOKEN!,
 });

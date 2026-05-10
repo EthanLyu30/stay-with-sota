@@ -54,7 +54,7 @@ export default function SearchBar() {
   };
 
   return (
-    <div ref={wrapperRef} style={{ position: 'relative', marginBottom: '28px' }}>
+    <div ref={wrapperRef} role="search" style={{ position: 'relative', marginBottom: '28px' }}>
       <div style={{
         display: 'flex',
         alignItems: 'center',
@@ -70,6 +70,9 @@ export default function SearchBar() {
         <input
           type="text"
           placeholder="搜索历史简报..."
+          aria-label="搜索历史简报"
+          aria-expanded={showResults}
+          aria-controls="search-results"
           value={query}
           onChange={e => setQuery(e.target.value)}
           onKeyDown={e => { if (e.key === 'Enter') handleSearch(); }}
@@ -104,7 +107,7 @@ export default function SearchBar() {
       </div>
 
       {showResults && results.length > 0 && (
-        <div style={{
+        <div id="search-results" style={{
           position: 'absolute',
           top: '100%',
           left: 0,

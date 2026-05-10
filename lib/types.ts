@@ -52,13 +52,6 @@ export interface Digest {
   createdAt: string;
 }
 
-// API 响应
-export interface ApiResponse<T> {
-  success: boolean;
-  data?: T;
-  error?: string;
-}
-
 // 分页
 export interface PaginatedResponse<T> {
   items: T[];
@@ -74,4 +67,31 @@ export interface Stats {
   todayItems: number;
   activeSources: number;
   lastEmailSent: string | null;
+}
+
+// Standard API Response Types
+export interface ApiSuccessResponse<T> {
+  success: true;
+  data: T;
+  message?: string;
+}
+
+export interface ApiErrorResponse {
+  success: false;
+  error: string;
+  code?: string;
+}
+
+export type ApiResponse<T> = ApiSuccessResponse<T> | ApiErrorResponse;
+
+// Pagination metadata
+export interface PaginationMeta {
+  page: number;
+  pageSize: number;
+  total: number;
+  hasMore: boolean;
+}
+
+export interface PaginatedApiResponse<T> extends ApiSuccessResponse<T> {
+  meta: PaginationMeta;
 }

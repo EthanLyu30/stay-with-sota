@@ -27,8 +27,8 @@ export default function DashboardPage() {
     fetch('/api/digests?page=1&pageSize=1')
       .then(r => r.json())
       .then(data => {
-        if (data.success && data.items && data.items.length > 0) {
-          return fetch(`/api/digests/${data.items[0].id}`);
+        if (data.success && data.data && data.data.length > 0) {
+          return fetch(`/api/digests/${data.data[0].id}`);
         }
         return null;
       })
@@ -254,22 +254,26 @@ export default function DashboardPage() {
 
       {/* Toast */}
       {toast && (
-        <div style={{
-          position: 'fixed',
-          bottom: '24px',
-          right: '24px',
-          padding: '12px 20px',
-          background: '#3B4252',
-          border: `1px solid ${toast.type === 'success' ? 'rgba(163, 190, 140, 0.2)' : 'rgba(191, 97, 106, 0.2)'}`,
-          borderRadius: '8px',
-          color: toast.type === 'success' ? '#A3BE8C' : '#BF616A',
-          fontSize: '13px',
-          fontFamily: 'var(--font-sans)',
-          boxShadow: '0 8px 32px rgba(0, 0, 0, 0.4)',
-          zIndex: 1000,
-          animation: 'slideUp 0.25s ease',
-          maxWidth: '400px',
-        }}>
+        <div
+          role="alert"
+          aria-live="polite"
+          style={{
+            position: 'fixed',
+            bottom: '24px',
+            right: '24px',
+            padding: '12px 20px',
+            background: '#3B4252',
+            border: `1px solid ${toast.type === 'success' ? 'rgba(163, 190, 140, 0.2)' : 'rgba(191, 97, 106, 0.2)'}`,
+            borderRadius: '8px',
+            color: toast.type === 'success' ? '#A3BE8C' : '#BF616A',
+            fontSize: '13px',
+            fontFamily: 'var(--font-sans)',
+            boxShadow: '0 8px 32px rgba(0, 0, 0, 0.4)',
+            zIndex: 1000,
+            animation: 'slideUp 0.25s ease',
+            maxWidth: '400px',
+          }}
+        >
           {toast.type === 'success' ? '✓' : '✕'} {toast.message}
         </div>
       )}

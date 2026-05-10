@@ -12,7 +12,7 @@ export async function GET(request: NextRequest) {
 
     return NextResponse.json({
       success: true,
-      items: result.items.map(d => ({
+      data: result.items.map(d => ({
         id: d.id,
         date: d.date,
         title: d.title,
@@ -26,11 +26,10 @@ export async function GET(request: NextRequest) {
           relevanceScore: item.relevanceScore,
         })),
       })),
-      total: result.total,
-      hasMore: result.hasMore,
+      meta: { page, pageSize, total: result.total, hasMore: result.hasMore }
     });
   } catch (error) {
     console.error('Get digests error:', error);
-    return NextResponse.json({ error: '操作失败' }, { status: 500 });
+    return NextResponse.json({ success: false, error: '操作失败' }, { status: 500 });
   }
 }

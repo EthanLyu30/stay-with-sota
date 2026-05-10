@@ -17,7 +17,6 @@ export async function GET() {
 
   return NextResponse.json({
     success: true,
-    providers,
-    activeProvider,
+    data: { providers, activeProvider }
   });
 }

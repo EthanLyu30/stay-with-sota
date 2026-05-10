@@ -32,11 +32,11 @@ export default function HistoryPage() {
       const data = await res.json();
       if (data.success) {
         if (pageNum === 1) {
-          setDigests(data.items || []);
+          setDigests(data.data || []);
         } else {
-          setDigests(prev => [...prev, ...(data.items || [])]);
+          setDigests(prev => [...prev, ...(data.data || [])]);
         }
-        setHasMore(data.hasMore || false);
+        setHasMore(data.meta?.hasMore || false);
       }
     } catch (err) {
       console.error('Failed to fetch digests:', err);

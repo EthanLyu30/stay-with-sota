@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { Inter, JetBrains_Mono } from 'next/font/google';
 import Navigation from '@/components/Navigation';
+import SkipLink from './accessibility';
 import './globals.css';
 
 const inter = Inter({
@@ -33,8 +34,9 @@ export default function RootLayout({
   return (
     <html lang="zh-CN">
       <body className={`${inter.variable} ${jetbrainsMono.variable}`}>
+        <SkipLink />
         <Navigation />
-        <main style={{
+        <main id="main-content" style={{
           paddingTop: '56px',
           minHeight: '100vh',
           background: '#2E3440',

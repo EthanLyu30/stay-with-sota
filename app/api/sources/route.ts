@@ -22,7 +22,7 @@ export async function GET() {
     return NextResponse.json({ success: true, data: sources });
   } catch (error) {
     console.error('Get sources error:', error);
-    return NextResponse.json({ error: '操作失败' }, { status: 500 });
+    return NextResponse.json({ success: false, error: '操作失败' }, { status: 500 });
   }
 }
 
@@ -32,12 +32,12 @@ export async function POST(request: NextRequest) {
     const { type, name, url, config } = body as Partial<Source>;
 
     if (!type || !name) {
-      return NextResponse.json({ error: 'type and name are required' }, { status: 400 });
+      return NextResponse.json({ success: false, error: 'type and name are required' }, { status: 400 });
     }
 
     // 验证数据源类型
     if (!VALID_SOURCE_TYPES.includes(type as SourceType)) {
-      return NextResponse.json({ error: '无效的数据源类型' }, { status: 400 });
+      return NextResponse.json({ success: false, error: '无效的数据源类型' }, { status: 400 });
     }
 
     const source: Source = {
@@ -54,6 +54,6 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ success: true, data: source }, { status: 201 });
   } catch (error) {
     console.error('Add source error:', error);
-    return NextResponse.json({ error: '操作失败' }, { status: 500 });
+    return NextResponse.json({ success: false, error: '操作失败' }, { status: 500 });
   }
 }
