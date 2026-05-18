@@ -100,7 +100,7 @@ export default function SettingsPage() {
           {[
             ['框架', 'Next.js 15 (App Router)'],
             ['部署', 'Vercel'],
-            ['数据库', 'Vercel KV (Upstash Redis)'],
+            ['数据库', 'Supabase (PostgreSQL)'],
             ['AI 引擎', '多模型支持 (Ollama / Gemini / DeepSeek / 通义 / 智谱)'],
             ['邮件', 'QQ 邮箱 SMTP'],
             ['定时任务', '每日 08:00 (北京时间)'],

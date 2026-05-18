@@ -1,17 +1,18 @@
 import { NextResponse } from 'next/server';
-import { kv } from '@/lib/db';
+import { supabase } from '@/lib/supabase';
 
 export async function GET() {
   const checks: Record<string, { status: 'ok' | 'error'; message?: string }> = {};
 
-  // Check Redis
+  // Check Supabase
   try {
-    await kv.ping();
-    checks.redis = { status: 'ok' };
+    const { error } = await supabase.from('sources').select('id', { count: 'exact', head: true });
+    if (error) throw error;
+    checks.database = { status: 'ok' };
   } catch (err) {
-    checks.redis = {
+    checks.database = {
       status: 'error',
-      message: err instanceof Error ? err.message : 'Redis connection failed'
+      message: err instanceof Error ? err.message : 'Database connection failed',
     };
   }
 

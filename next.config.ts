@@ -9,7 +9,7 @@ const nextConfig: NextConfig = {
     remotePatterns: [],
   },
   experimental: {
-    optimizePackageImports: ['@upstash/redis'],
+    optimizePackageImports: ['@supabase/supabase-js'],
   },
 };
 

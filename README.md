@@ -20,7 +20,7 @@ AI 领域信息聚合推送系统 — 自动抓取、智能筛选、每日推送
 |------|------|
 | Next.js 15 (App Router) | 全栈框架 |
 | TypeScript | 类型安全 |
-| Upstash Redis | 数据存储 |
+| Supabase | 数据存储 (PostgreSQL) |
 | Ollama | 本地 LLM 部署 |
 | Nodemailer | 邮件发送 |
 | Nord Color Palette | UI 设计系统 |
@@ -31,7 +31,7 @@ AI 领域信息聚合推送系统 — 自动抓取、智能筛选、每日推送
 
 - Node.js >= 18.17.0
 - Ollama (可选，用于本地 AI 模型)
-- Upstash Redis 账号 (免费)
+- Supabase 账号 (免费)
 
 ### 1. 克隆项目
 
@@ -51,9 +51,10 @@ cp .env.example .env.local
 
 ```env
 # === 必填 ===
-# Upstash Redis
-KV_REST_API_URL=https://xxx.upstash.io
-KV_REST_API_TOKEN=xxx
+# Supabase
+NEXT_PUBLIC_SUPABASE_URL=https://xxx.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=xxx
+SUPABASE_SERVICE_ROLE_KEY=xxx
 
 # AI 模型 (至少配置一个)
 LLM_PROVIDER=ollama-gemma4          # ollama-gemma4 | ollama-qwen3 | deepseek | gemini | qwen | zhipu
@@ -109,18 +110,21 @@ docker run -p 3000:3000 --env-file .env.local sota-daily
 ### 前提条件
 
 - [Vercel 账号](https://vercel.com)
-- [Upstash Redis](https://upstash.com)（Vercel 集成商店搜索 Redis）
+- [Supabase 账号](https://supabase.com)（免费）
 
 ### 部署步骤
 
 1. **Fork 或连接仓库** — 在 Vercel 中导入 GitHub 仓库
 
-2. **绑定 Upstash Redis** — Vercel Dashboard → Integrations → 搜索 "Redis" → 安装 Upstash Redis
+2. **创建 Supabase 项目** — 在 Supabase Dashboard 创建项目，获取 URL 和 API Key
 
 3. **配置环境变量** — Vercel Dashboard → Settings → Environment Variables：
 
 | 变量名 | 值 |
 |--------|-----|
+| `NEXT_PUBLIC_SUPABASE_URL` | Supabase 项目 URL |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Supabase 匿名 Key |
+| `SUPABASE_SERVICE_ROLE_KEY` | Supabase Service Role Key |
 | `QQ_EMAIL` | 你的 QQ 邮箱 |
 | `QQ_EMAIL_AUTH_CODE` | SMTP 授权码 |
 | `CRON_SECRET` | 随机字符串 |
@@ -228,7 +232,8 @@ stay-with-sota/
 │   └── EmptyState.tsx          # 空状态
 ├── lib/                        # 核心逻辑
 │   ├── types.ts                # TypeScript 类型
-│   ├── db.ts                   # Redis 数据层
+│   ├── db.ts                   # Supabase 数据层
+│   ├── supabase.ts             # Supabase 客户端
 │   ├── utils.ts                # 工具函数
 │   ├── dedup.ts                # 跨源去重 (URL + Jaccard bigram)
 │   ├── ai/                     # AI 模型层

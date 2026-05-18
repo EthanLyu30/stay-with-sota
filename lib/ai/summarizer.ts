@@ -2,6 +2,7 @@ import { logger } from '../logger';
 import type { FetchedItem, DigestItem } from '../types';
 import { generateId } from '../utils';
 import { callLLM, parseLLMResponse, getActiveProvider } from './provider';
+import type { LLMProviderConfig } from './types';
 
 interface LLMResponse {
   items: Array<{
@@ -92,7 +93,7 @@ export async function summarizeItems(items: FetchedItem[]): Promise<{
 }
 
 async function callLLMForBatch(
-  provider: any,
+  provider: LLMProviderConfig,
   items: FetchedItem[],
   isFirstBatch: boolean
 ): Promise<LLMResponse> {
